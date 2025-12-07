@@ -1,0 +1,131 @@
+.filter-button {
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  margin: 0;
+}
+
+.timeline {
+  position: relative;
+  max-width: 800px;
+  margin: 50px auto;
+  padding: 0 20px;
+}
+
+/* vertical line in the center */
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 0;
+  transform: translateX(-50%);
+  width: 4px;
+  height: 100%;
+  background: var(--icon-color);
+}
+
+/* each timeline item */
+.timeline-item {
+  position: relative;
+  width: 50%;
+  padding: 20px 40px;
+  box-sizing: border-box;
+}
+
+/* left side */
+.timeline-item.left {
+  left: 0;
+  text-align: right;
+}
+
+/* right side */
+.timeline-item.right {
+  left: 50%;
+  text-align: left;
+}
+
+.timeline-item + .timeline-item {
+    margin-top: -96px;  /* Vertical Overlap */
+}
+
+/* content boxes */
+.timeline-item .content {
+  background: var(--bg-color);
+  border: 2px solid var(--icon-color);
+  padding: 15px;
+  border-radius: 8px;
+  display: inline-block;
+  position: relative;
+}
+
+/* circles connecting to the line */
+.timeline-item::after {
+  content: '';
+  position: absolute;
+  top: 25px; /* adjust vertically */
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--icon-color);
+  border: 2px solid var(--bg-color);
+}
+
+/* position circles on the correct side */
+.timeline-item.left::after {
+  right: -6px; /* half of circle size */
+}
+
+.timeline-item.right::after {
+  left: -6px;
+}
+
+/* Category Specific Stylings */
+.timeline-item[data-category="work"] .content {
+    border: 5px solid #4da3ff;
+    background: #4da3ff44;
+    backdrop-filter: blur(6px);
+}
+.timeline-item[data-category="education"] .content {
+    border: 5px solid #55cc88;
+    background: #55cc8844;
+    backdrop-filter: blur(6px);
+}
+
+.timeline-item[data-category="other"] .content {
+    border: 5px solid #bb66ff;
+    background: #bb66ff44;
+    backdrop-filter: blur(6px);
+}
+
+/* Hide Details until Hovering */
+.timeline-item .details {
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: 
+        max-height 0.4s ease,
+        opacity 0.3s ease;
+}
+.timeline-item:hover .details {
+    max-height: 500px;
+    opacity: 1;
+}
+
+/* responsive: stack items on small screens */
+@media screen and (max-width: 600px) {
+  .timeline::before {
+    left: 8px; /* move line to left */
+  }
+  .timeline-item {
+    width: 100%;
+    padding-left: 30px;
+    padding-right: 15px;
+  }
+  .timeline-item.left, .timeline-item.right {
+    left: 0;
+    text-align: left;
+  }
+  .timeline-item::after {
+    left: 0;
+  }
+}

@@ -1,0 +1,38 @@
+/* Define Themes */
+:root {
+    --bg-color: #ffffff;
+    --text-color: #000000;
+    --icon-color: #222;
+    --icon-hover-color: #aaaaaa;
+}
+
+[data-theme="dark"] {
+    --bg-color: #232323;
+    --text-color: #e8e8e8;
+    --icon-color: #ddd;
+    --icon-hover-color: #00ea4e;
+}
+
+/* Toggle Themes */
+#theme-toggle {
+    position: fixed;
+    top: 8px;
+    left: 12px;
+    width: 32px;
+    height: 32px;
+    border: none;
+    background: none;
+    cursor: pointer;
+    padding: 0;
+}
+
+#theme-toggle svg {
+    width: 100%;
+    height: 100%;
+    fill: var(--icon-color);
+    transition: transform 0.2s, fill 0.25s;
+}
+
+#theme-toggle:hover svg {
+    transform: scale(1.15);
+}
