@@ -17,6 +17,14 @@
                 <path d="M12 4.5V2m0 20v-2.5M4.5 12H2m20 0h-2.5M5.6 5.6L4.2 4.2m15.6 15.6l-1.4-1.4M5.6 18.4l-1.4 1.4m16.8-16.8l-1.4 1.4M12 7a5 5 0 110 10 5 5 0 010-10z"/>
             </svg>
         </button>
+
+        <div class="timeline-filters">
+            <button class="filter-button" data-filter="all">All</button>
+            <button class="filter-button" data-filter="work">Work</button>
+            <button class="filter-button" data-filter="education">Education</button>
+            <button class="filter-button" data-filter="other">Other</button>
+        </div>
+
         <nav class="top-nav">
             <a href="index.html">Home</a>
             <a href="projects.html">Projects</a>
@@ -24,189 +32,238 @@
         </nav>
     </header>
 
-    <!-- <main class="content">
-        <h1>Curriculum Vitae</h1>
-        <p>Here’s a summary of my professional experience, education, and skills...</p>
-    </main> -->
+    <aside class="cv-left-panel">
+        <h2>Degrees</h2>
+        <ul>
+            <li>MSc. — University of Bern</li>
+            <li>BSc. — University of Bern</li>
+        </ul>
 
-    <section class="timeline">
+        <h2>Publications</h2>
+        <ul>
+            <li>HexHex: Highspeed Extraction of Hexahedral Meshes (SIGGRAPH 2025)</li>
+        </ul>
 
-        <div class="timeline-filters">
-            <!-- <button class="filter-button" data-filter="all">All</button>
-            <button class="filter-button" data-filter="education">
-                <svg role="img" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
-                    <title>Education Icon</title>
-                    <path d="M434.452 904.856c0 30.647 24.843 55.49 55.489 55.49h36.993c30.647 0 55.49-24.843 55.49-55.49V886.36H434.452v18.496z m73.986-832.342c-173.66 0-314.44 140.78-314.44 314.44 0 95.368 42.457 180.82 109.499 238.486 41.118 35.365 130.955 223.926 130.955 223.926h147.972s89.893-188.849 130.128-223.219c67.521-57.672 110.326-143.433 110.326-239.193 0.001-173.659-140.78-314.44-314.44-314.44z m180.101 524.718C653.037 627.509 573.72 812.374 573.72 812.374h-46.785V579.401l87.181-87.181c7.173-7.175 7.173-18.805 0-25.978-7.173-7.173-18.804-7.173-25.978 0l-79.61 79.61-107.895-107.895c-7.225-7.225-18.935-7.225-26.158 0-7.225 7.223-7.225 18.933 0 26.158l112.292 112.292c0.981 0.981 2.05 1.817 3.174 2.531v233.436h-46.785s-79.269-184.61-115.548-215.765c-59.157-50.801-96.618-126.079-96.618-210.094 0-152.986 124.217-277.007 277.447-277.007s277.447 124.021 277.447 277.007c0.002 84.358-37.768 159.911-97.345 210.717z" />
-                </svg>
-            </button>
-            <button class="filter-button" data-filter="other">
-                <svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <title>Other Icon</title>
-                    <path d="M0,0.054V20h21V0.054H0z M15.422,18.129l-5.264-2.768l-5.265,2.768l1.006-5.863L1.64,8.114l5.887-0.855
-	l2.632-5.334l2.633,5.334l5.885,0.855l-4.258,4.152L15.422,18.129z" />
-                </svg>
-            </button>
-            <button class="filter-button" data-filter="work">
-                <svg role="img" viewBox="0 0 463 463" xmlns="http://www.w3.org/2000/svg">
-                    <title>Work Icon</title>
-                    <path d="M455.5,348H447V99.5c0-17.369-14.131-31.5-31.5-31.5h-368C30.131,68,16,82.131,16,99.5V348H7.5
-				c-4.142,0-7.5,3.358-7.5,7.5v16C0,384.458,10.542,395,23.5,395h416c12.958,0,23.5-10.542,23.5-23.5v-16
-				C463,351.358,459.642,348,455.5,348z M31,99.5C31,90.402,38.402,83,47.5,83h368c9.098,0,16.5,7.402,16.5,16.5V348H31V99.5z
-				 M448,371.5c0,4.687-3.813,8.5-8.5,8.5h-416c-4.687,0-8.5-3.813-8.5-8.5V363h169.025c-0.011,0.166-0.025,0.331-0.025,0.5
-				c0,4.142,3.358,7.5,7.5,7.5h80c4.142,0,7.5-3.358,7.5-7.5c0-0.169-0.014-0.334-0.025-0.5H448V371.5z"/>
-			<path d="M407.5,100h-352c-4.142,0-7.5,3.358-7.5,7.5v216c0,4.142,3.358,7.5,7.5,7.5h352c4.142,0,7.5-3.358,7.5-7.5v-216
-				C415,103.358,411.642,100,407.5,100z M400,316H63V115h337V316z"/>
-                </svg>
-            </button> -->
+        <h2>Honors</h2>
+        <ul>
+            <li>Faculty Award for the Master thesis (2026)</li>
+            <li>BSc. insigni cum laude (2024)</li>
+            <li>JAACS Award for the Bachelor thesis (2023)</li>
+        </ul>
+    </aside>
+
+    <aside class="cv-details-panel" id="detailsPanel">
+        <div class="details-inner">
+            <img id="detailsImage" style="display:none;">
+            <h3 id="detailsTitle"></h3>
+            <p id="detailsDescription"></p>
         </div>
+    </aside>
+
+    <main class="timeline-wrapper">
+
+        <div class="timeline">
     
-        <div class="timeline-item right" data-category="education">
+        <div class="timeline-item right" data-category="education"
+                data-title="PhD in Computer Science"
+                data-description-html="<p>I'm currently pursuing a PhD in Computer Science at the University of Bern. In the Computer Graphics Group, my research focuses on applying Integer-Grid Maps, commonly used in hexahedral meshing, to the problem of general 3D shape reconstruction from point clouds.</p>"
+                data-image= "./images/IGRec.png">
             <div class="category-icon"></div>
             <div class="content">
             <h3>Oct. 2025 – 2029</h3>
-            <h4>PhD in Computer Science</h4>
-            <p class="details">Computer Graphics Group, University of Bern</p>
+            <h4>PhD in Computer Science, University of Bern</h4>
             </div>
         </div>
 
-        <div class="timeline-item left" data-category="other">
+        <div class="timeline-item" data-category="other"
+                data-title="Programming Contest Coach"
+                data-description-html="<p>I coached two teams of three of the University of Bern for the ICPC Southwestern Europe Regional Contest (SWERC). I organized the trip to Lyon for myself and the six amazing people I accompanied.</p>"
+                data-image= "./images/SWERC25.jpeg">
             <div class="category-icon"></div>
             <div class="content">
             <h3>Nov. 2025</h3>
             <h4>Programming Contest Coach</h4>
-            <p class="details">Coach of two teams of three for the ICPC Southwestern Europe Regional Contest (SWERC) in Lyon.</p>
             </div>
         </div>
 
-        <div class="timeline-item right" data-category="education">
+        <div class="timeline-item" data-category="education"
+                data-title="SIGGRAPH 2025 - Technical Paper"
+                data-description-html="<p>I further developed my Bachelor thesis project. It got accepted as a SIGGRAPH technical paper. At the annual conference (in Vancouver), I presented my work: HexHex: Highspeed Extraction of Hexahedral Meshes.</p>"
+                data-image= "./images/SIGGRAPH.png">
             <div class="category-icon"></div>
             <div class="content">
             <h3>Aug. 2025</h3>
-            <h4>SIGGRAPH Publication</h4>
-            <p class="details">Published and presented the technical paper "HexHex: Highspeed Extraction of Hexahedral Meshes" at the SIGGRAPH 2025 in Vancouver.</p>
+            <h4>SIGGRAPH 2025 - Technical Paper</h4>
             </div>
         </div>
 
-        <div class="timeline-item left" data-category="education">
+        <div class="timeline-item" data-category="education"
+                data-title="Master's Degree"
+                data-description-html="<p>I finished my 2 year Master's degree with a 6 as an overall grade. For the thesis project 'General Shape Reconstruction from Point Clouds using 3D Parametrizations', I am about to reeive the honor of the Faculty Award of Mathematics, Statistics and Computer Science (Feb. 2026).</p>"
+                data-image= "./images/IGRec.png">
             <div class="category-icon"></div>
             <div class="content">
             <h3>Feb. 2024 – Sep. 2025</h3>
             <h4>Master's in Computer Science, specialized in Visual Computing</h4>
-            <p>University of Bern</p>
-            <p class="details">Honored with the Faculty Award of Mathematics, Statistics and Computer Science for the thesis project "General Shape Reconstruction from Point Clouds using 3D Parametrizations" (Feb. 2026).</p>
             </div>
         </div>
 
-        <div class="timeline-item right" data-category="work">
+        <div class="timeline-item" data-category="work"
+                data-title="TA (BK)"
+                data-description-html="<p>15%</p>"
+                data-image= "">
             <div class="category-icon"></div>
             <div class="content">
             <h3>Spring 2024</h3>
             <h4>Teaching Assistant, Computability and Complexity (BK)</h4>
-            <p class="details">15%</p>
             </div>
         </div>
 
-         <div class="timeline-item left" data-category="work">
+        <div class="timeline-item" data-category="work"
+                data-title="Research Assistant, Computer Graphics Group (20%)"
+                data-description-html="<p>As a research assistant, I continued to develop my Bachelor's thesis project where I optimized the hexahedral mesh etraction from defect-free integer-grid maps.</p>"
+                data-image= "">
+            <div class="category-icon"></div>
+            <div class="content">
+            <h3>Nov. 2023 - Aug. 2025</h3>
+            <h4>Research Assistant, Computer Graphics Group (20%)</h4>
+            </div>
+        </div>
+
+         <div class="timeline-item" data-category="work"
+                data-title="TA (GTI)"
+                data-description-html="<p>15%</p>"
+                data-image= "">
             <div class="category-icon"></div>
             <div class="content">
             <h3>Fall 2023</h3>
             <h4>Teaching Assistant, Fundamentals of Technical Computer Science (GTI)</h4>
-            <p class="details">15%</p>
             </div>
         </div>
 
-        <div class="timeline-item right" data-category="work">
+        <div class="timeline-item" data-category="work"
+                data-title="TA (BK)"
+                data-description-html="<p>15%</p>"
+                data-image= "">
             <div class="category-icon"></div>
             <div class="content">
             <h3>Spring 2023</h3>
             <h4>Teaching Assistant, Computability and Complexity (BK)</h4>
-            <p class="details">15%</p>
             </div>
         </div>
 
-        <div class="timeline-item left" data-category="work">
+        <div class="timeline-item" data-category="work"
+                data-title="TA (DA)"
+                data-description-html="<p>15%</p>"
+                data-image= "">
             <div class="category-icon"></div>
             <div class="content">
             <h3>Spring 2023</h3>
             <h4>Teaching Assistant, Datastructures and Algorithms (DA)</h4>
-            <p class="details">15%</p>
             </div>
         </div>
 
-         <div class="timeline-item right" data-category="work">
+         <div class="timeline-item" data-category="work"
+                data-title="TA (GTI)"
+                data-description-html="<p>15%</p>"
+                data-image= "">
             <div class="category-icon"></div>
             <div class="content">
             <h3>Fall 2022</h3>
             <h4>Teaching Assistant, Fundamentals of Technical Computer Science (GTI)</h4>
-            <p class="details">15%</p>
             </div>
         </div>
 
-        <div class="timeline-item left" data-category="work">
+        <div class="timeline-item" data-category="work"
+                data-title="TA (DB)"
+                data-description-html="<p>15%</p>"
+                data-image= "">
             <div class="category-icon"></div>
             <div class="content">
             <h3>Spring 2022</h3>
             <h4>Teaching Assistant, Databases (DB)</h4>
-            <p class="details">15%</p>
             </div>
         </div>
 
-        <div class="timeline-item right" data-category="work">
+        <div class="timeline-item" data-category="work"
+                data-title="TA (GTI)"
+                data-description-html="<p>15%</p>"
+                data-image= "">
             <div class="category-icon"></div>
             <div class="content">
             <h3>Fall 2021</h3>
             <h4>Teaching Assistant, Fundamentals of Technical Computer Science (GTI)</h4>
-            <p class="details">15%</p>
             </div>
         </div>
 
-         <div class="timeline-item left" data-category="work">
+         <div class="timeline-item" data-category="work"
+                data-title="TA (DA)"
+                data-description-html="<p>15%</p>"
+                data-image= "">
             <div class="category-icon"></div>
             <div class="content">
             <h3>Spring 2021</h3>
             <h4>Teaching Assistant, Datastructures and Algorithms (DA)</h4>
-            <p class="details">15%</p>
             </div>
         </div>
 
-        <div class="timeline-item right" data-category="education">
+        <div class="timeline-item" data-category="education"
+                data-title="Bachelor's Degree, Universiry of Bern"
+                data-description-html="<p>Honored with the 'Joint Alumni Association in Computer Science Award' for the thesis project 'Fast Hexahedral Mesh Extraction from Locally Injective Integer-Grid Maps' (Dec. 2023).</p>"
+                data-image= "">
             <div class="category-icon"></div>
             <div class="content">
             <h3>Sep. 2019 – Jan. 2024</h3>
             <h4>Bachelor's in Computer Science</h4>
-            <p>University of Bern</p>
-            <p class="details">Honored with the "Joint Alumni Association in Computer Science Award" for the thesis project "Fast Hexahedral Mesh Extraction from Locally Injective Integer-Grid Maps" (Dec. 2023).</p>
             </div>
         </div>
 
-        <div class="timeline-item left" data-category="other">
+        <div class="timeline-item" data-category="other"
+                data-title="Board member of the 'WBG Bleiche'"
+                data-description-html="<p>Member of a lay committee for the administration of the “Bleiche” housing cooperative. Regular participation in meetings and minute-taking.</p>"
+                data-image= "">
             <div class="category-icon"></div>
             <div class="content">
             <h3>2019 – 2025</h3>
             <h4>Board member of the "WBG Bleiche"</h4>
-            <p class="details">Member of a lay committee for the administration of the “Bleiche” housing cooperative. Regular participation in meetings and minute-taking.</p>
             </div>
         </div>
 
-        <div class="timeline-item right" data-category="work">
+        <div class="timeline-item" data-category="work"
+                data-title="Civil Service, Tagesschule und Schule Worb"
+                data-description-html="<p>For a year I accompanied over 200 children from Kindergaten to 6-th grade.</p>"
+                data-image= "">
             <div class="category-icon"></div>
             <div class="content">
             <h3>Sep. 2018 – Aug. 2019</h3>
             <h4>Civil Service</h4>
-            <p class="details">Tagesschule und Schule Worb</p>
             </div>
         </div>
 
-        <div class="timeline-item left" data-category="education">
+        <div class="timeline-item" data-category="other"
+                data-title="Math Tutor"
+                data-description-html="<p>Occasional tutoring (5-th grade to Gymnasium), primarily in Mathematics.</p>"
+                data-image= "">
+            <div class="category-icon"></div>
+            <div class="content">
+            <h3>2017 – today</h3>
+            <h4>Math Tutor</h4>
+            </div>
+        </div>
+
+        <div class="timeline-item" data-category="education"
+                data-title="Matura, Gymnasium Kirchenfeld"
+                data-description-html="<p>Matura with main subject Physics and Applied Matheamtics (PAM).</p>"
+                data-image= "">
             <div class="category-icon"></div>
             <div class="content">
             <h3>Sep. 2014 – Aug. 2018</h3>
-            <h4>Matura, specialized in Physics and Applied Mathematics</h4>
-            <p class="details">Gymnasium Kirchenfeld, Bern</p>
+            <h4>Matura, Gymnasium Kirchenfeld</h4>
             </div>
         </div>
 
-    </section>
+        </div>
+    </main>
 
     <!-- Socials -->
     <footer class="footer">
