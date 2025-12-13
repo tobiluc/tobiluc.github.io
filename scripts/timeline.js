@@ -33,33 +33,34 @@ buttons.forEach(btn => {
     });
 });
 
+// Popup
+const backdrop = document.getElementById("timeline-popup-backdrop");
+const titleEl = document.getElementById("popup-title");
+const contentEl = document.getElementById("popup-content");
+const imageEl = document.getElementById("popup-image");
 
-const panel = document.getElementById("detailsPanel");
+document.querySelectorAll(".timeline-item").forEach(item => {
+  item.addEventListener("click", () => {
+    titleEl.textContent = item.dataset.title;
+    contentEl.innerHTML = item.dataset.descriptionHtml || "";
 
-const titleEl = document.getElementById("detailsTitle");
-const descEl = document.getElementById("detailsDescription");
-const imgEl = document.getElementById("detailsImage");
+    if (item.dataset.image) {
+      imageEl.src = item.dataset.image;
+      imageEl.style.display = "block";
+    } else {
+      imageEl.style.display = "none";
+    }
 
-items.forEach(item => {
-    item.addEventListener("mouseenter", () => {
-        const title = item.dataset.title;
-        const html = item.dataset.descriptionHtml;
-        const image = item.dataset.image;
+    backdrop.hidden = false;
+  });
+});
 
-        titleEl.textContent = title;
-        descEl.innerHTML = html || "";
+backdrop.addEventListener("click", e => {
+  if (e.target === backdrop) {
+    backdrop.hidden = true;
+  }
+});
 
-        if (image) {
-            imgEl.src = image;
-            imgEl.style.display = "block";
-        } else {
-            imgEl.style.display = "none";
-        }
-
-        panel.classList.add("visible");
-    });
-
-    item.addEventListener("mouseleave", () => {
-        panel.classList.remove("visible");
-    });
+document.querySelector(".close-btn").addEventListener("click", () => {
+  backdrop.hidden = true;
 });

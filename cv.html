@@ -5,7 +5,7 @@
     <title>CV</title>
     <link rel="stylesheet" href="./styles/style.css">
     <link rel="stylesheet" href="./styles/themes.css">
-    <link rel="stylesheet" href="./styles/timeline.css">
+    <link rel="stylesheet" href="./styles/cv.css">
 </head>
 <body>
     <canvas id="bg-canvas"></canvas>
@@ -18,13 +18,6 @@
             </svg>
         </button>
 
-        <div class="timeline-filters">
-            <button class="filter-button" data-filter="all">All</button>
-            <button class="filter-button" data-filter="work">Work</button>
-            <button class="filter-button" data-filter="education">Education</button>
-            <button class="filter-button" data-filter="other">Other</button>
-        </div>
-
         <nav class="top-nav">
             <a href="index.html">Home</a>
             <a href="projects.html">Projects</a>
@@ -32,33 +25,64 @@
         </nav>
     </header>
 
-    <aside class="cv-left-panel">
-        <h2>Degrees</h2>
-        <ul>
-            <li>MSc. — University of Bern</li>
-            <li>BSc. — University of Bern</li>
-        </ul>
+    <section class="cv-overview">
+    <div class="overview-grid">
 
-        <h2>Publications</h2>
-        <ul>
-            <li>HexHex: Highspeed Extraction of Hexahedral Meshes (SIGGRAPH 2025)</li>
-        </ul>
+    <!-- Degrees -->
+    <div class="overview-card">
+    <h3>Degrees</h3>
+    <ul>
+    <li><strong>Msc</strong> <span>Computer Science (2025)</span></li>
+    <li><strong>BSc</strong> <span>Computer Science (2024)</span></li>
+    </ul>
+    </div>
 
-        <h2>Honors</h2>
-        <ul>
-            <li>Faculty Award for the Master thesis (2026)</li>
-            <li>BSc. insigni cum laude (2024)</li>
-            <li>JAACS Award for the Bachelor thesis (2023)</li>
-        </ul>
-    </aside>
+    <!-- Publications -->
+    <div class="overview-card">
+    <h3>Publications</h3>
+    <ul>
+    <a href="https://cgg.unibe.ch/publication/011289/"><li>HexHex, SIGGRAPH 2025</li></a>
+    </ul>
+    </div>
 
-    <aside class="cv-details-panel" id="detailsPanel">
-        <div class="details-inner">
-            <img id="detailsImage" style="display:none;">
-            <h3 id="detailsTitle"></h3>
-            <p id="detailsDescription"></p>
-        </div>
-    </aside>
+    <!-- Honours -->
+    <div class="overview-card">
+    <h3>Honors</h3>
+    <ul>
+    <li><!--Faculty of Mathematics, Statistics and Computer Science Award-->??? (2026)</li>
+    <li>BSc insigni cum laude (2024)</li>
+    <a href="https://www.jointalumni.ch/awards-thesis-2023/"><li>JAACS Award (2023)</li></a>
+    </ul>
+    </div>
+
+    </div>
+    </section>
+
+    <header class="timeline-header">
+    <h1>Curriculum Vitae</h1>
+    <div class="timeline-filters">
+        <button class="filter-button active" data-filter="all" aria-label="Show All">
+            <img src="icons/cv-all.svg" alt="" />
+        </button>
+
+        <button class="filter-button" data-filter="work" aria-label="Work">
+            <img src="icons/cv-work.svg" alt="" />
+        </button>
+
+        <button class="filter-button" data-filter="education" aria-label="Education">
+            <img src="icons/cv-education.svg" alt="" />
+        </button>
+
+        <button class="filter-button" data-filter="other" aria-label="Other">
+            <img src="icons/cv-other.svg" alt="" />
+        </button>
+
+        <!-- <button class="filter-button" data-filter="all">Show All</button>
+        <button class="filter-button" data-filter="work">Work</button>
+        <button class="filter-button" data-filter="education">Education</button>
+        <button class="filter-button" data-filter="other">Other</button> -->
+    </div>
+    </header>
 
     <main class="timeline-wrapper">
 
@@ -264,6 +288,15 @@
 
         </div>
     </main>
+
+    <div id="timeline-popup-backdrop" hidden>
+    <div id="timeline-popup" role="dialog" aria-modal="true">
+        <button class="close-btn" aria-label="Close">×</button>
+        <h3 id="popup-title"></h3>
+        <div id="popup-content"></div>
+        <img id="popup-image" alt="" />
+    </div>
+    </div>
 
     <!-- Socials -->
     <footer class="footer">

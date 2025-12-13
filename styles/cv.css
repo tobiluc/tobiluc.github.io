@@ -1,0 +1,362 @@
+.timeline-item[data-category="education"] {
+  --item-color: #55cc88;
+}
+
+.timeline-item[data-category="work"] {
+  --item-color: #4da3ff;
+}
+
+.timeline-item[data-category="other"] {
+  --item-color: #bb66ff;
+}
+
+.filter-button[data-filter="all"] {
+  --filter-color: var(--icon-color);
+}
+
+.filter-button[data-filter="work"] {
+  --filter-color: #4da3ff;
+}
+
+.filter-button[data-filter="education"] {
+  --filter-color: #55cc88;
+}
+
+.filter-button[data-filter="other"] {
+  --filter-color: #bb66ff;
+}
+
+
+/*-------- Timeline Header (Title and Filter BUttons) ---------*/
+.timeline-header {
+  max-width: 1100px;
+  margin: 3rem auto 2.5rem;
+  padding: 0 1rem;
+  text-align: center;
+}
+
+.timeline-header h1 {
+  font-size: clamp(2rem, 4vw, 2.6rem);
+  font-weight: 600;
+  margin-bottom: 1.25rem;
+}
+
+
+.timeline-filters {
+    position: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+}
+
+.filter-button {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: 1px solid #ccc;
+  background: var(--bg-color);
+  place-items: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.filter-button img {
+  width: 20px;
+  height: 20px;
+  opacity: 0.7;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  color: var(--icon-color);
+}
+
+.filter-button:hover img {
+  opacity: 1;
+  transform: scale(1.05);
+}
+
+.filter-button:hover {
+  background-color: var(--filter-color);
+  border-color: var(--filter-color);
+}
+
+.filter-button.active img {
+  filter: invert(1);
+  opacity: 1;
+}
+
+.filter-button {
+  position: relative;
+}
+
+.filter-button::after {
+  content: attr(aria-label);
+  position: absolute;
+  bottom: -1.8rem;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.75rem;
+  color: var(--text-color);
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.15s ease;
+}
+
+.filter-button:hover::after {
+  opacity: 1;
+}
+
+/*-------- Top Panel (Overview) ---------*/
+.cv-overview {
+max-width: 1100px;
+margin: 3rem auto 2rem;
+padding: 1.5rem 2rem;
+border-radius: 1rem;
+}
+
+.cv-overview h2 {
+margin: 0 0 1rem;
+font-size: 1.4rem;
+font-weight: 600;
+}
+
+.overview-grid {
+display: grid;
+grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+gap: 1.5rem;
+}
+
+.overview-card {
+border-radius: 0.75rem;
+padding: 1.25rem 1.25rem 1.4rem;
+box-shadow: 0 6px 20px rgba(0,0,0,0.06);
+background: var(--card-bg);
+backdrop-filter: blur(6px);
+}
+
+.overview-card h3 {
+margin: 0 0 0.75rem;
+font-size: 1.05rem;
+color: var(--accent);
+display: flex;
+align-items: center;
+gap: 0.5rem;
+}
+
+.overview-card ul {
+list-style: none;
+padding: 0;
+margin: 0;
+text-decoration: none;
+}
+
+.overview-card li {
+margin-bottom: 0.5rem;
+}
+
+.overview-card a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/*-------- Timeline Item Popup ---------*/
+ #timeline-popup-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.4);
+  display: grid;
+  place-items: center;
+  z-index: 1000;
+}
+
+#timeline-popup-backdrop[hidden] {
+  display: none; /* Dont show popup when hidden */
+}
+
+#timeline-popup {
+  background: var(--bg-color);
+  max-width: 720px;
+  width: min(90%, 720px);
+  max-height: 85vh;
+  overflow-y: auto;
+  padding: 1.5rem;
+  border-radius: 1rem;
+  position: relative;
+}
+
+#timeline-popup img {
+  max-width: 100%;
+  margin-top: 1rem;
+  border-radius: 0.5rem;
+}
+
+.close-btn {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  font-size: 1.5rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+
+/* --------- Timeline Center ----------- */
+.timeline-wrapper {
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 80px 0;
+}
+.timeline {
+    position: relative;
+    margin-top: 4rem;
+    width: 100%;
+}
+.timeline::before {
+    content: "";
+    position: absolute;
+    left: 50%;
+    width: 4px;
+    height: 100%;
+    background: var(--timeline-line);
+    transform: translateX(-50%);
+}
+
+/* Compact items */
+.timeline-item {
+    width: 50%;
+    margin-bottom: 32px;
+    position: relative;
+    transition: transform 0.5s ease,
+}
+.timeline-item:hover {
+    transform: translateY(-6px);
+}
+.timeline-item.left {
+    left: 0;
+}
+.timeline-item.right {
+    left: 50%;
+}
+
+/*-------- Vertical Line ---------*/
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 0;
+  transform: translateX(-50%);
+  width: 4px;
+  height: 100%;
+  background: var(--icon-color);
+}
+/* each timeline item */
+.timeline-item {
+  position: relative;
+  width: 50%;
+  padding: 20px 40px;
+  box-sizing: border-box;
+}
+/* left side */
+.timeline-item.left {
+  left: 0;
+  text-align: right;
+}
+/* right side */
+.timeline-item.right {
+  left: 50%;
+  text-align: left;
+}
+.timeline-item + .timeline-item {
+    margin-top: -128px;  /* Vertical Overlap */
+}
+
+/* content boxes */
+.timeline-item .content {
+  background: var(--bg-color);
+  border: 2px solid var(--icon-color);
+  padding: 15px;
+  border-radius: 8px;
+  display: inline-block;
+  position: relative;
+}
+
+/* Connect items to vertical line */
+.timeline-item {
+  position: relative;
+}
+
+.timeline-item::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  width: 2.5rem;
+  height: 4px;
+  background: var(--item-color);
+  transform: translateY(-50%);
+}
+
+.timeline-item.left::before {
+  right: 0rem;
+}
+
+.timeline-item.right::before {
+  left: 0rem;
+}
+
+
+/* circles connecting to the line */
+/* .timeline-item::after {
+  content: '';
+  position: absolute;
+  top: 25px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--icon-color);
+  border: 2px solid var(--bg-color);
+}
+
+.timeline-item.left::after {
+  right: -6px;
+}
+
+.timeline-item.right::after {
+  left: -6px;
+} */
+
+/* Category Specific Stylings */
+.timeline-item[data-category="work"] .content {
+    border: 5px solid #4da3ff;
+    background: #4da3ff44;
+    backdrop-filter: blur(6px);
+}
+.timeline-item[data-category="education"] .content {
+    border: 5px solid #55cc88;
+    background: #55cc8844;
+    backdrop-filter: blur(6px);
+}
+
+.timeline-item[data-category="other"] .content {
+    border: 5px solid #bb66ff;
+    background: #bb66ff44;
+    backdrop-filter: blur(6px);
+}
+
+/* responsive: stack items on small screens */
+/* @media screen and (max-width: 600px) {
+  .timeline::before {
+    left: 8px;
+  }
+  .timeline-item {
+    width: 100%;
+    padding-left: 30px;
+    padding-right: 15px;
+  }
+  .timeline-item.left, .timeline-item.right {
+    left: 0;
+    text-align: left;
+  }
+  .timeline-item::after {
+    left: 0;
+  }
+} */

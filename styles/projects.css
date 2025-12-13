@@ -1,0 +1,58 @@
+.projects-grid {
+    column-count: 3;          /* number of columns on desktop */
+    column-gap: 1.5rem;
+    padding: 2rem;
+}
+
+/* Reduce Number of Columns on smaller Screens */
+@media (max-width: 1100px) {
+    .projects-grid {
+        column-count: 2;
+    }
+}
+@media (max-width: 700px) {
+    .projects-grid {
+        column-count: 1;
+    }
+}
+
+.project-card {
+    display: inline-block;
+    width: 100%;               /* this is important for masonry */
+    background: var(--bg2);
+    backdrop-filter: blur(6px);
+    border-radius: 12px;
+    margin-bottom: 1.5rem;
+    overflow: hidden;          /* so image rounds match */
+    text-decoration: none;
+    color: var(--text);
+    box-shadow: 0 4px 12px rgb(0 0 0 / 0.15);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+/* Hover animation */
+.project-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 8px 20px rgb(0 0 0 / 0.25);
+}
+
+/* Project image */
+.project-img {
+    width: 100%;
+    display: block;
+    height: auto;
+}
+
+/* Content inside the card */
+.project-info {
+    padding: 1rem;
+}
+
+.project-info h3 {
+    margin: 0 0 0.3rem;
+}
+
+.project-info p {
+    opacity: 0.85;
+    font-size: 0.9rem;
+}
