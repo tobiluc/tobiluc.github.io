@@ -1,5 +1,5 @@
 .projects-grid {
-    column-count: 3;          /* number of columns on desktop */
+    column-count: 3;
     column-gap: 1.5rem;
     padding: 2rem;
 }
@@ -16,43 +16,79 @@
     }
 }
 
-.project-card {
-    display: inline-block;
-    width: 100%;               /* this is important for masonry */
-    background: var(--bg2);
-    backdrop-filter: blur(6px);
+.project-media {
+    position: relative;
+    overflow: hidden;
     border-radius: 12px;
-    margin-bottom: 1.5rem;
-    overflow: hidden;          /* so image rounds match */
-    text-decoration: none;
-    color: var(--text);
-    box-shadow: 0 4px 12px rgb(0 0 0 / 0.15);
-    transition: transform 0.25s ease, box-shadow 0.25s ease;
-}
-
-/* Hover animation */
-.project-card:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 8px 20px rgb(0 0 0 / 0.25);
-}
-
-/* Project image */
-.project-img {
-    width: 100%;
-    display: block;
-    height: auto;
-}
-
-/* Content inside the card */
-.project-info {
     padding: 1rem;
 }
 
-.project-info h3 {
-    margin: 0 0 0.3rem;
+/* Image */
+.project-img {
+    width: 100%;
+    display: block;
+    transition: transform 0.4s ease;
 }
 
-.project-info p {
-    opacity: 0.85;
+/* Overlay */
+.project-overlay {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    height: 3.2rem;
+    padding: 0 1rem;
+    background: color-mix(in srgb, var(--bg-color), transparent 20%);
+    backdrop-filter: blur(4px);
+    color: var(--text-color);
+
+    transition: height 0.35s ease, background 0.35s ease;
+}
+
+/* Title — centered in collapsed bar */
+.project-overlay h3 {
+    position: absolute;
+    bottom: 50%;
+    transform: translateY(50%);
+    margin: 0;
+    font-size: 1.05rem;
+    font-weight: 600;
+
+    transition: transform 0.35s ease, bottom 0.35s ease;
+}
+
+/* Description */
+.project-overlay p {
+    margin: 3rem 0 0;
     font-size: 0.9rem;
+    line-height: 1.4;
+
+    opacity: 0;
+    transform: translateY(6px);
+    transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+/* Hover state */
+.project-card:hover .project-overlay {
+    height: 100%;
+    background: color-mix(in srgb, var(--bg-color), transparent 30%);
+}
+
+/* Title moves up */
+.project-card:hover .project-overlay h3 {
+    bottom: auto;
+    top: 1rem;
+    transform: translateY(0);
+}
+
+/* Paragraph appears */
+.project-card:hover .project-overlay p {
+    opacity: 0.9;
+    transform: translateY(0);
+}
+
+/* Image zoom */
+.project-card:hover .project-img {
+    transform: scale(1.05);
 }
