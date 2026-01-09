@@ -114,16 +114,16 @@ class SantaShooter extends Game {
             ctx.textBaseline = "middle";
 
             ctx.font = "64px Arial";
-            ctx.fillText("GAME OVER", canvas.width / 2, canvas.height / 2 - 80);
+            ctx.fillText("GAME OVER", canvas.width / 2, canvas.height / 2 - 120);
 
             ctx.font = "48px Arial";
-            ctx.fillText("Your Score: "+globals.score, canvas.width / 2, canvas.height / 2 - 20);
-            ctx.fillText("Highscore: " + localStorage.getItem("santashooter_highscore"), canvas.width / 2, canvas.height / 2 + 10);
+            ctx.fillText("Your Score: "+globals.score, canvas.width / 2, canvas.height / 2 - 60);
+            ctx.fillText("Highscore: " + localStorage.getItem("santashooter_highscore"), canvas.width / 2, canvas.height / 2);
 
             ctx.font = "24px Arial";
             ctx.fillText("Press 'R' to restart",
                 canvas.width / 2,
-                canvas.height / 2 + 30
+                canvas.height / 2 + 50
             );
             return;
         }
