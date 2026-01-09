@@ -1,3 +1,3 @@
 # tobiluc
 
-[Website](https://tobiluc.github.io)
+[Website](https://tobiluc.github.io/)
