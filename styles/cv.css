@@ -100,7 +100,7 @@
 
 /*-------- Top Panel (Overview) ---------*/
 .cv-overview {
-max-width: 100%;
+max-width: 1200px;
 margin: 3rem auto 2rem;
 padding: 1.5rem 2rem;
 border-radius: 1rem;
