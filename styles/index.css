@@ -1,6 +1,6 @@
 /* --- Center content in the page --- */
 .center-content {
-    min-height: 100vh;
+    min-height: 90vh;
     display: flex;
     flex-direction: column; /* image on top, text below */
     justify-content: center; /* vertical centering */

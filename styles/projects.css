@@ -2,6 +2,8 @@
     column-count: 3;
     column-gap: 1.5rem;
     padding: 2rem;
+    padding-top: 4rem;
+    padding-bottom: 5rem;
 }
 
 /* Reduce Number of Columns on smaller Screens */
@@ -54,6 +56,8 @@
     margin: 0;
     font-size: 1.05rem;
     font-weight: 600;
+    text-decoration: underline;
+    letter-spacing: 0.05rem;
 
     transition: transform 0.35s ease, bottom 0.35s ease;
 }
