@@ -1,3 +1,14 @@
+/* --- Center content in the page --- */
+.center-content {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column; /* image on top, text below */
+    justify-content: center; /* vertical centering */
+    align-items: center; /* horizontal centering */
+    text-align: center; /* center the paragraph text */
+    padding: 20px;
+}
+
 .profile-img {
     width: 320px;
     height: 320px;
@@ -9,6 +20,15 @@
 
 .intro-text {
     font-size: 1.1rem;
-    max-width: 600px;
+    max-width: 320px;
     color: var(--text-color);
+}
+
+a {
+    color: var(--text-color);
+    text-decoration: none;
+}
+
+a:hover {
+    color: var(--icon-hover-color);
 }
