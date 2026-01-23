@@ -47,7 +47,7 @@ body {
 }
 
 .top-bar nav a:hover {
-    color: var(--icon-hover-color);
+    color: var(--hover-color);
     transform: scale(1.05);
 }
 
@@ -88,7 +88,7 @@ body {
 
 .icon:hover svg {
     transform: scale(1.2);
-    fill: var(--icon-hover-color);
+    fill: var(--hover-color);
 }
 
 .icon {
