@@ -41,9 +41,12 @@ let mouse = {
     y: 0,
     down: 0
 };
+let mousePrev = {x:0,y:0,down:0};
 canvas.addEventListener("pointerdown", e => mouse.down = 1);
 canvas.addEventListener("pointerup",   e => mouse.down = 0);
 canvas.addEventListener("pointermove", e => {
+    mousePrev.x = mouse.x;
+    mousePrev.y = mouse.y;
     const rect = canvas.getBoundingClientRect();
     mouse.x = (e.clientX - rect.left) / rect.width;
     mouse.y = 1.0 - (e.clientY - rect.top) / rect.height;
@@ -69,9 +72,9 @@ let dyeB = createTexture();
 const simShader = device.createShaderModule({
 code: `
 struct Uniforms {
-    mouse : vec2<f32>,
-    mouseDown : f32,
-    fade : f32,
+    mousePos : vec4<f32>, // previous & current
+    fade : vec4<f32>, // mouse down, fade factor, padding
+    injectColor: vec4<f32>
 }
 
 @group(0) @binding(0)
@@ -82,6 +85,24 @@ var outputTex : texture_storage_2d<rgba16float, write>;
 
 @group(0) @binding(2)
 var<uniform> uniforms : Uniforms;
+
+fn distanceToSegment(p: vec2<f32>, a: vec2<f32>, b: vec2<f32>) -> f32 {
+    let ab = b - a;
+    let ap = p - a;
+
+    let abLenSq = dot(ab, ab);
+
+    // Prevent division by zero if mouse didn't move
+    if (abLenSq == 0.0) {
+        return length(ap);
+    }
+
+    var t = dot(ap, ab) / abLenSq;
+    t = clamp(t, 0.0, 1.0);
+
+    let closest = a + t * ab;
+    return length(p - closest);
+}
 
 @compute @workgroup_size(8, 8)
 fn main(@builtin(global_invocation_id) id : vec3<u32>) {
@@ -95,19 +116,21 @@ fn main(@builtin(global_invocation_id) id : vec3<u32>) {
     var color = textureLoad(inputTex, pos, 0);
 
     // Fade
-    color *= uniforms.fade;
+    color *= uniforms.fade[1];
 
     // Mouse injection
-    if (uniforms.mouseDown > 0.5) {
+    if (uniforms.fade[0] > 0.5) { // if mouse down
 
         let uv = vec2<f32>(id.xy) / vec2<f32>(${SIM_SIZE});
-        let dist = distance(uv, uniforms.mouse);
+        //let dist = distance(uv, uniforms.mousePos.zw);
+        let dist = distanceToSegment(uv, uniforms.mousePos.xy, uniforms.mousePos.zw);
 
-        let radius = 0.07;
+        let radius = 0.05;
 
         if (dist < radius) {
             let strength = (1.0 - dist / radius);
-            color += vec4<f32>(0.6, 0.2, 1.0, 1.0) * strength;
+            color += uniforms.injectColor * strength;
+            //color += vec4<f32>(0.2,1.0,0.6, 1.0) * strength;
         }
     }
 
@@ -129,7 +152,7 @@ const simPipeline = device.createComputePipeline({
 });
 
 const simUniformBuffer = device.createBuffer({
-    size: 4 * 4, // mouse x, mouse y, mouse down, fade factor
+    size: 9*4 + 3*4, // mouse x, mouse y, mouse down, fade factor, color, padding
     usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST
 });
 
@@ -142,10 +165,14 @@ function simulate() {
         simUniformBuffer,
         0,
         new Float32Array([
+            mousePrev.x,
+            1.0 - mousePrev.y,
             mouse.x,
             1.0 - mouse.y, // flip vertical
             mouse.down,
-            0.98   // fade factor
+            0.975, // fade factor
+            0.0,0.0, //padding
+            0.2, 1.0, 0.6, 1.0 // injection Color
         ])
     );
 
@@ -232,6 +259,7 @@ const sampler = device.createSampler({
     magFilter: "linear",
     minFilter: "linear"
 });
+
 function frame() {
 
     simulate();
