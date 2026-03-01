@@ -94,3 +94,15 @@ body {
 .icon {
     text-decoration: none;
 }
+
+/* Link */
+a {
+    color: var(--icon-color);
+    display: inline-block;
+    transition: color 0.2s ease, transform 0.2s ease;
+}
+
+a:hover {
+    color: var(--hover-color);
+    transform: scale(1.025);
+}

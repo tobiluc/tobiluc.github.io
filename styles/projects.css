@@ -1,21 +1,8 @@
 .projects-grid {
-    column-count: 3;
-    column-gap: 1.5rem;
-    padding: 2rem;
-    padding-top: 4rem;
-    padding-bottom: 5rem;
-}
-
-/* Reduce Number of Columns on smaller Screens */
-@media (max-width: 1200px) {
-    .projects-grid {
-        column-count: 2;
-    }
-}
-@media (max-width: 900px) {
-    .projects-grid {
-        column-count: 1;
-    }
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+    gap: 1rem;
+    padding: 4rem 2rem 5rem 2rem;
 }
 
 .project-media {

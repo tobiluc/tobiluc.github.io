@@ -272,7 +272,7 @@ class Player extends Node2d {
         super.update(deltaTime);
 
         // Move
-        const spd = deltaTime * (80+(globals.score/5000.0));
+        const spd = 2 * deltaTime * (80+(globals.score/5000.0));
         if (keys["ArrowUp"] || keys["w"]) {
             if (this.globalPosition.y > 0) {
                 this.position.y -= spd;

@@ -1,0 +1,91 @@
+/* Invert doodle color (black -> white) in dark theme */
+[data-theme="dark"] .pop-character {
+  filter: invert(1); 
+}
+[data-theme="dark"] .footer-doodle img {
+  filter: invert(1); 
+}
+
+/* ----------------------
+ Popup Character
+---------------------- */
+.pop-character {
+    transition: filter 0.3s ease;
+    position: fixed;
+    bottom: 16%;
+    width: 10%;
+    pointer-events: none;
+    z-index: 0;
+    animation: popCycle 4s ease-in-out infinite, idleFloat 5s ease-in-out infinite;
+}
+
+@keyframes idleFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
+
+.pop-character-right {
+  right: -12%; /* off-screen */
+  animation-name: popCycleRight, idleFloat;
+}
+
+.pop-character-left {
+  left: -12%; /* off-screen */
+  animation-name: popCycleLeft, idleFloat;
+}
+
+@keyframes popCycleRight {
+  0%, 70%, 100% { right: -12%; }
+  75% { right: 2%; }
+  90% { right: 2%; }
+}
+
+@keyframes popCycleLeft {
+  0%, 70%, 100% { left: -12%; }
+  75% { left: 2%; }
+  90% { left: 2%; }
+}
+
+/* ----------------------
+ Footer Doodle March
+---------------------- */
+.footer-doodle-lane {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+}
+
+.footer-doodle {
+  position: absolute;
+  bottom: 0;
+  animation: walkLeft linear forwards;
+}
+
+.footer-doodle img {
+    display: block;
+    height: 52px;
+    cursor: pointer;
+}
+
+@keyframes walkLeft {
+  from { transform: translateX(100vw); }
+  to   { transform: translateX(-150px); }
+}
+
+.footer-doodle img.jump {
+  animation: jump 0.5s ease;
+}
+
+@keyframes jump {
+  0%   { transform: translateY(0); }
+  30%  { transform: translateY(-30px); }
+  100% { transform: translateY(0); }
+}
+
+/* Accessibility: disable motion if user prefers reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .pop-character {
+    animation: none;
+  }
+}
