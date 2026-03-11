@@ -66,6 +66,7 @@
     display: block;
     height: 52px;
     cursor: pointer;
+    animation: breathe 1s ease-in-out infinite;
 }
 
 @keyframes walkLeft {
@@ -73,14 +74,19 @@
   to   { transform: translateX(-150px); }
 }
 
-.footer-doodle img.jump {
-  animation: jump 0.5s ease;
+@keyframes breathe {
+  0%,100% { transform: scale(1); }
+  50%     { transform: scale(1.03); }
 }
 
 @keyframes jump {
   0%   { transform: translateY(0); }
-  30%  { transform: translateY(-30px); }
+  30%  { transform: translateY(-35px); }
   100% { transform: translateY(0); }
+}
+
+.footer-doodle img.jump {
+  animation: jump 0.5s ease;
 }
 
 /* Accessibility: disable motion if user prefers reduced motion */
