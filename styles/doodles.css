@@ -91,7 +91,9 @@
 
 /* Accessibility: disable motion if user prefers reduced motion */
 @media (prefers-reduced-motion: reduce) {
-  .pop-character {
-    animation: none;
-  }
+    .pop-character,
+    .footer-doodle,
+    .footer-doodle img {
+        animation: none !important;
+    }
 }

@@ -22,6 +22,12 @@ const doodles = [
     dir+"wiggle.png"
 ];
 
+// Preload images
+doodles.forEach(src => {
+    const img = new Image();
+    img.src = src;
+});
+
 //----------------------------------------
 // The Popup Characters have an initial random delay
 //----------------------------------------
@@ -36,6 +42,10 @@ document.querySelectorAll('.pop-character').forEach(el => {
 const lane = document.querySelector(".footer-doodle-lane");
 
 function spawnDoodle() {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        return;
+    }
+
     // Add a Wrapper div (for horizontal walking)
     const wrapper = document.createElement("div");
     wrapper.classList.add("footer-doodle");

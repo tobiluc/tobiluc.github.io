@@ -172,7 +172,7 @@ class TextParticle extends Particle {
 
 
 /* Create some Shapes */
-particles = [];
+const particles = [];
 for (let i = 0; i < 10; i++) {particles.push(new Ball());}
 for (let i = 0; i < 10; i++) {particles.push(new Triangle());}
 for (let i = 0; i < 10; i++) {particles.push(new Rectangle());}
