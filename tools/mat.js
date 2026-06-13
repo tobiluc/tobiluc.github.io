@@ -22,6 +22,23 @@ const vecAdd = (a, b) => a.map((x, i) => a[i] + b[i]);
 
 const vecSub = (a, b) => a.map((x, i) => a[i] - b[i]);
 
+const vecMul = (a, b) => a.map((x, i) => a[i] * b[i]);
+
+const vecDiv = (a, b) => a.map((x, i) => a[i] / b[i]);
+
+const vecZero = (n) => new Array(n).fill(0);
+
+const mat2x2Det = (A) => A[0][0]*A[1][1] - A[0][1]*A[1][0];
+
+const mat2x2Inv = (A) => {
+    const det = mat2x2Det(A);
+    if (Math.abs(det) < 1e-12) {throw new Error("singular matrix");}
+    return [
+        [A[1][1] / det, -A[0][1] / det],
+        [-A[1][0] / det, A[0][0] / det]
+    ];
+};
+
 function assert(condition, message) {
     if (!condition) {
         throw new Error(message || "Assertion failed");
@@ -44,7 +61,8 @@ function norm(a) {
 }
 
 export {
-    vecEq, vecNeg, vecDot, vecSqNorm, vecNorm, vecScaled, vecAdd, vecSub,
+    vecEq, vecNeg, vecDot, vecSqNorm, vecNorm, vecScaled, vecAdd, vecSub, vecMul, vecDiv, vecZero,
+    mat2x2Det, mat2x2Inv,
     dot,
     squaredNorm,
     norm

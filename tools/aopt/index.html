@@ -6,7 +6,12 @@
 
     <title>Applied Optimization</title>
 
-    <link rel="stylesheet" href="./aopt.css">
+    <link rel="stylesheet" href="./main.css">
+    <link rel="stylesheet" href="/styles/style.css">
+    <link rel="stylesheet" href="/styles/themes.css">
+
+    <!-- Favicon -->
+    <link rel="icon" href="/icons/favicon.ico" type="image/x-icon">
 
     <!-- d3 for plotting -->
     <script src="https://d3js.org/d3.v7.min.js"></script>
@@ -20,16 +25,33 @@
 
 <body>
 
-    <h1>Applied Optimization</h1>
+    <!-- Navigation Bar -->
+    <header class="top-bar">
+        <button id="theme-toggle" aria-label="Toggle Theme">
+            <svg id="theme-icon" viewBox="0 0 24 24">
+                <path d="M12 4.5V2m0 20v-2.5M4.5 12H2m20 0h-2.5M5.6 5.6L4.2 4.2m15.6 15.6l-1.4-1.4M5.6 18.4l-1.4 1.4m16.8-16.8l-1.4 1.4M12 7a5 5 0 110 10 5 5 0 010-10z"/>
+            </svg>
+        </button>
+        <nav class="top-nav">
+            <a href="/index.html">Home</a>
+            <a href="/projects.html">Projects</a>
+            <a href="/cv.html">CV</a>
+        </nav>
+    </header>
 
-    <p>\(f(x,y) = 4 \cdot (\sin(x) - \cos(y))^2 + x^2 + y^2 + x + y \)</p>
+    <h1>Secret Applied Optimization Testing Facility</h1>
 
-    <p>\( \Delta f(x,y)  \)</p>
+    <p>\(f(x,y) = 4 (\sin(x) - \cos(y))^2 + x^2 + y^2 + x + y \\
+        \Delta f(x,y) = (8  \cos(x) (\sin(x) - \cos(y)) + 2x + 1,
+            8 \sin(y) (\sin(x) - \cos(y)) + 2y + 1)^T  \)</p>
+
+    <p>Click anywhere to start the Line Search.</p>
 
     <div id="plot"></div>
     <div id="tooltip"></div>
 
-    <script type="module" src="./aopt.js"></script>
+    <script type="module" src="./main.js"></script>
+    <script src="../../scripts/themes.js"></script>
 
 </body>
 </html>

@@ -2,13 +2,13 @@ export class Visualizer
 {
     constructor(svgSelector, config = {})
     {
-        this.width = config.width || 600;
-        this.height = config.height || 600;
+        this.width = 600;
+        this.height = 600;
 
         this.svg = d3.select(svgSelector)
             .append("svg")
-            .attr("width", this.width)
-            .attr("height", this.height);
+            .attr("viewBox", `0 0 ${this.width} ${this.height}`)
+            .attr("preserveAspectRatio", "xMidYMid meet");
 
         this.domain = {xmin: -5, xmax: 5, ymin: -5, ymax: 5};
 
@@ -92,8 +92,8 @@ export class Visualizer
         const color = d3.scaleSequential(d3.interpolateRdBu)
             .domain([max, min]);
 
-        const cellWidth = Math.ceil(this.width / nx);
-        const cellHeight = Math.ceil(this.height / ny);
+        const cellWidth = Math.round(this.width / nx);
+        const cellHeight = Math.round(this.height / ny);
 
         this.heatmapLayer.selectAll("rect")
             .data(values)
@@ -102,7 +102,8 @@ export class Visualizer
             .attr("y", (_, i) => Math.round(Math.floor(i / nx) * cellHeight))
             .attr("width", cellWidth)
             .attr("height", cellHeight)
-            .attr("fill", d => color(d));
+            .attr("fill", d => color(d))
+            .attr("shape-rendering", "crispEdges");
 
         return this;
     }
@@ -240,6 +241,18 @@ export class Visualizer
         return {x: x, y: y, value: z};
     }
 
+    onHover(callback)
+    {
+        this.hoverCallback = callback;
+        return this;
+    }
+
+    onClick(callback)
+    {
+        this.clickCallback = callback;
+        return this;
+    }
+
     _initLayers()
     {
         this.heatmapLayer = this.svg.append("g").attr("class", "heatmap-layer");
@@ -249,18 +262,25 @@ export class Visualizer
         this.overlayLayer = this.svg.append("g").attr("class", "overlay-layer");
     }
 
+    _hideInteraction()
+    {
+        this.tooltip.style("display", "none");
+        this.crosshair.style("display", "none");
+    }
+
     _initInteraction()
     {
-        const tooltip = d3.select("#tooltip");
+        this.tooltip = d3.select("#tooltip");
 
-        const crosshair = this.overlayLayer.append("g");
+        this.crosshair = this.overlayLayer.append("g")
+            .style("display", "none");
 
-        const vLine = crosshair.append("line")
+        const vLine = this.crosshair.append("line")
             .attr("stroke", "white")
             .attr("stroke-width", 1)
             .attr("opacity", 0.5);
 
-        const hLine = crosshair.append("line")
+        const hLine = this.crosshair.append("line")
             .attr("stroke", "white")
             .attr("stroke-width", 1)
             .attr("opacity", 0.5);
@@ -269,7 +289,7 @@ export class Visualizer
 
             const [mx, my] = d3.pointer(event);
 
-            crosshair.style("display", "block");
+            this.crosshair.style("display", "block");
 
             vLine
             .attr("x1", mx)
@@ -290,16 +310,26 @@ export class Visualizer
                 this.hoverCallback(x, y, z);
             }
 
-            tooltip
+            this.tooltip
                 .style("display", "block")
                 .style("left", (event.pageX + 10) + "px")
                 .style("top", (event.pageY + 10) + "px")
                 .text(`f(${x.toFixed(2)}, ${y.toFixed(2)}) = ${z?.toFixed(3)}`);
         });
 
+        this.svg.on("click", (event) => {
+
+            const [mx, my] = d3.pointer(event);
+
+            const p = this.mouse2point(mx, my);
+
+            if (this.clickCallback) {
+                this.clickCallback(p.x, p.y, p.value, event);
+            }
+        });
+
         this.svg.on("mouseleave", () => {
-            tooltip.style("display", "none");
-            crosshair.style("display", "none");
+            this._hideInteraction();
         });
     }
 }
