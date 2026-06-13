@@ -7,7 +7,7 @@ function backtracking_line_search(objective, x, dir, options = {})
     const g = objective.grad(x);
     const alphaTimesGDotDir = Mat.vecDot(g, dir) * (options.alpha || 0.2);
     let iter = 0;
-    while ((objective.func(Mat.vecAdd(x, Mat.vecScaled(dir, t))) > f + t * alphaTimesGDotDir) && iter < (options.maxIters || 1000)) {
+    while ((objective.func(Mat.vecAdd(x, Mat.vecScaled(dir, t))) > f + t * alphaTimesGDotDir) && iter < (options.backTrackingMaxIters || 16)) {
         t = t * (options.tau || 0.9);
         ++iter;
     }
@@ -24,7 +24,7 @@ function line_search_descent_method(objective, options={})
     let x = options.x0 || [0,0];
     let g = objective.grad(x);
     pts.push(x);
-    for (let iter = 0; iter < options.maxIters || 1000; ++iter)
+    for (let iter = 0; iter < options.lineSearchMaxIters || 100; ++iter)
     {
         const dir = Mat.vecNeg(g);
         const t = backtracking_line_search(objective, x, dir, options);

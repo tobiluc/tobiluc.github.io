@@ -13,7 +13,7 @@ export class Visualizer
         this.domain = {xmin: -5, xmax: 5, ymin: -5, ymax: 5};
 
         this.f = null;
-        this.grid = {nx: 160, ny: 160, values:[]};
+        this.grid = {nx: 64, ny: 64, values:[]};
         this.points = [];
         this.lines = [];
 
@@ -92,14 +92,14 @@ export class Visualizer
         const color = d3.scaleSequential(d3.interpolateRdBu)
             .domain([max, min]);
 
-        const cellWidth = Math.round(this.width / nx);
-        const cellHeight = Math.round(this.height / ny);
+        const cellWidth = (this.width / nx);
+        const cellHeight = (this.height / ny);
 
         this.heatmapLayer.selectAll("rect")
             .data(values)
             .join("rect")
-            .attr("x", (_, i) => Math.round((i % nx) * cellWidth))
-            .attr("y", (_, i) => Math.round(Math.floor(i / nx) * cellHeight))
+            .attr("x", (_, i) => ((i % nx) * cellWidth))
+            .attr("y", (_, i) => (Math.floor(i / nx) * cellHeight))
             .attr("width", cellWidth)
             .attr("height", cellHeight)
             .attr("fill", d => color(d))
@@ -145,52 +145,30 @@ export class Visualizer
     addPoint(x, y, options = {})
     {
         this.points.push({x, y});
-    
-        const circles = this.pointLayer
-            .selectAll("circle")
-            .data(this.points);
 
-        circles.enter()
+        this.pointLayer
             .append("circle")
-            .merge(circles)
-            .attr("cx", d => this.xScale(d.x))
-            .attr("cy", d => this.yScale(d.y))
+            .attr("cx", this.xScale(x))
+            .attr("cy", this.yScale(y))
             .attr("r", options.radius || 4)
-            .attr("fill", d => {
-                return options.color || "black";
-            })
+            .attr("fill", options.color || "black")
             .attr("opacity", 0.9);
-
-        circles.exit().remove();
 
         return this;
     }
 
     addLine(points, options = {})
     {
-        this.lines.push({
-            points,
-            stroke: options.stroke || "black",
-            strokeWidth: options.strokeWidth || 2
-        });
-
         const lineGenerator = d3.line()
             .x(d => this.xScale(d[0]))
             .y(d => this.yScale(d[1]));
 
-        const paths = this.lineLayer
-            .selectAll("path")
-            .data(this.lines);
-
-        paths.enter()
+        this.lineLayer
             .append("path")
-            .merge(paths)
-            .attr("d", d => lineGenerator(d.points))
+            .attr("d", lineGenerator(points))
             .attr("fill", "none")
-            .attr("stroke", d => d.stroke)
-            .attr("stroke-width", d => d.strokeWidth);
-
-        paths.exit().remove();
+            .attr("stroke", options.stroke || "black")
+            .attr("stroke-width", options.strokeWidth || 2);
 
         return this;
     }
