@@ -15,6 +15,7 @@ export class Visualizer
         this.f = null;
         this.grid = {nx: 160, ny: 160, values:[]};
         this.points = [];
+        this.lines = [];
 
         this.xScale = d3.scaleLinear();
         this.yScale = d3.scaleLinear();
@@ -74,7 +75,7 @@ export class Visualizer
             for (let i = 0; i < this.grid.nx; i++) {
                 const x = xmin + (i / (this.grid.nx - 1)) * (xmax - xmin);
                 const y = ymin + (j / (this.grid.ny - 1)) * (ymax - ymin);
-                this.grid.values.push(f(x, y));
+                this.grid.values.push(f([x, y]));
             }
         }
 
@@ -140,12 +141,10 @@ export class Visualizer
         return this;
     }
 
-    addPoint(x, y, value = null)
+    addPoint(x, y, options = {})
     {
-        this.points.push({x, y, value});
-        
-        const r = 4;
-
+        this.points.push({x, y});
+    
         const circles = this.pointLayer
             .selectAll("circle")
             .data(this.points);
@@ -155,14 +154,42 @@ export class Visualizer
             .merge(circles)
             .attr("cx", d => this.xScale(d.x))
             .attr("cy", d => this.yScale(d.y))
-            .attr("r", r)
+            .attr("r", options.radius || 4)
             .attr("fill", d => {
-                if (d.value == null || !this.f) return "black";
-                return d3.interpolateRdBu(1 - d.value);
+                return options.color || "black";
             })
             .attr("opacity", 0.9);
 
         circles.exit().remove();
+
+        return this;
+    }
+
+    addLine(points, options = {})
+    {
+        this.lines.push({
+            points,
+            stroke: options.stroke || "black",
+            strokeWidth: options.strokeWidth || 2
+        });
+
+        const lineGenerator = d3.line()
+            .x(d => this.xScale(d[0]))
+            .y(d => this.yScale(d[1]));
+
+        const paths = this.lineLayer
+            .selectAll("path")
+            .data(this.lines);
+
+        paths.enter()
+            .append("path")
+            .merge(paths)
+            .attr("d", d => lineGenerator(d.points))
+            .attr("fill", "none")
+            .attr("stroke", d => d.stroke)
+            .attr("stroke-width", d => d.strokeWidth);
+
+        paths.exit().remove();
 
         return this;
     }
@@ -174,9 +201,17 @@ export class Visualizer
         return this;
     }
 
+    clearLines()
+    {
+        this.lines = [];
+        this.lineLayer.selectAll("*").remove();
+        return this;
+    }
+
     clear()
     {
         this.clearPoints();
+        this.clearLines();
         this.heatmapLayer.selectAll("*").remove();
         this.contourLayer.selectAll("*").remove();
         this.overlayLayer.selectAll(".axes").remove();
@@ -197,12 +232,21 @@ export class Visualizer
         }
     }
 
+    mouse2point(mx, my)
+    {
+        const x = this.xScale.invert(mx);
+        const y = this.yScale.invert(my);
+        const z = this.f ? this.f([x, y]) : null;
+        return {x: x, y: y, value: z};
+    }
+
     _initLayers()
     {
         this.heatmapLayer = this.svg.append("g").attr("class", "heatmap-layer");
         this.contourLayer = this.svg.append("g").attr("class", "contour-layer");
-        this.overlayLayer = this.svg.append("g").attr("class", "overlay-layer");
+        this.lineLayer = this.svg.append("g").attr("class", "line-layer");
         this.pointLayer = this.svg.append("g").attr("class", "point-layer");
+        this.overlayLayer = this.svg.append("g").attr("class", "overlay-layer");
     }
 
     _initInteraction()
@@ -239,10 +283,8 @@ export class Visualizer
                 .attr("y1", my)
                 .attr("y2", my);
 
-            const x = this.xScale.invert(mx);
-            const y = this.yScale.invert(my);
-
-            const z = this.f ? this.f(x, y) : null;
+            const p = this.mouse2point(mx, my);
+            const [x, y, z] = [p.x, p.y, p.value];
 
             if (this.hoverCallback) {
                 this.hoverCallback(x, y, z);
