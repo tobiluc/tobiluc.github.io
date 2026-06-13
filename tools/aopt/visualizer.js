@@ -1,19 +1,21 @@
 export class Visualizer
 {
-    constructor(svgSelector, config = {})
+    constructor(svgSelector, canvasSelector, config = {})
     {
         this.width = 600;
         this.height = 600;
 
         this.svg = d3.select(svgSelector)
-            .append("svg")
             .attr("viewBox", `0 0 ${this.width} ${this.height}`)
             .attr("preserveAspectRatio", "xMidYMid meet");
+
+        this.canvas = d3.select(canvasSelector).node();
+        this.ctx = this.canvas.getContext("2d");
 
         this.domain = {xmin: -5, xmax: 5, ymin: -5, ymax: 5};
 
         this.f = null;
-        this.grid = {nx: 64, ny: 64, values:[]};
+        this.grid = {nx: 128, ny: 128, values:[]};
         this.points = [];
         this.lines = [];
 
@@ -27,12 +29,8 @@ export class Visualizer
     setDomain([xmin, xmax], [ymin, ymax])
     {
         this.domain = {xmin, xmax, ymin, ymax};
-
         this.xScale.domain([xmin, xmax]).range([0, this.width]);
         this.yScale.domain([ymin, ymax]).range([this.height, 0]);
-        // this.xScaleInv = xScale.invert;
-        // this.yScaleInv = yScale.invert;
-
         return this;
     }
 
@@ -43,7 +41,6 @@ export class Visualizer
         }
 
         const {xmin, xmax, ymin, ymax} = this.domain;
-
         this.axes = this.overlayLayer.append("g").attr("class", "axes");
 
         this.axes.append("line")
@@ -66,16 +63,17 @@ export class Visualizer
     setFunction(f)
     {
         const {xmin, xmax, ymin, ymax} = this.domain;
-
         this.f = f;
-
         this.grid.values = [];
 
+        // D3 Contours expect row-major layout where the top row comes first (highest Y value down to lowest)
+        this.grid.values = new Float64Array(this.grid.nx * this.grid.ny);
+        let index = 0;
         for (let j = 0; j < this.grid.ny; j++) {
             for (let i = 0; i < this.grid.nx; i++) {
                 const x = xmin + (i / (this.grid.nx - 1)) * (xmax - xmin);
                 const y = ymin + (j / (this.grid.ny - 1)) * (ymax - ymin);
-                this.grid.values.push(f([x, y]));
+                this.grid.values[index++] = f([x, y]);
             }
         }
 
@@ -84,38 +82,46 @@ export class Visualizer
 
     addHeatmap()
     {
-        this.heatmapLayer.selectAll("*").remove();
-
         const {nx, ny, values} = this.grid;
+        if (!values || values.length === 0) return this;
+
+        this.canvas.width = nx;
+        this.canvas.height = ny;
 
         const [min, max] = d3.extent(values);
-        const color = d3.scaleSequential(d3.interpolateRdBu)
-            .domain([max, min]);
+        const color = d3.scaleSequential(d3.interpolateRdBu).domain([max, min]);
 
-        const cellWidth = (this.width / nx);
-        const cellHeight = (this.height / ny);
+        // ImageData is fast!
+        const imgData = this.ctx.createImageData(nx, ny);
+        const data = imgData.data;
 
-        this.heatmapLayer.selectAll("rect")
-            .data(values)
-            .join("rect")
-            .attr("x", (_, i) => ((i % nx) * cellWidth))
-            .attr("y", (_, i) => (Math.floor(i / nx) * cellHeight))
-            .attr("width", cellWidth)
-            .attr("height", cellHeight)
-            .attr("fill", d => color(d))
-            .attr("shape-rendering", "crispEdges");
+        for (let i = 0; i < values.length; i++) {
+            // Parse Color String
+            const rgbStr = color(values[i]); // e.g. "rgb(255, 0, 0)"
+            const parsed = rgbStr.match(/\d+/g);
+            if (parsed) {
+                const idx = i * 4;
+                data[idx]     = +parsed[0]; // R
+                data[idx + 1] = +parsed[1]; // G
+                data[idx + 2] = +parsed[2]; // B
+                data[idx + 3] = 255;        // A
+            }
+        }
 
+        this.ctx.putImageData(imgData, 0, 0);
         return this;
     }
 
     addContours(thresholds)
     {
         const {nx, ny, values} = this.grid;
+        if (!values || values.length === 0) {return this;}
+        
         const {xmin, xmax, ymin, ymax} = this.domain;
 
         const contours = d3.contours()
             .size([nx, ny])
-            .thresholds(thresholds)
+            .thresholds(thresholds || 10)
             (values);
 
         const xScale = this.xScale;
@@ -132,8 +138,7 @@ export class Visualizer
 
         this.contourLayer.selectAll("path")
             .data(contours)
-            .enter()
-            .append("path")
+            .join("path")
             .attr("d", path)
             .attr("fill", "none")
             .attr("stroke", "black")
@@ -191,7 +196,7 @@ export class Visualizer
     {
         this.clearPoints();
         this.clearLines();
-        this.heatmapLayer.selectAll("*").remove();
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
         this.contourLayer.selectAll("*").remove();
         this.overlayLayer.selectAll(".axes").remove();
         this.axes = null;
@@ -233,7 +238,6 @@ export class Visualizer
 
     _initLayers()
     {
-        this.heatmapLayer = this.svg.append("g").attr("class", "heatmap-layer");
         this.contourLayer = this.svg.append("g").attr("class", "contour-layer");
         this.lineLayer = this.svg.append("g").attr("class", "line-layer");
         this.pointLayer = this.svg.append("g").attr("class", "point-layer");
@@ -264,16 +268,15 @@ export class Visualizer
             .attr("opacity", 0.5);
 
         this.svg.on("mousemove", (event) => {
-
             const [mx, my] = d3.pointer(event);
 
             this.crosshair.style("display", "block");
 
             vLine
-            .attr("x1", mx)
-            .attr("x2", mx)
-            .attr("y1", 0)
-            .attr("y2", this.height);
+                .attr("x1", mx)
+                .attr("x2", mx)
+                .attr("y1", 0)
+                .attr("y2", this.height);
 
             hLine
                 .attr("x1", 0)
@@ -296,9 +299,7 @@ export class Visualizer
         });
 
         this.svg.on("click", (event) => {
-
             const [mx, my] = d3.pointer(event);
-
             const p = this.mouse2point(mx, my);
 
             if (this.clickCallback) {

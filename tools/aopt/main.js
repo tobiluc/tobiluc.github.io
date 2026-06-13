@@ -21,10 +21,7 @@ const objective = {
 //     ];
 // }
 
-const vis = new Visualizer("#plot", {
-    width: 600,
-    height: 600
-});
+const vis = new Visualizer("#visualizer-svg", "#heatmap");
 vis.clear();
 vis.setDomain([-10, 10], [-10, 10])
     .setFunction(objective.func)
@@ -39,7 +36,7 @@ vis.onClick((x, y, z) => {
     const pts = AOPT.line_search_descent_method(objective, {x0: [x,y], eps: 0.01, t0:0.1});
 
     pts.forEach(x => {
-        vis.addPoint(x[0], x[1], {color:"red", radius:5});
+        vis.addPoint(x[0], x[1], {color:"red", radius:4});
     });
     for (let i = 0; i < pts.length-1; ++i) {
         vis.addLine([pts[i], pts[i+1]], {stroke: "red"})

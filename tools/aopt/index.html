@@ -39,17 +39,42 @@
         </nav>
     </header>
 
-    <h1>Secret Applied Optimization Testing Facility</h1>
+    <div class="container">
 
-    <p>\(f(x,y) = 4 (\sin(x) - \cos(y))^2 + x^2 + y^2 + x + y \\
-        \Delta f(x,y) = (8  \cos(x) (\sin(x) - \cos(y)) + 2x + 1,
-            8 \sin(y) (\sin(x) - \cos(y)) + 2y + 1)^T  \)</p>
+        <!-- Sidebar -->
+        <nav class="sidebar">
+        <ul>
+            <li><a href="#line-search-descent">Line Search Descent</a></li>
+            <li><a href="#tba">TBA</a></li>
+        </ul>
+        </nav>
 
-    <p>Click anywhere to start the Line Search.</p>
+        <!-- Main content -->
+        <main class="content">
 
-    <div id="plot"></div>
-    
-    <div id="tooltip"></div>
+        <section id="line-search-descent">
+            <h2>Line Search Descent</h2>
+
+            <p>\(f(x,y) = 4 (\sin(x) - \cos(y))^2 + x^2 + y^2 + x + y \\
+                \Delta f(x,y) = (8  \cos(x) (\sin(x) - \cos(y)) + 2x + 1,
+                    8 \sin(y) (\sin(x) - \cos(y)) + 2y + 1)^T  \)</p>
+
+            <p>Click anywhere to start the Line Search.</p>
+
+            <div id="plot">
+                <canvas id="heatmap"></canvas>
+                <svg id="visualizer-svg"></svg>
+            </div>
+            <div id="tooltip"></div>
+
+        </section>
+
+        <section id="tba">
+            <h2>TBA</h2>
+            <p>What is this?</p>
+        </section>
+        </main>
+    </div>
 
     <script type="module" src="./main.js"></script>
     <script src="../../scripts/themes.js"></script>
