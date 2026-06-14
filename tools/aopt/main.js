@@ -10,6 +10,7 @@ const objective = {
     ]
 }
 
+
 // function myFunc1(x) {
 //     return 4*Math.pow(Math.sin(x[0]) - Math.cos(x[1]), 2) + Mat.vecSqNorm(x) + x[0] + x[1];
 // }
@@ -21,7 +22,11 @@ const objective = {
 //     ];
 // }
 
-const vis = new Visualizer("#visualizer-svg", "#heatmap");
+const visualizers = Array.from(
+    document.querySelectorAll(".visualizer")
+).map(el => new Visualizer(el));
+
+const vis = visualizers[0];
 vis.clear();
 vis.setDomain([-10, 10], [-10, 10])
     .setFunction(objective.func)
@@ -33,7 +38,15 @@ vis.onClick((x, y, z) => {
     vis.clearPoints();
     vis.clearLines();
 
-    const pts = AOPT.line_search_descent_method(objective, {x0: [x,y], eps: 0.01, t0:0.1});
+    const params = {
+        t0: parseFloat(document.getElementById("t0").value),
+        alpha: parseFloat(document.getElementById("alpha").value),
+        tau: parseFloat(document.getElementById("tau").value),
+        eps: parseFloat(document.getElementById("epsilon").value),
+        x0: [x,y]
+    };
+
+    const pts = AOPT.line_search_descent_method(objective, params);
 
     pts.forEach(x => {
         vis.addPoint(x[0], x[1], {color:"red", radius:4});

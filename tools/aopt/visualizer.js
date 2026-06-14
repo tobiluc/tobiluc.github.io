@@ -1,15 +1,16 @@
 export class Visualizer
 {
-    constructor(svgSelector, canvasSelector, config = {})
+    constructor(container, config = {})
     {
+        this.container = container;
         this.width = 600;
         this.height = 600;
 
-        this.svg = d3.select(svgSelector)
+        this.svg = d3.select(container.querySelector(".visualizer-svg"))
             .attr("viewBox", `0 0 ${this.width} ${this.height}`)
             .attr("preserveAspectRatio", "xMidYMid meet");
 
-        this.canvas = d3.select(canvasSelector).node();
+        this.canvas = d3.select(container.querySelector(".visualizer-canvas")).node();
         this.ctx = this.canvas.getContext("2d");
 
         this.domain = {xmin: -5, xmax: 5, ymin: -5, ymax: 5};
@@ -252,7 +253,7 @@ export class Visualizer
 
     _initInteraction()
     {
-        this.tooltip = d3.select("#tooltip");
+        this.tooltip = d3.select(this.container.querySelector(".visualizer-tooltip"));
 
         this.crosshair = this.overlayLayer.append("g")
             .style("display", "none");
@@ -268,8 +269,10 @@ export class Visualizer
             .attr("opacity", 0.5);
 
         this.svg.on("mousemove", (event) => {
-            const [mx, my] = d3.pointer(event);
-
+            let [mx, my] = d3.pointer(event, this.overlayLayer.node());
+            const p = this.mouse2point(mx, my);
+            const [x, y, z] = [p.x, p.y, p.value];
+    
             this.crosshair.style("display", "block");
 
             vLine
@@ -284,8 +287,7 @@ export class Visualizer
                 .attr("y1", my)
                 .attr("y2", my);
 
-            const p = this.mouse2point(mx, my);
-            const [x, y, z] = [p.x, p.y, p.value];
+            [mx, my] = d3.pointer(event, this.container);
 
             if (this.hoverCallback) {
                 this.hoverCallback(x, y, z);
@@ -293,13 +295,13 @@ export class Visualizer
 
             this.tooltip
                 .style("display", "block")
-                .style("left", (event.pageX + 10) + "px")
-                .style("top", (event.pageY + 10) + "px")
+                .style("left", (mx + 10) + "px")
+                .style("top", (my + 10) + "px")
                 .text(`f(${x.toFixed(2)}, ${y.toFixed(2)}) = ${z?.toFixed(3)}`);
         });
 
         this.svg.on("click", (event) => {
-            const [mx, my] = d3.pointer(event);
+            const [mx, my] = d3.pointer(event, this.overlayLayer.node());
             const p = this.mouse2point(mx, my);
 
             if (this.clickCallback) {
