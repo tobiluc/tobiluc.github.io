@@ -4,17 +4,19 @@ import * as AOPT from "./aopt.js";
 
 const objective = {
     func: (x) => 4*Math.pow(Math.sin(x[0]) - Math.cos(x[1]), 2) + Mat.vecSqNorm(x) + x[0] + x[1],
-    grad: (x) => [
-        8*Math.cos(x[0])*(Math.sin(x[0]) - Math.cos(x[1])) + 2*x[0] + 1,
-        8*Math.sin(x[1])*(Math.sin(x[0]) - Math.cos(x[1])) + 2*x[1] + 1
-    ],
+    grad: (x) => {
+        const a = Math.sin(x[0]) - Math.cos(x[1]);
+        return [
+            8*Math.cos(x[0])*a + 2*x[0] + 1,
+            8*Math.sin(x[1])*a + 2*x[1] + 1
+        ]
+    },
     hess: (x) => {
         const sin0 = Math.sin(x[0]);
         const cos0 = Math.cos(x[0]);
         const sin1 = Math.sin(x[1]);
         const cos1 = Math.cos(x[1]);
 
-        
         const h00 = 8 * (-sin0 * (sin0 - cos1) + cos0 * cos0) + 2;
         const h01 = 8 * cos0 * sin1;
         const h11 = 8 * (cos1 * (sin0 - cos1) + sin1 * sin1) + 2;
@@ -64,7 +66,7 @@ vis.onClick((x, y, z) => {
         t0: parseFloat(document.getElementById("lsd-t0").value),
         alpha: parseFloat(document.getElementById("lsd-alpha").value),
         tau: parseFloat(document.getElementById("lsd-tau").value),
-        eps: parseFloat(document.getElementById("lsd-epsilon").value),
+        epsilon: parseFloat(document.getElementById("lsd-epsilon").value),
         x0: [x,y],
         direction: document.getElementById("lsd-direction").value
     };

@@ -40,7 +40,7 @@ function fd_hess(grad, h=1e-4) {
     };
 }
 
-function backtracking_line_search(objective, x, dir, options = {})
+function backtracking_line_search_step_size(objective, x, dir, options = {})
 {
     const timeoutMs = 500;
     const startTime = performance.now();
@@ -70,19 +70,18 @@ function line_search_descent_method(objective, options={})
     const timeoutMs = 5000;
     const startTime = performance.now();
 
-    const eps = options.eps || 1e-6;
-    const eps2 = eps*eps;
+    const eps = options.epsilon || 1e-6;
 
     let pts = []
 
     let x = options.x0 || [0,0];
-    let currGrad = objective.grad(x);
     pts.push(x);
     let numIters = 0;
     let numGDFallbackIters = 0;
     while (true)
     {
         ++numIters;
+        const currGrad = objective.grad(x);
 
         // Get search direction
         let searchDir = options.direction=="newton-step" ? Mat.vecNeg(Mat.mat2x2VecMul(Mat.mat2x2Inv(objective.hess(x)), currGrad))
@@ -95,17 +94,17 @@ function line_search_descent_method(objective, options={})
         }
 
         // Search for step size
-        const t = backtracking_line_search(objective, x, searchDir, options);
-
-        // Compute current point
-        x = Mat.vecAdd(x, Mat.vecScaled(searchDir, t));
-        pts.push(x);
+        const t = backtracking_line_search_step_size(objective, x, searchDir, options);
 
         // Stopping Criterion
-        currGrad = objective.grad(x);
-        if (Mat.vecSqNorm(currGrad) < eps2) {
+        const newtonDecr = -Mat.vecDot(currGrad, searchDir);
+        if (newtonDecr <= 2*eps) {
             break;
         }
+
+        // Update point
+        x = Mat.vecAdd(x, Mat.vecScaled(searchDir, t));
+        pts.push(x);
 
         // Check Timeout
         if (performance.now() - startTime > timeoutMs) {
@@ -118,5 +117,5 @@ function line_search_descent_method(objective, options={})
 
 export {
     fd_grad, fd_hess,
-    backtracking_line_search, line_search_descent_method
+    backtracking_line_search_step_size, line_search_descent_method
 };
