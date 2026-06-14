@@ -27,6 +27,7 @@ const objective = {
         ];
     }
 }
+// objective.func = ([x, y]) => x*x + y*y - x;
 // objective.grad = AOPT.fd_grad(objective.func);
 // objective.hess = AOPT.fd_hess(objective.grad);
 
@@ -34,25 +35,13 @@ const objective = {
 // objective.grad = (x) => Mat.vecScaled(x, 2);
 // objective.hess = (x) => [[2,0], [0,2]];
 
-
-// function myFunc1(x) {
-//     return 4*Math.pow(Math.sin(x[0]) - Math.cos(x[1]), 2) + Mat.vecSqNorm(x) + x[0] + x[1];
-// }
-
-// function myGrad1(x) {
-//     return [
-//         8*Math.cos(x[0])*(Math.sin(x[0]) - Math.cos(x[1])) + 2*x[0] + 1,
-//         8*Math.sin(x[1])*(Math.sin(x[0]) - Math.cos(x[1])) + 2*x[1] + 1
-//     ];
-// }
-
 const visualizers = Array.from(
     document.querySelectorAll(".visualizer")
 ).map(el => new Visualizer(el));
 
 const vis = visualizers[0];
 vis.clear();
-vis.setDomain([-10, 10], [-10, 10])
+vis.setDomain([-5, 5], [-5, 5])
     .setFunction(objective.func)
     .addHeatmap()
     .addCoordinateAxes()

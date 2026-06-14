@@ -16,6 +16,8 @@ export class Visualizer
         this.domain = {xmin: -5, xmax: 5, ymin: -5, ymax: 5};
 
         this.f = null;
+        this.isFeasible = null;
+
         this.grid = {nx: 128, ny: 128, values:[]};
         this.points = [];
         this.lines = [];
@@ -90,7 +92,7 @@ export class Visualizer
         this.canvas.height = ny;
 
         const [min, max] = d3.extent(values);
-        const color = d3.scaleSequential(d3.interpolateRdBu).domain([max, min]);
+        const color = d3.scaleSequential(d3.interpolateRgbBasis(["red", "orange", "aqua", "blue"])).domain([max, min]);
 
         // ImageData is fast!
         const imgData = this.ctx.createImageData(nx, ny);
@@ -102,9 +104,9 @@ export class Visualizer
             const parsed = rgbStr.match(/\d+/g);
             if (parsed) {
                 const idx = i * 4;
-                data[idx]     = +parsed[0]; // R
-                data[idx + 1] = +parsed[1]; // G
-                data[idx + 2] = +parsed[2]; // B
+                data[idx]     = parsed[0]; // R
+                data[idx + 1] = parsed[1]; // G
+                data[idx + 2] = parsed[2]; // B
                 data[idx + 3] = 255;        // A
             }
         }
@@ -148,6 +150,63 @@ export class Visualizer
             .attr("stroke-width", 1);
 
         return this;
+    }
+
+    setFeasibleRegion(isFeasible, options = {})
+    {
+        this.clearFeasibleRegion();
+
+        this.isFeasible = isFeasible;
+
+        if (!this.isFeasible) {return this;}
+
+        const {nx, ny} = this.grid;
+        const {xmin, xmax, ymin, ymax} = this.domain;
+
+        // 0 = feasible, 1 = infeasible
+        const constraintValues = new Float64Array(nx * ny);
+        let index = 0;
+        for (let j = 0; j < ny; j++) {
+            for (let i = 0; i < nx; i++) {
+                const x = xmin + (i / (nx - 1)) * (xmax - xmin);
+                const y = ymin + (j / (ny - 1)) * (ymax - ymin);
+                constraintValues[index++] = this.isFeasible([x, y]) ? 0 : 1;
+            }
+        }
+
+        // Infeasible region = values >= 0.5
+        const contours = d3.contours()
+            .size([nx, ny])
+            .thresholds([0.5])
+            (constraintValues);
+
+        const xScale = this.xScale;
+        const yScale = this.yScale;
+        const path = d3.geoPath(
+            d3.geoTransform({
+                point: function(x, y) {
+                    const sx = xScale(xmin + (x / nx) * (xmax - xmin));
+                    const sy = yScale(ymin + (y / ny) * (ymax - ymin));
+                    this.stream.point(sx, sy);
+                }
+            })
+        );
+
+        // Infeasible area as grey overlay
+        this.feasibilityLayer.selectAll("path")
+            .data(contours)
+            .join("path")
+            .attr("d", path)
+            .attr("fill", options.infeasibleFill || "rgba(128, 128, 128, 0.7)")
+            .attr("stroke", options.infeasibleStroke || "rgba(128, 128, 128, 0.9)")
+            .attr("stroke-width", 1.5);
+
+        return this;
+    }
+
+    clearFeasibleRegion()
+    {
+        this.feasibilityLayer.selectAll("*").remove();
     }
 
     addPoint(x, y, options = {})
@@ -200,12 +259,19 @@ export class Visualizer
         this.contourLayer.selectAll("*").remove();
     }
 
+    clearFeasibleRegion()
+    {
+        this.isFeasible = null;
+        this.feasibilityLayer.selectAll("*").remove();
+    }
+
     clear()
     {
         this.clearPoints();
         this.clearLines();
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
         this.clearContours();
+        this.clearFeasibleRegion();
         this.overlayLayer.selectAll(".axes").remove();
         this.axes = null;
         return this;
@@ -246,6 +312,7 @@ export class Visualizer
 
     _initLayers()
     {
+        this.feasibilityLayer = this.svg.append("g").attr("class", "feasibility-layer");
         this.contourLayer = this.svg.append("g").attr("class", "contour-layer");
         this.lineLayer = this.svg.append("g").attr("class", "line-layer");
         this.pointLayer = this.svg.append("g").attr("class", "point-layer");
