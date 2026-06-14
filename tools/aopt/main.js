@@ -7,8 +7,30 @@ const objective = {
     grad: (x) => [
         8*Math.cos(x[0])*(Math.sin(x[0]) - Math.cos(x[1])) + 2*x[0] + 1,
         8*Math.sin(x[1])*(Math.sin(x[0]) - Math.cos(x[1])) + 2*x[1] + 1
-    ]
+    ],
+    hess: (x) => {
+        const sin0 = Math.sin(x[0]);
+        const cos0 = Math.cos(x[0]);
+        const sin1 = Math.sin(x[1]);
+        const cos1 = Math.cos(x[1]);
+
+        
+        const h00 = 8 * (-sin0 * (sin0 - cos1) + cos0 * cos0) + 2;
+        const h01 = 8 * cos0 * sin1;
+        const h11 = 8 * (cos1 * (sin0 - cos1) + sin1 * sin1) + 2;
+
+        return [
+            [h00, h01],
+            [h01, h11]
+        ];
+    }
 }
+// objective.grad = AOPT.fd_grad(objective.func);
+// objective.hess = AOPT.fd_hess(objective.grad);
+
+// objective.func = (x) => Mat.vecSqNorm(x);
+// objective.grad = (x) => Mat.vecScaled(x, 2);
+// objective.hess = (x) => [[2,0], [0,2]];
 
 
 // function myFunc1(x) {
@@ -39,11 +61,12 @@ vis.onClick((x, y, z) => {
     vis.clearLines();
 
     const params = {
-        t0: parseFloat(document.getElementById("t0").value),
-        alpha: parseFloat(document.getElementById("alpha").value),
-        tau: parseFloat(document.getElementById("tau").value),
-        eps: parseFloat(document.getElementById("epsilon").value),
-        x0: [x,y]
+        t0: parseFloat(document.getElementById("lsd-t0").value),
+        alpha: parseFloat(document.getElementById("lsd-alpha").value),
+        tau: parseFloat(document.getElementById("lsd-tau").value),
+        eps: parseFloat(document.getElementById("lsd-epsilon").value),
+        x0: [x,y],
+        direction: document.getElementById("lsd-direction").value
     };
 
     const pts = AOPT.line_search_descent_method(objective, params);

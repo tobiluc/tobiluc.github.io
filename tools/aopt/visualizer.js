@@ -117,6 +117,8 @@ export class Visualizer
     {
         const {nx, ny, values} = this.grid;
         if (!values || values.length === 0) {return this;}
+
+        this.clearContours();
         
         const {xmin, xmax, ymin, ymax} = this.domain;
 
@@ -193,12 +195,17 @@ export class Visualizer
         return this;
     }
 
+    clearContours()
+    {
+        this.contourLayer.selectAll("*").remove();
+    }
+
     clear()
     {
         this.clearPoints();
         this.clearLines();
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-        this.contourLayer.selectAll("*").remove();
+        this.clearContours();
         this.overlayLayer.selectAll(".axes").remove();
         this.axes = null;
         return this;

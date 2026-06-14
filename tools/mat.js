@@ -1,16 +1,8 @@
-function isVector(x) {
-    return Array.isArray(x) && typeof x[0] === "number";
-}
-
-function isMatrix(x) {
-    return Array.isArray(x) && Array.isArray(x[0]);
-}
-
 const vecEq = (a, b) => a.length === b.length && a.every((x, i) => x === b[i]);
 
 const vecNeg = (a) =>  a.map(val => -val);
 
-const vecDot = (a, b) => a.map((x, i) => a[i] * b[i]).reduce((m, n) => m + n);
+const vecDot = (a, b) => a.reduce((sum, x, i) => sum + x * b[i], 0);
 
 const vecSqNorm = (a) => vecDot(a, a);
 
@@ -39,31 +31,22 @@ const mat2x2Inv = (A) => {
     ];
 };
 
-function assert(condition, message) {
-    if (!condition) {
-        throw new Error(message || "Assertion failed");
-    }
-}
+const mat2x2VecMul = (A, v) => [
+    A[0][0] * v[0] + A[0][1] * v[1],
+    A[1][0] * v[0] + A[1][1] * v[1]
+];
 
-function dot(a, b) {
-    if (isVector(a)) {return vecDot(a, b);}
-    if (isMatrix(a)) {return matDot(a, b);}
-    assert(false, "dot expected vector or matrix");
-    return 0;
-}
+const mat2x2Add = (A, B) => [
+    [A[0][0] + B[0][0], A[0][1] + B[0][1]],
+    [A[1][0] + B[1][0], A[1][1] + B[1][1]]
+];
 
-function squaredNorm(a) {
-    return dot(a, a);
-}
-
-function norm(a) {
-    return Math.sqrt(dot(a, a));
-}
+const mat2x2Scaled = (A, s) => [
+    [A[0][0] * s, A[0][1] * s],
+    [A[1][0] * s, A[1][1] * s]
+];
 
 export {
     vecEq, vecNeg, vecDot, vecSqNorm, vecNorm, vecScaled, vecAdd, vecSub, vecMul, vecDiv, vecZero,
-    mat2x2Det, mat2x2Inv,
-    dot,
-    squaredNorm,
-    norm
+    mat2x2Det, mat2x2Inv, mat2x2VecMul, mat2x2Add, mat2x2Scaled
 };
