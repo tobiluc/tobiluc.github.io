@@ -46,6 +46,7 @@ vis.setDomain([-5, 5], [-5, 5])
     .addHeatmap()
     .addCoordinateAxes()
     .addContours(32);
+    // .setFeasibleRegion(([x,y]) => x*x + y*y < 10);
 
 vis.onClick((x, y, z) => {
     vis.clearPoints();
