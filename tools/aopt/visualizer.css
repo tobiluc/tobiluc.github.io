@@ -106,3 +106,67 @@ p {
     outline: none;
     border-color: var(--shadow-color);
 }
+
+
+/* Ensure the function row spans full width or scales beautifully */
+.function-controls-row {
+    margin-bottom: 1rem; /* Space between function input and numeric parameters */
+    align-items: center;  /* Center align the math label with the input */
+}
+
+/* Math Label Styling */
+.function-label {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text-color);
+    white-space: nowrap;
+}
+
+.function-input-wrapper {
+    display: flex;
+    flex: 1;
+    min-width: 280px;
+    position: relative;
+    border: 2px solid var(--icon-color);
+    border-radius: 0.5rem;
+    background: var(--bg-color);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.function-input-wrapper:focus-within {
+    border-color: var(--shadow-color);
+    box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.05);
+}
+
+.function-input {
+    flex: 1;
+    border: none !important;
+    background: transparent !important;
+    color: var(--text-color);
+    padding: 0.5rem 0.75rem;
+    font-family: monospace;
+    font-size: 0.95rem;
+    outline: none;
+    width: 100%;
+}
+
+.function-confirm {
+    background: var(--icon-color);
+    color: var(--bg-color);
+    border: none;
+    border-radius: 0 0.35rem 0.35rem 0;
+    padding: 0.5rem 1.2rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s ease, opacity 0.2s ease;
+}
+
+.function-confirm:hover {
+    opacity: 0.9;
+    background: var(--hover-color);
+}
+
+.function-confirm:active {
+    transform: scale(0.98);
+}

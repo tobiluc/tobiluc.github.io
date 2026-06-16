@@ -1,4 +1,4 @@
-export class Visualizer
+export class FunctionVisualizer2D
 {
     constructor(container, config = {})
     {
@@ -69,7 +69,7 @@ export class Visualizer
         this.f = f;
         this.grid.values = [];
 
-        // D3 Contours expect row-major layout where the top row comes first (highest Y value down to lowest)
+        // values are row-major
         this.grid.values = new Float64Array(this.grid.nx * this.grid.ny);
         let index = 0;
         for (let j = 0; j < this.grid.ny; j++) {
@@ -86,7 +86,7 @@ export class Visualizer
     addHeatmap()
     {
         const {nx, ny, values} = this.grid;
-        if (!values || values.length === 0) return this;
+        if (!values || values.length === 0) {return this;}
 
         this.canvas.width = nx;
         this.canvas.height = ny;

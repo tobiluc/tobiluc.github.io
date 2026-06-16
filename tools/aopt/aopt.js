@@ -106,7 +106,11 @@ function line_search_descent_method(objective, options={})
         x = Mat.vecAdd(x, Mat.vecScaled(searchDir, t));
         pts.push(x);
 
-        // Check Timeout
+        // Check Timeout or #Iterations
+        if (numIters >= (options.maxIters || 1000)) {
+            console.warn("line search descent number of iterations exceeded.");
+            return pts;
+        }
         if (performance.now() - startTime > timeoutMs) {
             console.warn("line search descent time limit exceeded.");
             return pts;
