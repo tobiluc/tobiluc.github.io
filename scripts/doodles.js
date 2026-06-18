@@ -19,7 +19,9 @@ const doodles = [
     dir+"thumbs-up.png",
     dir+"tower.png",
     dir+"well.png",
-    dir+"wiggle.png"
+    dir+"wiggle.png",
+    dir+"cocktail-R.png",
+    dir+"cocktail-L.png"
 ];
 
 // Preload images
