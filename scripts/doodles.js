@@ -21,7 +21,8 @@ const doodles = [
     dir+"well.png",
     dir+"wiggle.png",
     dir+"cocktail-R.png",
-    dir+"cocktail-L.png"
+    dir+"cocktail-L.png",
+    dir+"happy-on-one-leg.png"
 ];
 
 // Preload images
