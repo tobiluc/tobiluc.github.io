@@ -27,7 +27,7 @@ html, body {
     font-weight: 600;
 }
 
-#password-input {
+#password-input, #email-input {
     width: 100%;
     padding: 0.75rem 1rem;
     margin-bottom: 1rem;
@@ -38,12 +38,12 @@ html, body {
     transition: border-color 0.2s, box-shadow 0.2s;
 }
 
-#password-input:focus {
+#password-input:focus, #email-input:focus {
     outline: none;
     box-shadow: 0 0 0 3px color-mix(in srgb, var(--shadow-color), transparent 20%);
 }
 
-#password-submit-button {
+#login-button {
     width: 100%;
     padding: 0.75rem 1rem;
     background-color: var(--icon-color);
@@ -56,7 +56,7 @@ html, body {
     transition: background-color 0.2s;
 }
 
-#password-submit-button:hover {
+#login-button:hover {
     background-color: var(--hover-color);
 }
 

@@ -1,6 +1,5 @@
 const SUPABASE_URL = 'https://nxkezfnduhksbjyikjlh.supabase.co';
 const SUPABASE_ANON_KEY = 'sb_publishable_SOSRHkWaxPz_u7ADqdf53Q_uCtK9JR2';
-const PASSWORD_HASH = '80efd42baeac42a84163b8f710429be4d03df7b11b7efbb871ade00fb6b4fc44';
 const BUCKET_NAME = 'Stories';
 const SIGNED_URL_TIMEFRAME_SECONDS = 3600;
 
@@ -14,24 +13,32 @@ async function sha256(string)
     return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
 }
 
-async function checkPassword()
+async function handleLogin()
 {
-    const inputString = document.getElementById('password-input').value;
-    const inputHash = await sha256(inputString);
+    const email = document.getElementById('email-input').value;
+    const password = document.getElementById('password-input').value;
+    const errorMsg = document.getElementById('error-msg');
 
-    if (inputHash === PASSWORD_HASH)
-    {
-        // Hide password gate, show explorer
+    // Ask Supabase to log the user in using the Users table
+    const { data, error } = await supabaseClient.auth.signInWithPassword({
+        email: email,
+        password: password,
+    });
+
+    if (error) {
+        errorMsg.textContent = error.message;
+        errorMsg.style.display = 'block';
+    } else {
+        // Success!
+        errorMsg.style.display = 'none';
         document.getElementById('auth-gate').style.display = 'none';
         document.getElementById('explorer-content').style.display = 'block';
         
         fetchFolderFiles('Short Stories');
-    } else {
-        document.getElementById('error-msg').style.display = 'block';
     }
 }
 
-document.getElementById('password-submit-button').onclick = checkPassword;
+document.getElementById('login-button').onclick = handleLogin;
 
 async function fetchFolderFiles(folderName)
 {
