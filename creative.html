@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Creative Work</title>
+
+    <link rel="stylesheet" href="./styles/style.css">
+    <link rel="stylesheet" href="./styles/themes.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <!-- Favicon -->
+    <link rel="icon" href="icons/favicon.ico" type="image/x-icon">
+</head>
+<body>
+
+    <div id="auth-gate">
+        <h3>Diese Inhalte sind passwortgeschützt.</h3>
+        <input type="password" id="password-input">
+        <button id="password-submit-button">Senden</button>
+        <p id="error-msg" style="color: red; display: none;">Nein, das ist es nicht...</p>
+    </div>
+
+    <div id="explorer-content" style="display: none;">
+        <h2>Inhalt</h2>
+        <ul id="file-list">
+            <li>Laden...</li>
+        </ul>
+    </div>
+
+    <script src="./scripts/creative.js"></script>
+</body>
+</html>

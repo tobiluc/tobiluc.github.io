@@ -75,7 +75,27 @@
         <section id="line-search-descent">
             <h2>Line Search Descent</h2>
 
-            <p>An interesting example to compare the Newton Step vs. Gradient Descent is the function \( f(x,y)=x^2 + 10y^2 \).</p>
+            <p>The core idea is simple. Starting at some initial point \(p_0\), we iteratively update the point by moving along a descent direction
+                \( \Delta p \):
+                \[
+                    p_k \gets p_{k-1} + t \cdot \Delta p
+                \].
+                For \(\Delta p\) to be a descent direction, \( \nabla f(p)^T \Delta p < 0\) must hold.
+                This is not always the case for the Newton Step \( \Delta p = - \nabla^2 f(p)^{-1} \nabla f(p) \) in which case
+                we fallback to the Gradient Descent \( \Delta p = -\nabla f(p) \)<br>
+
+                The step size \(t\) id determined using backtracking line search,<br>
+                meaning an initial step size \(t_0\) is decreased (\( t_k \gets \tau \cdot t_{k-1} \) with \(\tau \in (0,1)\)) until the function value is sufficiently smaller.
+                To that end, we check the Armijo Condition
+                \[
+                    f(p + t \Delta p) \leq f(p) + t \alpha \nabla f(p)^T \Delta p
+                \]
+                with a damping coefficient \( \alpha \in (0,1) \)
+                <br>
+
+                The algorithm stops, when \( \lambda^2 = - \nabla f(p)^T \Delta p \leq 2 \epsilon \).<br>
+
+                An interesting example to compare the Newton Step vs. Gradient Descent is the function \( f(x,y)=x^2 + 10y^2 \).</p>
 
             <div class="controls">
                 <label class="function-label" for="lsd-func">\( f(x,y) = \)</label>
@@ -105,12 +125,12 @@
 
                 <div class="control-group">
                     <label for="lsd-alpha">α</label>
-                    <input type="number" id="lsd-alpha" value="0.2" step="0.01">
+                    <input type="number" id="lsd-alpha" value="0.05" step="0.01">
                 </div>
 
                 <div class="control-group">
                     <label for="lsd-tau">τ</label>
-                    <input type="number" id="lsd-tau" value="0.6" step="0.01">
+                    <input type="number" id="lsd-tau" value="0.5" step="0.01">
                 </div>
 
                 <div class="control-group">
