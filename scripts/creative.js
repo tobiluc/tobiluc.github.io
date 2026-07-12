@@ -122,15 +122,37 @@ async function renderBookshelf()
         const randomHeight = 140 + (index % 4) * 10;
         book.style.height = `${randomHeight}px`;
 
-        if (isLoggedIn) {
+        if (isLoggedIn)
+        {
             book.style.backgroundColor = spineColors[index % spineColors.length];
-            book.onclick = async () => {
+
+            book.onclick = async () =>
+                {
+                // open a blank tab
+                // the reason for this is to hopefully prevent the popup blcok from safari
+                const newTab = window.open('about:blank', '_blank');
+
+                if (!newTab) {
+                    alert("Popup blockiert!");
+                    return;
+                }
+
+                newTab.document.title = "Laden...";
+
+                // Wait for Supabase to give you the secure link
                 const { data } = await supabaseClient
                     .storage
                     .from(BUCKET_NAME)
                     .createSignedUrl(`${selectedTable}/${story.filename}`, 30);
-
-                if (data?.signedUrl) window.open(data.signedUrl, '_blank');
+                
+                if (data?.signedUrl) {
+                    // Inject the real URL into the new tab
+                    newTab.location.href = data.signedUrl;
+                } else {
+                    // If something breaks, close the blank tab
+                    newTab.close();
+                    alert("Linkgenerierungsfehler :/");
+                }
             };
         } else {
             book.classList.add('locked');
