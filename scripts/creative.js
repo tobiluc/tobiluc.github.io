@@ -116,54 +116,41 @@ async function renderBookshelf()
     // Render the filtered list of books
     stories.forEach((story, index) => 
     {
-        const book = document.createElement('div');
+        const book = document.createElement('a');
         book.classList.add('book-spine');
+
+        book.target = '_blank';
+        book.rel = 'noopener noreferrer';
+        book.href = '#';
         
         const randomHeight = 140 + (index % 4) * 10;
         book.style.height = `${randomHeight}px`;
+        book.style.textDecoration = 'none';
 
-        if (isLoggedIn)
-        {
+        if (isLoggedIn) {
             book.style.backgroundColor = spineColors[index % spineColors.length];
-
-            book.onclick = async () =>
-                {
-                // open a blank tab
-                // the reason for this is to hopefully prevent the popup blcok from safari
-                const newTab = window.open('about:blank', '_blank');
-
-                if (!newTab) {
-                    alert("Popup blockiert!");
-                    return;
-                }
-
-                newTab.document.title = "Laden...";
-
-                // Wait for Supabase to give you the secure link
-                const { data } = await supabaseClient
-                    .storage
-                    .from(BUCKET_NAME)
-                    .createSignedUrl(`${selectedTable}/${story.filename}`, 30);
-                
-                if (data?.signedUrl) {
-                    // Inject the real URL into the new tab
-                    newTab.location.href = data.signedUrl;
-                } else {
-                    // If something breaks, close the blank tab
-                    newTab.close();
-                    alert("Linkgenerierungsfehler :/");
-                }
-            };
         } else {
             book.classList.add('locked');
         }
 
         book.innerHTML = `<div class="book-title-vertical">${story.title}</div>`;
 
-        book.onmouseenter = () => {
+        book.onmouseenter = async () =>
+        {
             const statusSymbol = isLoggedIn ? 'Lesen' : 'Einloggen';
             const yearText = story.date ? ` (${new Date(story.date).getFullYear()})` : '';
             tooltip.innerHTML = `<strong>${story.title}</strong>${yearText} | <span style="color: #b7791f">${statusSymbol}</span>`;
+
+            // grab the secure tokenized link in the background
+            // so when we click we go to the file
+            const { data } = await supabaseClient
+                .storage
+                .from(BUCKET_NAME)
+                .createSignedUrl(`${selectedTable}/${story.filename}`, 30);
+
+            if (data?.signedUrl) {
+                book.href = data.signedUrl;
+            }
         };
 
         book.onmouseleave = () => {
