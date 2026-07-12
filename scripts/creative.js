@@ -32,120 +32,127 @@ async function handleLogin()
         // Login Success!
         errorMsg.style.display = 'none';
         document.getElementById('auth-gate').style.display = 'none';
-        document.getElementById('explorer-content').style.display = 'block';
+        for (const shelf of document.getElementsByClassName('bookshelf')) {
+            shelf.style.display = 'block';
+        }
         
         // fetchFolderFiles('Short Stories');
-        fetchShortStories();
+        // fetchShortStories();
+        renderBookshelf();
     }
 }
 
 document.getElementById('login-button').onclick = handleLogin;
 
-async function fetchShortStories()
+//-----------
+// Logout
+//-----------
+// document.getElementById('logout-button').onclick = async () => {
+//     await supabaseClient.auth.signOut();
+//     // alert("Logged out!");
+//     window.location.reload();
+// };
+
+
+//-------------------
+// Bookshelf Visuals
+//-------------------
+// Track the selected table/category
+let selectedTable = 'ShortStories';
+const spineColors = ['#a33535', '#2c5282', '#2f855a', '#b7791f', '#6b46c1', '#4a5568'];
+
+function switchTable(tableName, displayName)
 {
-    const fileListUI = document.getElementById('file-list');
-    fileListUI.innerHTML = 'Loading stories...';
+    selectedTable = tableName;
+    
+    // Update the visible title
+    document.getElementById('selected-shelf-title').textContent = displayName;
+    
+    // Update button active states visually
+    const buttons = document.querySelectorAll('.nav-btn');
+    buttons.forEach(btn => {
+        if (btn.textContent.includes(displayName)) {
+            btn.classList.add('active');
+        } else {
+            btn.classList.remove('active');
+        }
+    });
+    
+    // Redraw the shelf after switching datatable
+    renderBookshelf();
+}
 
-    // 1. This query will now succeed for EVERYONE (no login required)
-    const { data: stories, error: dbError } = await supabaseClient
-        .from('ShortStories')
+async function renderBookshelf()
+{
+    const shelf = document.getElementById('selected-shelf');
+    const tooltip = document.getElementById('book-tooltip');
+    
+    shelf.innerHTML = '<div style="color: gray; padding: 20px;">Changing shelves...</div>';
+
+    // Query
+    const { data: stories, error } = await supabaseClient
+        .from(selectedTable)
         .select('title, date, filename')
-        .order('date', { ascending: false });
+        .order('date', {ascending: false});
 
-    if (dbError) {
-        fileListUI.innerHTML = `<li>Error fetching stories: ${dbError.message}</li>`;
+    // Error?
+    if (error) {
+        shelf.innerHTML = `Error: ${error.message}`;
         return;
     }
 
-    fileListUI.innerHTML = ''; 
+    // No books here?
+    if (!stories || stories.length === 0) {
+        shelf.innerHTML = '<div style="color: #888; padding: 40px; font-style: italic;">Es herrscht gähnende Leere...</div>';
+        return;
+    }
 
-    // Check if logged in
+    // Logged in?
     const { data: { session } } = await supabaseClient.auth.getSession();
     const isLoggedIn = session !== null;
 
-    // Loop through data
-    for (const story of stories)
+    shelf.innerHTML = ''; // Clear indicator
+
+    // Render the filtered list of books
+    stories.forEach((story, index) => 
     {
-        const listItem = document.createElement('li');
+        const book = document.createElement('div');
+        book.classList.add('book-spine');
         
-        if (true)
-        {
-            // Generate the secure signed URL
-            const { data: signedData, error: urlError } = await supabaseClient
-                .storage
-                .from(BUCKET_NAME)
-                .createSignedUrl(`Short Stories/${story.filename}.pdf`, 300);
+        const randomHeight = 140 + (index % 4) * 10;
+        book.style.height = `${randomHeight}px`;
 
-            if (urlError)
-            {
-                listItem.innerHTML = `<strong>${story.title}</strong> (${story.date})<span style="color:red;">(Error loading file)</span>`;
-            }
-            else
-            {
+        if (isLoggedIn) {
+            book.style.backgroundColor = spineColors[index % spineColors.length];
+            book.onclick = async () => {
+                const { data } = await supabaseClient
+                    .storage
+                    .from(BUCKET_NAME)
+                    .createSignedUrl(`${selectedTable}/${story.filename}`, 30);
 
-                // If we hack our way to here without login, we have a 400 error
-                listItem.innerHTML = `
-                    <strong>${story.title}</strong> <span class="meta">[${story.date}]</span> 
-                    <a href="${signedData.signedUrl}" target="_blank">📖 Read Story</a>
-                `;
-            }
+                if (data?.signedUrl) window.open(data.signedUrl, '_blank');
+            };
         } else {
-            // User is a guest! Show title, hide link
-            listItem.innerHTML = `
-                <strong>${story.title}</strong> <span class="meta">[${story.genre} - ${story.year}]</span> 
-                <span style="color: gray; font-style: italic;">🔒 Login to read</span>
-            `;
+            book.classList.add('locked');
         }
-                
-        fileListUI.appendChild(listItem);
-    }
+
+        book.innerHTML = `<div class="book-title-vertical">${story.title}</div>`;
+
+        book.onmouseenter = () => {
+            const statusSymbol = isLoggedIn ? 'Lesen' : 'Einloggen';
+            const yearText = story.date ? ` (${new Date(story.date).getFullYear()})` : '';
+            tooltip.innerHTML = `<strong>${story.title}</strong>${yearText} | <span style="color: #b7791f">${statusSymbol}</span>`;
+        };
+
+        book.onmouseleave = () => {
+            tooltip.innerHTML = `Klick auf ein "Buch", um es zu lesen.`;
+        };
+
+        shelf.appendChild(book);
+    });
 }
 
-// async function fetchFolderFiles(folderName)
-// {
-//     const fileListUI = document.getElementById('file-list');
-    
-//     const { data: files, error: listError } = await supabaseClient
-//         .storage
-//         .from(BUCKET_NAME)
-//         .list(folderName, { sortBy: { column: 'name', order: 'asc' } });
-
-//     if (listError) {
-//         fileListUI.innerHTML = `<li>Error listing files: ${listError.message}</li>`;
-//         return;
-//     }
-
-//     // No files there?
-//     if (!files || files.length === 0) {
-//         fileListUI.innerHTML = `<li>No files found in this bucket.</li>`;
-//         return;
-//     }
-
-//     fileListUI.innerHTML = ''; // Clear the "Loading..." placeholder
-
-//     // get a link for each file
-//     for (const file of files)
-//     {
-//         if (file.name === '.emptyFolderPlaceholder') {continue;}
-
-//         //console.log(file.name);
-
-//         const { data: signedData, error: urlError } = await supabaseClient
-//             .storage
-//             .from(BUCKET_NAME)
-//             .createSignedUrl(`${folderName}/${file.name}`, SIGNED_URL_TIMEFRAME_SECONDS);
-
-//         const listItem = document.createElement('li');
-        
-//         if (urlError) {
-//             // Fail
-//             console.error("URL Generation Error for", file.name, urlError);
-//             listItem.textContent = `${file.name} (Error generating link)`;
-//         } else {
-//             // Success: Show a clickable link to the file
-//             listItem.innerHTML = `<a href="${signedData.signedUrl}" target="_blank">📄 ${file.name}</a>`;
-//         }
-                
-//         fileListUI.appendChild(listItem);
-//     }
-// }
+// Initial load when page first boots up
+// window.onload = () => {
+//     renderBookshelf();
+// };

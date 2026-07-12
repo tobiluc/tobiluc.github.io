@@ -8,7 +8,8 @@
 
     <link rel="stylesheet" href="./styles/style.css">
     <link rel="stylesheet" href="./styles/themes.css">
-    <link rel="stylesheet" href="./styles/creative.css">
+    <link rel="stylesheet" href="./styles/login.css">
+    <link rel="stylesheet" href="./styles/bookshelf.css">
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
@@ -41,11 +42,25 @@
         <input type="password" id="password-input" placeholder="Password">
         <button id="login-button">Log In</button>
         <p id="error-msg" style="display:none; color:red;">Nein, das ist es nicht :/</p>
+
+        <!-- <button id="logout-button">Log Out</button> -->
     </div>
 
-    <div id="explorer-content" style="display:none;">
-        <h3>Inhalt</h3>
-        <ul id="file-list"><li>Laden...</li></ul>
+    <div class="bookshelf" style="display:none;">
+
+        <div class="category-nav">
+            <button class="nav-btn active" onclick="switchTable('ShortStories', 'Kurzgeschichten')">Kurzgeschichten</button>
+            <!-- <button class="nav-btn" onclick="switchTable('AgentBullet', 'Agent Bullet')">Agent Bullet</button> -->
+        </div>
+
+        <div class="shelf-row">
+            <h3 id="selected-shelf-title">Kurzgeschichten</h3>
+            <div class="books-container" id="selected-shelf"></div>
+            <div class="shelf-wood"></div>
+        </div>
+
+        <div id="book-tooltip" class="tooltip-box">Klick auf ein "Buch", um es zu lesen.</div>
+
     </div>
 
     <!-- Socials -->

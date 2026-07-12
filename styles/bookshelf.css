@@ -1,0 +1,129 @@
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: color;
+    padding: 20px;
+}
+
+.category-nav {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 30px;
+    width: 100%;
+    max-width: 800px;
+}
+
+.nav-btn {
+    background-color: #f0f0f0;
+    color: #4a3728;
+    border: 2px solid #8B5A2B;
+    padding: 10px 20px;
+    font-size: 14px;
+    font-weight: bold;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.nav-btn:hover {
+    background-color: #e6dcd3;
+}
+
+.nav-btn.active {
+    background-color: #8B5A2B;
+    color: white;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.15);
+}
+
+.tooltip-box {
+    width: 100%;
+    max-width: 800px;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    padding: 15px;
+    border-radius: 6px;
+    min-height: 40px;
+    margin-bottom: 25px;
+    text-align: center;
+    box-shadow: 0 4px 10px color-mix(in srgb, var(--shadow-color), transparent 20%);
+    font-size: 15px;
+    border-left: 5px solid #8B5A2B;
+    box-sizing: border-box;
+}
+
+.bookshelf {
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.shelf-row {
+    margin-bottom: 50px;
+    position: relative;
+}
+
+.shelf-title {
+    margin-bottom: 10px;
+    color: #4a3728;
+    border-bottom: 2px dashed var(--icon-color);
+    padding-bottom: 5px;
+}
+
+/* horizontal area where books stand */
+.books-container {
+    display: flex;
+    align-items: flex-end;
+    padding: 0 20px;
+    height: 180px;
+    gap: 6px;
+}
+
+/* The wooden shelf ledge */
+.shelf-wood {
+    height: 15px;
+    background: linear-gradient(to bottom, #8B5A2B, #5C3A21);
+    border-radius: 2px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+}
+
+.book-spine {
+    width: 35px;
+    height: 150px;
+    background-color: #2b5c8f;
+    color: white;
+    cursor: pointer;
+    border-radius: 3px 3px 0 0;
+    box-shadow: inset -3px 0 5px rgba(0,0,0,0.2), 2px 0 4px rgba(0,0,0,0.2);
+    transition: transform 0.2s ease, filter 0.2s ease;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    container-type: normal; 
+}
+
+/* Vertical title written on book spine */
+.book-title-vertical {
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    white-space: nowrap;
+    user-select: none;
+    padding: 10px 0;
+    font-size: clamp(5px, 2.5cqh, 14px); 
+    font-weight: bold;
+    letter-spacing: 0.5px;
+}
+
+/* Hover over Book spine */
+.book-spine:hover {
+    transform: translateY(-10px) scale(1.05);
+    filter: brightness(1.2);
+}
+
+/* Locked State for spine (visitor not logged in) */
+.book-spine.locked {
+    background-color: #555 !important;
+    opacity: 0.7;
+}
