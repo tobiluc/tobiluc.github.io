@@ -92,8 +92,8 @@ async function renderBookshelf()
     // Query
     const { data: stories, error } = await supabaseClient
         .from(selectedTable)
-        .select('title, date, filename')
-        .order('date', {ascending: false});
+        .select('title, date, filename, description')
+        .order('date', {ascending: true});
 
     // Error?
     if (error) {
@@ -139,7 +139,7 @@ async function renderBookshelf()
         {
             const statusSymbol = isLoggedIn ? 'Lesen' : 'Einloggen';
             const yearText = story.date ? ` (${new Date(story.date).getFullYear()})` : '';
-            tooltip.innerHTML = `<strong>${story.title}</strong>${yearText} | <span style="color: #b7791f">${statusSymbol}</span>`;
+            tooltip.innerHTML = `<strong>${story.title}</strong>${yearText} | <span style="color: #b7791f">${statusSymbol}</span> <p>${story.description? story.description : ''}</p>`;
 
             // grab the secure tokenized link in the background
             // so when we click we go to the file
