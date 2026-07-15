@@ -204,4 +204,6 @@ function animate() {
     requestAnimationFrame(animate);
 }
 
-animate();
+document.addEventListener('DOMContentLoaded', () => {
+  animate();
+});

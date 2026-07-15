@@ -14,12 +14,19 @@ function set_theme(theme) {
 }
 
 // Set from cache
-if (theme = localStorage.getItem("theme")) {
-    set_theme(theme)
+function setThemeFromCache() {
+    const theme = localStorage.getItem("theme");
+    if (theme) {
+        set_theme(theme);
+    }
 }
 
 // Toggle theme
 btn.addEventListener("click", () => {
     const theme = document.documentElement.getAttribute("data-theme") || "light";
     set_theme(theme === "light" ? "dark" : "light")
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+  setThemeFromCache();
 });

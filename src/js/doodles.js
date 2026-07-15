@@ -1,4 +1,4 @@
-const dir = "/src/assets/images/doodles/";
+const dir = "/images/doodles/";
 const doodles = [
     dir+"back.png",
     dir+"coffee.png",
