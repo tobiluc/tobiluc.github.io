@@ -2,7 +2,7 @@ import {FunctionVisualizer2D} from "./FunctionVisualizer2D.js";
 import * as Mat from "../mat.js";
 import * as AOPT from "./aopt.js";
 import {evaluateNode} from "../expr.js";
-import jsep from "/tools/deps/jsep/dist/jsep.min.js"
+import jsep from "../deps/jsep/dist/jsep.min.js"
 
 jsep.removeAllBinaryOps();
 jsep.removeAllUnaryOps();

@@ -8,38 +8,27 @@
 
     <link rel="stylesheet" href="./sidebar-content.css">
     <link rel="stylesheet" href="./visualizer.css">
-    <link rel="stylesheet" href="/styles/style.css">
-    <link rel="stylesheet" href="/styles/themes.css">
+    <link rel="stylesheet" href="/src/css/style.css">
+    <link rel="stylesheet" href="/src/css/themes.css">
 
     <!-- Favicon -->
-    <link rel="icon" href="/icons/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
 
     <!-- d3 for plotting -->
-    <script src="https://d3js.org/d3.v7.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/d3-contour@4"></script>
+    <!-- <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/d3-contour@4"></script> -->
 
     <!-- katex for Latex rendering -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.css" integrity="sha384-zB1R0rpPzHqg7Kpt0Aljp8JPLqbXI3bhnPWROx27a9N0Ll6ZP/+DiW/UqRcLbRjq" crossorigin="anonymous">
+    <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.css" integrity="sha384-zB1R0rpPzHqg7Kpt0Aljp8JPLqbXI3bhnPWROx27a9N0Ll6ZP/+DiW/UqRcLbRjq" crossorigin="anonymous">
     <script defer src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.js" integrity="sha384-y23I5Q6l+B6vatafAwxRu/0oK/79VlbSz7Q9aiSZUvyWYIYsd+qj+o24G5ZU2zJz" crossorigin="anonymous"></script>
-    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/auto-render.min.js" integrity="sha384-kWPLUVMOks5AQFrykwIup5lo0m3iMkkHrD0uJ4H5cjeGihAutqP0yW0J6dpFiVkI" crossorigin="anonymous" onload="renderMathInElement(document.body);"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/auto-render.min.js" integrity="sha384-kWPLUVMOks5AQFrykwIup5lo0m3iMkkHrD0uJ4H5cjeGihAutqP0yW0J6dpFiVkI" crossorigin="anonymous" onload="renderMathInElement(document.body);"></script> -->
 
 </head>
 
 <body>
 
     <!-- Navigation Bar -->
-    <header class="top-bar">
-        <button id="theme-toggle" aria-label="Toggle Theme">
-            <svg id="theme-icon" viewBox="0 0 24 24">
-                <path d="M12 4.5V2m0 20v-2.5M4.5 12H2m20 0h-2.5M5.6 5.6L4.2 4.2m15.6 15.6l-1.4-1.4M5.6 18.4l-1.4 1.4m16.8-16.8l-1.4 1.4M12 7a5 5 0 110 10 5 5 0 010-10z"/>
-            </svg>
-        </button>
-        <nav class="top-nav">
-            <a href="/index.html">Home</a>
-            <a href="/projects.html">Projects</a>
-            <a href="/cv.html">CV</a>
-        </nav>
-    </header>
+    <load src="/src/partials/navbar.html" />
 
     <div class="container">
 
@@ -157,7 +146,8 @@
     </div>
 
     <script type="module" src="./main.js"></script>
-    <script src="../../scripts/themes.js"></script>
+    <script src="/src/js/themes.js"></script>
+    <script type="module" src="/src/js/katex.js"></script>
 
 </body>
 </html>

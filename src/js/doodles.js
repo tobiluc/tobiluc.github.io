@@ -1,4 +1,4 @@
-const dir = "images/doodles/";
+const dir = "/src/assets/images/doodles/";
 const doodles = [
     dir+"back.png",
     dir+"coffee.png",
@@ -67,7 +67,7 @@ function spawnDoodle() {
         img.classList.remove("jump");
         void img.offsetWidth;
         img.classList.add("jump");
-        window.location.href = "/creative.html"
+        window.location.href = "/bookshelf.html"
     });
 
     lane.appendChild(wrapper);

@@ -1,16 +1,6 @@
-const SUPABASE_URL = 'https://nxkezfnduhksbjyikjlh.supabase.co';
-const SUPABASE_ANON_KEY = 'sb_publishable_SOSRHkWaxPz_u7ADqdf53Q_uCtK9JR2';
+import { loginUser, isLoggedIn, supabaseClient } from "./supabaseAuth";
+
 const BUCKET_NAME = 'Stories';
-
-const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
-async function sha256(string)
-{
-    const utf8 = new TextEncoder().encode(string);
-    const hashBuffer = await crypto.subtle.digest('SHA-256', utf8);
-    const hashArray = Array.from(new Uint8Array(hashBuffer));
-    return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-}
 
 async function handleLogin()
 {
@@ -18,41 +8,22 @@ async function handleLogin()
     const password = document.getElementById('password-input').value;
     const errorMsg = document.getElementById('error-msg');
 
-    // Ask Supabase to log the user in using the Users table
-    const { data, error } = await supabaseClient.auth.signInWithPassword({
-        email: email,
-        password: password,
-    });
-
-    if (error) {
-        // Login Fail
-        errorMsg.textContent = error.message;
-        errorMsg.style.display = 'block';
-    } else {
-        // Login Success!
+    try {
+        const data = await loginUser(email, password);
         errorMsg.style.display = 'none';
         document.getElementById('auth-gate').style.display = 'none';
         for (const shelf of document.getElementsByClassName('bookshelf')) {
             shelf.style.display = 'block';
         }
-        
-        // fetchFolderFiles('Short Stories');
-        // fetchShortStories();
         renderBookshelf();
+    } catch (error) {
+        // Login Fail
+        errorMsg.textContent = error.message;
+        errorMsg.style.display = 'block';
     }
 }
 
 document.getElementById('login-button').onclick = handleLogin;
-
-//-----------
-// Logout
-//-----------
-// document.getElementById('logout-button').onclick = async () => {
-//     await supabaseClient.auth.signOut();
-//     // alert("Logged out!");
-//     window.location.reload();
-// };
-
 
 //-------------------
 // Bookshelf Visuals
@@ -108,8 +79,7 @@ async function renderBookshelf()
     }
 
     // Logged in?
-    const { data: { session } } = await supabaseClient.auth.getSession();
-    const isLoggedIn = session !== null;
+    const loggedIn = await isLoggedIn();
 
     shelf.innerHTML = ''; // Clear indicator
 
@@ -127,7 +97,7 @@ async function renderBookshelf()
         book.style.height = `${randomHeight}px`;
         book.style.textDecoration = 'none';
 
-        if (isLoggedIn) {
+        if (loggedIn) {
             book.style.backgroundColor = spineColors[index % spineColors.length];
         } else {
             book.classList.add('locked');

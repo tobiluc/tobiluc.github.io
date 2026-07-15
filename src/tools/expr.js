@@ -1,4 +1,4 @@
-import jsep from "/tools/deps/jsep/dist/jsep.min.js"
+import jsep from "./deps/jsep/dist/jsep.min.js"
 
 export function evaluateNode(node, scope)
 {

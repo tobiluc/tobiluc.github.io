@@ -3,37 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <title>Projects</title>
-    <link rel="stylesheet" href="./styles/style.css">
-    <link rel="stylesheet" href="./styles/themes.css">
-    <link rel="stylesheet" href="./styles/projects.css">
-    <link rel="stylesheet" href="./styles/doodles.css">
+    <link rel="stylesheet" href="/src/css/style.css">
+    <link rel="stylesheet" href="/src/css/themes.css">
+    <link rel="stylesheet" href="/src/css/projects.css">
+    <link rel="stylesheet" href="/src/css/doodles.css">
 
     <!-- Favicon -->
-    <link rel="icon" href="icons/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
 
 </head>
 <body>
     <canvas id="bg-canvas"></canvas>
 
     <!-- Navigation Bar -->
-    <header class="top-bar">
-        <button id="theme-toggle" aria-label="Toggle Theme">
-            <svg id="theme-icon" viewBox="0 0 24 24">
-                <path d="M12 4.5V2m0 20v-2.5M4.5 12H2m20 0h-2.5M5.6 5.6L4.2 4.2m15.6 15.6l-1.4-1.4M5.6 18.4l-1.4 1.4m16.8-16.8l-1.4 1.4M12 7a5 5 0 110 10 5 5 0 010-10z"/>
-            </svg>
-        </button>
-        <nav class="top-nav">
-            <a href="index.html">Home</a>
-            <a href="projects.html">Projects</a>
-            <a href="cv.html">CV</a>
-        </nav>
-    </header>
+    <load src="/src/partials/navbar.html" />
 
     <section class="projects-grid">
 
-        <a href="/tools/aopt" class="project-card">
+        <a href="/src/tools/aopt/index.html" class="project-card">
             <div class="project-media">
-            <img src="images/projects/Project-AOPT-Tools.png" alt="aopt-tools" class="project-img">
+            <img src="/src/assets/images/projects/Project-AOPT-Tools.png" alt="aopt-tools" class="project-img">
             <div class="project-overlay">
                 <h3>Applied Optimization Vis. (JS)</h3>
                 <p>Interactive visualizations to refresh my knowledge on Applied Optimization.</p>
@@ -43,7 +32,7 @@
 
         <a href="https://github.com/tobiluc/ibex" class="project-card">
             <div class="project-media">
-            <img src="images/projects/Project-ibex.png" alt="ibex" class="project-img">
+            <img src="/src/assets/images/projects/Project-ibex.png" alt="ibex" class="project-img">
             <div class="project-overlay">
                 <h3>ibex (C++)</h3>
                 <p>A simple parser that can evaluate mathematical expressions given as texts. It supports operator precedences, brackets as well as registering variables and functions.</p>
@@ -53,7 +42,7 @@
 
         <a href="https://github.com/tobiluc/ToLoG" class="project-card">
             <div class="project-media">
-            <img src="images/projects/Project-ToLoG.png" alt="ToLoG" class="project-img">
+            <img src="/src/assets/images/projects/Project-ToLoG.png" alt="ToLoG" class="project-img">
             <div class="project-overlay">
                 <h3>ToLoG (C++)</h3>
                 <p>Tobis Library of Geometry is an ongoing project where I put some general purpose datastructures and algorithms that I use in other projects.</p>
@@ -63,7 +52,7 @@
 
         <a href="https://github.com/tobiluc/AxoPlotl-WebGPU" class="project-card">
             <div class="project-media">
-            <img src="images/projects/Project-AxoPlotl-WebGPU.png" alt="AxoPlotl" class="project-img">
+            <img src="/src/assets/images/projects/Project-AxoPlotl-WebGPU.png" alt="AxoPlotl" class="project-img">
             <div class="project-overlay">
                 <h3>AxoPlotl (C++)</h3>
                 <p>Visualization of meshes (including OpenVolumeMesh and its properties) and plotting of implicit and explicit surfaces using the ibex parser. Implemented using WebGPU using the dawn backend.</p>
@@ -73,7 +62,7 @@
 
         <a href="https://github.com/tobiluc/Wordhunter" class="project-card">
             <div class="project-media">
-            <img src="images/projects/Project-WordHunter.png" alt="Wordhunter" class="project-img">
+            <img src="/src/assets/images/projects/Project-WordHunter.png" alt="Wordhunter" class="project-img">
             <div class="project-overlay">
                 <h3>Wordhunter (Godot)</h3>
                 <p>A game, designed for a puzzle-hungry mother, made in Godot where the goal is to find words in a hexagonal grid of letters. The longer the word, the better, both for points and to avoid the danger tiles!</p>
@@ -83,7 +72,7 @@
 
         <a href="https://brateboi.itch.io/happy-little-trains" class="project-card">
             <div class="project-media">
-            <img src="images/projects/Project-HappyLittleTrains.png" alt="Happy Little Trains" class="project-img">
+            <img src="/src/assets/images/projects/Project-HappyLittleTrains.png" alt="Happy Little Trains" class="project-img">
             <div class="project-overlay">
                 <h3>Happy Little Trains (Unity)</h3>
                 <p>A team project for the course "Design and Graphics Programming for Game Development" at the University of Fribourg. For a semester, two friends and I developed this puzzle game where you need to guide colored trains to their matching stations.</p>
@@ -93,7 +82,7 @@
 
         <a href="https://github.com/tobiluc/CuttingPlanes" class="project-card">
             <div class="project-media">
-            <img src="images/projects/Project-CuttingPlanes.png" alt="Cutting Planes" class="project-img">
+            <img src="/src/assets/images/projects/Project-CuttingPlanes.png" alt="Cutting Planes" class="project-img">
             <div class="project-overlay">
                 <h3>Cutting Planes 2D Visualizer (C++, Python)</h3>
                 <p>Cutting Planes is an algorithm to solve mixed integer linear problems. This project contains a c++ solver (for arbitrary dimensions), and a visualization tool made in python (for 2d problems). It was created for the Applied Optimization Seminar at the University of Bern in the Spring semester 2024.</p>
@@ -103,7 +92,7 @@
 
         <a href="https://github.com/tobiluc/CompilerConstruction" class="project-card">
             <div class="project-media">
-            <img src="images/projects/Project-CompilerConstruction.png" alt="Sokoban" class="project-img">
+            <img src="/src/assets/images/projects/Project-CompilerConstruction.png" alt="Sokoban" class="project-img">
             <div class="project-overlay">
                 <h3>Interpreter (Java)</h3>
                 <p>From text to tokens to a tree, here I implemented an interpreter for a custom programming language. This includes different variable types, operations, loops, scopes, and functions.</p>
@@ -113,7 +102,7 @@
 
         <a href="https://github.com/tobiluc/LogicLounge" class="project-card">
             <div class="project-media">
-            <img src="images/projects/Project-LogicLounge.png" alt="Logic Lounge" class="project-img">
+            <img src="/src/assets/images/projects/Project-LogicLounge.png" alt="Logic Lounge" class="project-img">
             <div class="project-overlay">
                 <h3>Logic Lounge (Java)</h3>
                 <p>The project includes some simple algorithms related to boolean formulas like creating a Karnaugh-Veitch diagram, showing the steps of the Quine-McCluskey algorithm to minimize boolean functions, or an algorithm for computational tree logic. All of this is provided with a nice interface where you can type your formulas. The output can be either stored as an image, or as latex source code.</p>
@@ -123,7 +112,7 @@
 
         <a href="https://github.com/tobiluc/Raytracer" class="project-card">
             <div class="project-media">
-            <img src="images/projects/Project-RayTracer.png" alt="Raytracer" class="project-img">
+            <img src="/src/assets/images/projects/Project-RayTracer.png" alt="Raytracer" class="project-img">
             <div class="project-overlay">
                 <h3>Raytracer (Java)</h3>
                 <p>An editor to raytrace your own little scenes and produce (hopefully beautiful) images. All the logic is written in good ol' java. You can define primitive shapes, load meshes, texture- and normal-maps, define certain material properties of your shapes, and more....</p>
@@ -133,7 +122,7 @@
 
         <a href="https://github.com/tobiluc/Sokoban" class="project-card">
             <div class="project-media">
-            <img src="images/projects/Project-Sokoban.png" alt="Sokoban" class="project-img">
+            <img src="/src/assets/images/projects/Project-Sokoban.png" alt="Sokoban" class="project-img">
             <div class="project-overlay">
                 <h3>Sokoban (Java)</h3>
                 <p>A classic where you push boxes (or flies?) onto buttons (or into spider webs?). The game automatically reads levels from the corresponding folder, so take a look at some level files, and create your own if you like :)</p>
@@ -141,9 +130,9 @@
             </div>
         </a>
 
-        <a href="games/SantaShooter/index.html" class="project-card">
+        <a href="/src/games/SantaShooter/index.html" class="project-card">
             <div class="project-media">
-            <img src="images/projects/Project-SantaShooter.png" alt="Santa Shooter" class="project-img">
+            <img src="/src/assets/images/projects/Project-SantaShooter.png" alt="Santa Shooter" class="project-img">
             <div class="project-overlay">
                 <h3>Santa Shooter (JS)</h3>
                 <p>Once upon a December, there were no cookies for me. To cope with this, I developed this shoot 'em up game using GameMaker Studio in which Santa has to defend himself against the approaching cookies. Recently I had the desire to reimplement the game with its original assets using JavaScript.</p>
@@ -152,56 +141,12 @@
         </a>
     </section>
 
-    <footer class="footer">
-        <!-- <div class="footer-doodle-lane"></div> -->
-        <div class="socials">
+    <!-- Footer -->
+    <load src="/src/partials/footer.html" />
 
-            <!-- EMail -->
-            <a href="mailto:tobias.kohler@unibe.ch" class="icon">
-                <svg role="img" viewBox="0 0 8 6" xmlns="http://www.w3.org/2000/svg">
-                    <title>Email</title>
-                    <path d="m0 0h8v6h-8zm.75 .75v4.5h6.5v-4.5zM0 0l4 3 4-3v1l-4 3-4-3z"/>
-                </svg>
-            </a>
-
-            <!-- GitHub -->
-            <a href="https://github.com/tobiluc" class="icon" target="_blank">
-                <svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <title>GitHub</title>
-                        <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
-                </svg>
-            </a>
-
-            <!-- Linkedin -->
-            <a href="https://www.linkedin.com/in/tobias-kohler-3266a537a" class="icon" target="_blank">
-                <svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <title>LinkedIn icon</title>
-                    <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
-                </svg>
-            </a>
-
-            <!-- Instagram -->
-            <a href="https://instagram.com/t0biluc" class="icon" target="_blank">
-                <svg role="img" viewBox="-271 273 256 256" xmlns="http://www.w3.org/2000/svg">
-                    <title>Instagram</title>
-                    <path d="M-64.5,273h-157c-27.3,0-49.5,22.2-49.5,49.5v52.3v104.8c0,27.3,22.2,49.5,49.5,49.5h157c27.3,0,49.5-22.2,49.5-49.5V374.7
-    v-52.3C-15.1,295.2-37.3,273-64.5,273z M-50.3,302.5h5.7v5.6v37.8l-43.3,0.1l-0.1-43.4L-50.3,302.5z M-179.6,374.7
-    c8.2-11.3,21.5-18.8,36.5-18.8s28.3,7.4,36.5,18.8c5.4,7.4,8.5,16.5,8.5,26.3c0,24.8-20.2,45.1-45.1,45.1s-44.9-20.3-44.9-45.1
-    C-188.1,391.2-184.9,382.1-179.6,374.7z M-40,479.5C-40,493-51,504-64.5,504h-157c-13.5,0-24.5-11-24.5-24.5V374.7h38.2
-    c-3.3,8.1-5.2,17-5.2,26.3c0,38.6,31.4,70,70,70c38.6,0,70-31.4,70-70c0-9.3-1.9-18.2-5.2-26.3H-40V479.5z"/>
-                </svg>
-            </a>
-        </div>
-
-        <div class="copyright">
-            © <script>document.write(new Date().getFullYear())</script> Tobias Kohler. All rights reserved.
-        </div>
-
-    </footer>
-
-    <script src="./scripts/themes.js"></script>
-    <script src="./scripts/projects.js"></script>
-    <script src="./scripts/floating-shapes.js"></script>
-    <script src="./scripts/doodles.js"></script>
+    <script src="/src/js/themes.js"></script>
+    <script src="/src/js/projects.js"></script>
+    <script src="/src/js/floating-shapes.js"></script>
+    <script src="/src/js/doodles.js"></script>
 </body>
 </html>
