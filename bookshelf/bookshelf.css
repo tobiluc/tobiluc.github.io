@@ -105,7 +105,7 @@ body {
     justify-content: center;
     align-items: center;
     overflow: hidden;
-    container-type: normal; 
+    container-type: size;
 }
 
 /* Vertical title written on book spine */
@@ -114,10 +114,12 @@ body {
     transform: rotate(180deg);
     white-space: nowrap;
     user-select: none;
-    padding: 10px 0;
-    font-size: clamp(5px, 2.5cqh, 14px); 
+    padding: 0px 0;
+    font-size: clamp(8px, 8cqh, 16px);
     font-weight: bold;
     letter-spacing: 0.5px;
+    max-height: 90%; 
+    text-overflow: ellipsis;
 }
 
 /* Hover over Book spine */

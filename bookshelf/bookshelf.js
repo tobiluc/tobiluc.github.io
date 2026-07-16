@@ -65,15 +65,11 @@ async function renderBookshelf()
     {
         const book = document.createElement('button');
         book.classList.add('book-spine');
-
-        // book.target = '_blank';
-        // book.rel = 'noopener noreferrer';
-        // book.href = '#';
         
         const randomHeight = Math.floor(Math.random() * (170 - 140 + 1)) + 140;
         book.style.height = `${randomHeight}px`;
         book.style.textDecoration = 'none';
-        book.innerHTML = `<div class="book-title-vertical">${story.title}</div>`;
+        book.innerHTML = `<div class="book-title-vertical" title="${story.title}">${story.title}</div>`;
 
         
         if (loggedIn) {
@@ -129,29 +125,6 @@ async function renderBookshelf()
             }
         };
 
-        // book.onmouseenter = async () =>
-        // {
-        //     const statusSymbol = loggedIn ? 'Lesen' : 'Einloggen';
-        //     const yearText = story.date ? ` (${new Date(story.date).getFullYear()})` : '';
-        //     tooltip.innerHTML = `<strong>${story.title}</strong>${yearText} | <span style="color: #b7791f">${statusSymbol}</span> <p>${story.description? story.description : ''}</p>`;
-
-        //     // grab the secure tokenized link in the background
-        //     // so when we click we go to the file (only when logged in)
-        //     // When not logged in this will result in a bad request (400)
-        //     if (loggedIn)
-        //     {
-        //         const { data } = await supabaseClient
-        //             .storage
-        //             .from(BUCKET_NAME)
-        //             .createSignedUrl(`${selectedTable}/${story.filename}`, 30);
-        //         if (data?.signedUrl) {
-        //             book.href = data.signedUrl;
-        //         }
-        //     }
-        // };
-
-        
-
         shelf.appendChild(book);
     });
 }
@@ -169,8 +142,3 @@ document.addEventListener('DOMContentLoaded', () =>
 
     renderBookshelf();
 });
-
-// Initial load when page first boots up
-// window.onload = () => {
-//     renderBookshelf();
-// };
