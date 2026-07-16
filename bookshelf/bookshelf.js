@@ -98,7 +98,7 @@ async function renderBookshelf()
         book.onclick = async () =>
         {
             if (!loggedIn) {
-                // TODO: Prompt user to login
+                window.location.href = '/auth/';
                 return;
             }
 
