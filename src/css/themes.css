@@ -3,15 +3,15 @@
     --bg-color: #ffffff;
     --text-color: #000000;
     --icon-color: #222;
-    --card-color: #cecece;
-    --hover-color: #aaaaaa;
+    --card-color: #f490ff;
+    --hover-color: #7ea989;
     --shadow-color: #00000020;
 }
 
 [data-theme="dark"] {
     --bg-color: #232323;
     --text-color: #e8e8e8;
-    --card-color: #222;
+    --card-color: #560057;
     --icon-color: #ddd;
     --hover-color: #00ea4e;
     --shadow-color: #e8e8e820;

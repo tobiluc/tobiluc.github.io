@@ -70,7 +70,7 @@ async function renderBookshelf()
         // book.rel = 'noopener noreferrer';
         // book.href = '#';
         
-        const randomHeight = 140 + (index % 4) * 10;
+        const randomHeight = Math.floor(Math.random() * (170 - 140 + 1)) + 140;
         book.style.height = `${randomHeight}px`;
         book.style.textDecoration = 'none';
         book.innerHTML = `<div class="book-title-vertical">${story.title}</div>`;

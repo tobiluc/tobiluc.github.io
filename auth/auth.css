@@ -8,15 +8,16 @@ html, body {
     align-items: center;
 }
 
-#auth-gate {
+#auth-gate, #user-card {
     background: var(--card-bg);
     padding: 1.5rem;
     border-radius: 12px;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 8px 24px color-mix(in srgb, var(--shadow-color), transparent 10%);
     text-align: center;
     max-width: 400px;
     width: 90%;
     box-sizing: border-box;
+    backdrop-filter: blur(6px);
 }
 
 #auth-gate h3 {
@@ -46,9 +47,9 @@ html, body {
 #login-button, #logout-button {
     width: 100%;
     padding: 0.75rem 1rem;
-    background-color: var(--icon-color);
-    color: #ffffff;
+    background-color: var(--card-color);
     border: none;
+    color: var(--text-color);
     border-radius: 6px;
     font-size: 1rem;
     font-weight: 500;
