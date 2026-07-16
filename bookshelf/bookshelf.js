@@ -1,29 +1,6 @@
-import { loginUser, isLoggedIn, supabaseClient } from "../src/js/supabaseAuth";
+import { loginUser, isLoggedIn, supabaseClient } from "/auth/supabaseAuth";
 
 const BUCKET_NAME = 'Stories';
-
-async function handleLogin()
-{
-    const email = document.getElementById('email-input').value;
-    const password = document.getElementById('password-input').value;
-    const errorMsg = document.getElementById('error-msg');
-
-    try {
-        const data = await loginUser(email, password);
-        errorMsg.style.display = 'none';
-        document.getElementById('auth-gate').style.display = 'none';
-        for (const shelf of document.getElementsByClassName('bookshelf')) {
-            shelf.style.display = 'block';
-        }
-        renderBookshelf();
-    } catch (error) {
-        // Login Fail
-        errorMsg.textContent = error.message;
-        errorMsg.style.display = 'block';
-    }
-}
-
-document.getElementById('login-button').onclick = handleLogin;
 
 //-------------------
 // Bookshelf Visuals
@@ -86,46 +63,94 @@ async function renderBookshelf()
     // Render the filtered list of books
     stories.forEach((story, index) => 
     {
-        const book = document.createElement('a');
+        const book = document.createElement('button');
         book.classList.add('book-spine');
 
-        book.target = '_blank';
-        book.rel = 'noopener noreferrer';
-        book.href = '#';
+        // book.target = '_blank';
+        // book.rel = 'noopener noreferrer';
+        // book.href = '#';
         
         const randomHeight = 140 + (index % 4) * 10;
         book.style.height = `${randomHeight}px`;
         book.style.textDecoration = 'none';
+        book.innerHTML = `<div class="book-title-vertical">${story.title}</div>`;
 
+        
         if (loggedIn) {
             book.style.backgroundColor = spineColors[index % spineColors.length];
         } else {
             book.classList.add('locked');
         }
 
-        book.innerHTML = `<div class="book-title-vertical">${story.title}</div>`;
-
-        book.onmouseenter = async () =>
+        // visual hover logic
+        book.onmouseenter = () =>
         {
-            const statusSymbol = isLoggedIn ? 'Lesen' : 'Einloggen';
+            const statusSymbol = loggedIn ? 'Lesen' : 'Einloggen';
             const yearText = story.date ? ` (${new Date(story.date).getFullYear()})` : '';
-            tooltip.innerHTML = `<strong>${story.title}</strong>${yearText} | <span style="color: #b7791f">${statusSymbol}</span> <p>${story.description? story.description : ''}</p>`;
-
-            // grab the secure tokenized link in the background
-            // so when we click we go to the file
-            const { data } = await supabaseClient
-                .storage
-                .from(BUCKET_NAME)
-                .createSignedUrl(`${selectedTable}/${story.filename}`, 30);
-
-            if (data?.signedUrl) {
-                book.href = data.signedUrl;
-            }
+            tooltip.innerHTML = `<strong>${story.title}</strong>${yearText} | <span style="color: #b7791f">${statusSymbol}</span> <p>${story.description ? story.description : ''}</p>`;
         };
 
         book.onmouseleave = () => {
             tooltip.innerHTML = `Klick auf ein "Buch", um es zu lesen.`;
         };
+
+        //Handle the DB fetch and opening file
+        book.onclick = async () =>
+        {
+            if (!loggedIn) {
+                // TODO: Prompt user to login
+                return;
+            }
+
+            const newTab = window.open('about:blank', '_blank');
+
+            // Visual loading feedback
+            book.style.opacity = '0.5';
+            const originalText = tooltip.innerHTML;
+            tooltip.innerHTML = `<em>Öffne Dokument...</em>`;
+
+            try {
+                // Grab the secure tokenized link
+                const { data, error } = await supabaseClient
+                    .storage
+                    .from(BUCKET_NAME)
+                    .createSignedUrl(`${selectedTable}/${story.filename}`, 30);
+                if (error) {throw error;}
+
+                // Open in a new tab
+                if (data?.signedUrl) {
+                    newTab.location.href = data.signedUrl;
+                }
+            } catch (err) {
+                tooltip.innerHTML = `<span style="color: red">${err}</span>`;
+            } finally {
+                book.style.opacity = '1';
+                tooltip.innerHTML = originalText;
+            }
+        };
+
+        // book.onmouseenter = async () =>
+        // {
+        //     const statusSymbol = loggedIn ? 'Lesen' : 'Einloggen';
+        //     const yearText = story.date ? ` (${new Date(story.date).getFullYear()})` : '';
+        //     tooltip.innerHTML = `<strong>${story.title}</strong>${yearText} | <span style="color: #b7791f">${statusSymbol}</span> <p>${story.description? story.description : ''}</p>`;
+
+        //     // grab the secure tokenized link in the background
+        //     // so when we click we go to the file (only when logged in)
+        //     // When not logged in this will result in a bad request (400)
+        //     if (loggedIn)
+        //     {
+        //         const { data } = await supabaseClient
+        //             .storage
+        //             .from(BUCKET_NAME)
+        //             .createSignedUrl(`${selectedTable}/${story.filename}`, 30);
+        //         if (data?.signedUrl) {
+        //             book.href = data.signedUrl;
+        //         }
+        //     }
+        // };
+
+        
 
         shelf.appendChild(book);
     });
@@ -141,6 +166,8 @@ document.addEventListener('DOMContentLoaded', () =>
         switchTable(data.tableName, data.displayName);
     });
     });
+
+    renderBookshelf();
 });
 
 // Initial load when page first boots up

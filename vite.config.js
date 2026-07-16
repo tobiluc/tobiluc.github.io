@@ -17,6 +17,7 @@ export default defineConfig({
           aopt: resolve(__dirname, 'projects/aopt/index.html'),
         cv: resolve(__dirname, 'cv/index.html'),
         bookshelf: resolve(__dirname, 'bookshelf/index.html'),
+        auth: resolve(__dirname, 'auth/index.html'),
       },
     },
   },

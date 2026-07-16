@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Login</title>
+
+    <link rel="stylesheet" href="/src/css/style.css">
+    <link rel="stylesheet" href="/src/css/themes.css">
+    <link rel="stylesheet" href="./auth.css">
+
+    <!-- Favicon -->
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+</head>
+<body>
+
+    <!-- Fun Stuff :) -->
+    <canvas id="bg-canvas"></canvas>
+
+    <!-- Navigation Bar -->
+    <load src="src/partials/navbar.html" />
+
+    <div id="auth-gate">
+        <h2>Login</h2>
+        <form id="login-form" method="POST">
+            <input 
+                type="email" 
+                id="email-input" 
+                name="email" 
+                placeholder="Email Address" 
+                autocomplete="username" 
+                required
+            >
+            <input 
+                type="password" 
+                id="password-input" 
+                name="password" 
+                placeholder="Password" 
+                autocomplete="current-password" 
+                required
+            >
+        <button type="submit" id="login-button">Log In</button>
+        </form>
+        <p id="error-msg" style="display:none; color:red;">Nope</p>
+    </div>
+
+    <div id="user-card">
+        <h2 id="user-hello"></h2>
+        <button id="logout-button">Log Out</button>
+    </div>
+
+    <!-- Socials -->
+    <load src="/src/partials/footer.html" />
+
+    <script type="module" src="/src/js/themes.js"></script>
+    <script type="module" src="/src/js/floating-shapes.js"></script>
+    <script type="module" src="./auth.js"></script>
+
+</body>
+</html>

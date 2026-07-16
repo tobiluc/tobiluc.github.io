@@ -8,7 +8,7 @@
 
     <link rel="stylesheet" href="/src/css/style.css">
     <link rel="stylesheet" href="/src/css/themes.css">
-    <link rel="stylesheet" href="/src/css/login.css">
+    <link rel="stylesheet" href="/auth/auth.css">
     <link rel="stylesheet" href="./bookshelf.css">
 
     <!-- Favicon -->
@@ -22,17 +22,7 @@
     <!-- Navigation Bar -->
     <load src="src/partials/navbar.html" />
 
-    <div id="auth-gate">
-        <h2>Privates Login</h2>
-        <input type="email" id="email-input" placeholder="Email Address">
-        <input type="password" id="password-input" placeholder="Password">
-        <button id="login-button">Log In</button>
-        <p id="error-msg" style="display:none; color:red;">Nein, das ist es nicht :/</p>
-
-        <!-- <button id="logout-button">Log Out</button> -->
-    </div>
-
-    <div class="bookshelf" style="display:none;">
+    <div class="bookshelf">
 
         <div class="category-nav">
             <button class="nav-btn active" data-display-name="Kurzgeschichten" data-table-name="ShortStories">Kurzgeschichten</button>
