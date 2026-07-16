@@ -13,7 +13,7 @@ export default defineConfig({
       input: {
         main: resolve(__dirname, 'index.html'),
         projects: resolve(__dirname, 'projects/index.html'),
-          santashooter: resolve(__dirname, 'projects/SantaShooter/index.html'),
+          santashooter: resolve(__dirname, 'projects/santashooter/index.html'),
           aopt: resolve(__dirname, 'projects/aopt/index.html'),
         cv: resolve(__dirname, 'cv/index.html'),
         bookshelf: resolve(__dirname, 'bookshelf/index.html'),
