@@ -1,4 +1,4 @@
-import { loginUser, isLoggedIn, supabaseClient } from "./supabaseAuth";
+import { loginUser, isLoggedIn, supabaseClient } from "../src/js/supabaseAuth";
 
 const BUCKET_NAME = 'Stories';
 
@@ -130,6 +130,18 @@ async function renderBookshelf()
         shelf.appendChild(book);
     });
 }
+
+document.addEventListener('DOMContentLoaded', () =>
+{
+    // Handle switching of categories (short stories, detective ronny etc.)
+    const navButtons = document.querySelectorAll('.category-nav .nav-btn');
+    navButtons.forEach(button => {
+    button.addEventListener('click', (event) => {
+        const data = event.currentTarget.dataset;
+        switchTable(data.tableName, data.displayName);
+    });
+    });
+});
 
 // Initial load when page first boots up
 // window.onload = () => {

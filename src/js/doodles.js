@@ -67,7 +67,7 @@ function spawnDoodle() {
         img.classList.remove("jump");
         void img.offsetWidth;
         img.classList.add("jump");
-        window.location.href = "/bookshelf.html"
+        window.location.href = "/bookshelf/"
     });
 
     lane.appendChild(wrapper);

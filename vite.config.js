@@ -1,6 +1,7 @@
-import { resolve } from 'path'
+import { resolve, path } from 'path'
 import { defineConfig } from 'vite';
 import injectHTML from 'vite-plugin-html-inject';
+import fs from 'fs';
 
 export default defineConfig({
   plugins: [
@@ -11,9 +12,11 @@ export default defineConfig({
     rollupOptions: {
       input: {
         main: resolve(__dirname, 'index.html'),
-        projects: resolve(__dirname, 'projects.html'),
-        cv: resolve(__dirname, 'cv.html'),
-        bookshelf: resolve(__dirname, 'bookshelf.html'),
+        projects: resolve(__dirname, 'projects/index.html'),
+          santashooter: resolve(__dirname, 'projects/SantaShooter/index.html'),
+          aopt: resolve(__dirname, 'projects/aopt/index.html'),
+        cv: resolve(__dirname, 'cv/index.html'),
+        bookshelf: resolve(__dirname, 'bookshelf/index.html'),
       },
     },
   },

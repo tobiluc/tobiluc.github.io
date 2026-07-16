@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="/src/css/style.css">
     <link rel="stylesheet" href="/src/css/themes.css">
     <link rel="stylesheet" href="/src/css/login.css">
-    <link rel="stylesheet" href="/src/css/bookshelf.css">
+    <link rel="stylesheet" href="./bookshelf.css">
 
     <!-- Favicon -->
     <link rel="icon" href="/favicon.ico" type="image/x-icon">
@@ -35,8 +35,8 @@
     <div class="bookshelf" style="display:none;">
 
         <div class="category-nav">
-            <button class="nav-btn active" onclick="switchTable('ShortStories', 'Kurzgeschichten')">Kurzgeschichten</button>
-            <button class="nav-btn active" onclick="switchTable('DetectiveRonny', 'Detektiv Ronny')" style="font-family: 'Courier New', Courier, monospace;">Detektiv Ronny</button>
+            <button class="nav-btn active" data-display-name="Kurzgeschichten" data-table-name="ShortStories">Kurzgeschichten</button>
+            <button class="nav-btn" data-display-name="Detektiv Ronny" data-table-name="DetectiveRonny" style="font-family: 'Courier New', Courier, monospace;">Detektiv Ronny</button>
             <!-- <button class="nav-btn" onclick="switchTable('AgentBullet', 'Agent Bullet')">Agent Bullet</button> -->
         </div>
 
@@ -55,7 +55,7 @@
 
     <script type="module" src="/src/js/themes.js"></script>
     <script type="module" src="/src/js/floating-shapes.js"></script>
-    <script type="module" src="/src/js/bookshelf.js"></script>
+    <script type="module" src="./bookshelf.js"></script>
 
 </body>
 </html>
