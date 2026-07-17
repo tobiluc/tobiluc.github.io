@@ -21,12 +21,14 @@ function setThemeFromCache() {
     }
 }
 
-// Toggle theme
-btn.addEventListener("click", () => {
-    const theme = document.documentElement.getAttribute("data-theme") || "light";
-    set_theme(theme === "light" ? "dark" : "light")
-});
+document.addEventListener('DOMContentLoaded', () =>
+{
+    setThemeFromCache();
 
-document.addEventListener('DOMContentLoaded', () => {
-  setThemeFromCache();
+    // Toggle theme
+    btn.addEventListener("click", () => {
+        const theme = document.documentElement.getAttribute("data-theme") || "light";
+        set_theme(theme === "light" ? "dark" : "light")
+    });
+
 });

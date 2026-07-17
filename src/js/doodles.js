@@ -80,5 +80,8 @@ function spawnDoodle() {
     setTimeout(spawnDoodle, nextDelay);
 }
 
-// Start the loop
-spawnDoodle();
+document.addEventListener('DOMContentLoaded', () =>
+{
+    // Start the loop
+    spawnDoodle();
+});
