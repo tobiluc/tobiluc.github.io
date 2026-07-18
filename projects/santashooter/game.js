@@ -8,19 +8,19 @@ import {AssetDatabase, canvas, Game, Sprite2d, Timer, keys, Collider2d, Vec2, Ba
 // Images
 //---------------
 let assets = new AssetDatabase();
-assets.setImageFromFile("Player", "images/Santa.png");
-assets.setImageFromFile("PlayerLifesBack", "images/playerLifeBack.png");
-assets.setImageFromFile("PlayerLifesFront", "images/playerLifeFront.png");
-assets.setImageFromFile("Star", "images/Star.png");
+assets.setImageFromFile("Player", "/images/santashooter/Santa.png");
+assets.setImageFromFile("PlayerLifesBack", "/images/santashooter/playerLifeBack.png");
+assets.setImageFromFile("PlayerLifesFront", "/images/santashooter/playerLifeFront.png");
+assets.setImageFromFile("Star", "/images/santashooter/Star.png");
 for (let i = 0; i <= 31; i++) {
     const idx = i.toString().padStart(2, "0");
-    assets.setImageFromFile(`Enemy_${idx}`, `images/enemies/${idx}.png`);
+    assets.setImageFromFile(`Enemy_${idx}`, `/images/santashooter/enemies/${idx}.png`);
 }
-assets.setImageFromFile("StarsBG", "images/StarsBG.png");
-assets.setImageFromFile("AutoTargeting", "images/items/autoTargeting.png");
-assets.setImageFromFile("BigStars", "images/items/bigStars.png");
-assets.setImageFromFile("FastShooting", "images/items/fastShooting.png");
-assets.setImageFromFile("BonusHp", "images/items/bonusHp.png");
+assets.setImageFromFile("StarsBG", "/images/santashooter/StarsBG.png");
+assets.setImageFromFile("AutoTargeting", "/images/santashooter/items/autoTargeting.png");
+assets.setImageFromFile("BigStars", "/images/santashooter/items/bigStars.png");
+assets.setImageFromFile("FastShooting", "/images/santashooter/items/fastShooting.png");
+assets.setImageFromFile("BonusHp", "/images/santashooter/items/bonusHp.png");
 
 //---------------
 // Sounds

@@ -19,11 +19,8 @@ function switchTable(tableName, displayName)
     // Update button active states visually
     const buttons = document.querySelectorAll('.nav-btn');
     buttons.forEach(btn => {
-        if (btn.textContent.includes(displayName)) {
-            btn.classList.add('active');
-        } else {
-            btn.classList.remove('active');
-        }
+        const isCurrent = btn.getAttribute('data-table-name') === tableName;
+        btn.classList.toggle('active', isCurrent);
     });
     
     // Redraw the shelf after switching datatable
@@ -78,7 +75,7 @@ async function renderBookshelf()
             book.classList.add('locked');
         }
 
-        // visual hover logic
+        // visual hover logic -> Change Tooltip Text
         book.onmouseenter = () =>
         {
             const statusSymbol = loggedIn ? 'Lesen' : 'Einloggen';
@@ -93,6 +90,8 @@ async function renderBookshelf()
         //Handle the DB fetch and opening file
         book.onclick = async () =>
         {
+            // If a user is not logged in and tries to click on a file
+            // we send the user to the login screen
             if (!loggedIn) {
                 window.location.href = '/auth/';
                 return;
@@ -100,7 +99,7 @@ async function renderBookshelf()
 
             const newTab = window.open('about:blank', '_blank');
 
-            // Visual loading feedback
+            // Some visual cues that the file is loading
             book.style.opacity = '0.5';
             const originalText = tooltip.innerHTML;
             tooltip.innerHTML = `<em>Öffne Dokument...</em>`;
@@ -110,7 +109,7 @@ async function renderBookshelf()
                 const { data, error } = await supabaseClient
                     .storage
                     .from(BUCKET_NAME)
-                    .createSignedUrl(`${selectedTable}/${story.filename}`, 30);
+                    .createSignedUrl(`${selectedTable}/${story.filename}`, 10);
                 if (error) {throw error;}
 
                 // Open in a new tab

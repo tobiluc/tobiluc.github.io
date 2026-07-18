@@ -5,7 +5,7 @@ import fs from 'fs';
 
 export default defineConfig({
   plugins: [
-    injectHTML()
+    injectHTML() // used for the partial html snippet like navbar (templates)
   ],
   base: '/',
   build: {

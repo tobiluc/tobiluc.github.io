@@ -8,32 +8,53 @@ body {
 .category-nav {
     display: flex;
     justify-content: center;
-    gap: 15px;
+    align-items: center;
+    gap: 45px;
     margin-bottom: 30px;
     width: 100%;
     max-width: 800px;
 }
 
 .nav-btn {
-    background-color: #f0f0f0;
-    color: #4a3728;
-    border: 2px solid #8B5A2B;
-    padding: 10px 20px;
-    font-size: 14px;
-    font-weight: bold;
-    border-radius: 20px;
+    /* Circle */
+    width: 64px;
+    height: 64px;
+    border-radius: 64px;
+    
+    /* Center SVG */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    
+    /* Clean up button defaults */
+    border: 2px solid #ccc;
+    background-color: #ffffff;
     cursor: pointer;
-    transition: all 0.2s ease;
+    padding: 0;
+    transition: all 0.3s ease;
+    filter: grayscale(100%);
+    opacity: 0.3;
 }
 
+/* Hover effect for inactive buttons */
 .nav-btn:hover {
+    opacity: 0.85;
+    border-color: #999;
     background-color: #e6dcd3;
 }
 
+/* Active / Selected state: Full color and pop */
 .nav-btn.active {
-    background-color: #8B5A2B;
-    color: white;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.15);
+    filter: grayscale(0%);
+    opacity: 1;
+    border-color: #007bff;
+    transform: scale(1.05);
+}
+
+.nav-btn img {
+    width: 80%;
+    height: 80%;
+    fill: #333; 
 }
 
 .tooltip-box {
@@ -42,7 +63,6 @@ body {
     left: 50%;
     transform: translateX(-50%);
     width: 100%;
-    max-width: 800px;
     background-color: var(--bg-color);
     color: var(--text-color);
     padding: 15px;
@@ -56,8 +76,8 @@ body {
 }
 
 .bookshelf {
-    width: 100%;
-    max-width: 800px;
+    width: 800px;
+    max-width: 90%;
     margin: 0 auto;
     position: relative;
     padding-bottom: 80px;

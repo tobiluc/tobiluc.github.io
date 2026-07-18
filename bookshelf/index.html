@@ -23,11 +23,22 @@
     <load src="src/partials/navbar.html" />
 
     <div class="bookshelf">
-
         <div class="category-nav">
-            <button class="nav-btn active" data-display-name="Kurzgeschichten" data-table-name="ShortStories">Kurzgeschichten</button>
-            <button class="nav-btn" data-display-name="Detektiv Ronny" data-table-name="DetectiveRonny" style="font-family: 'Courier New', Courier, monospace;">Detektiv Ronny</button>
-            <!-- <button class="nav-btn" onclick="switchTable('AgentBullet', 'Agent Bullet')">Agent Bullet</button> -->
+            <button class="nav-btn active" data-display-name="Kurzgeschichten" data-table-name="ShortStories" title="Kurzgeschichten" aria-label="Kurzgeschichten">
+                <img src="/images/bookshelf/Icon-ShortStories.svg" alt="" class="nav-icon" />
+            </button>
+            
+            <button class="nav-btn" data-display-name="Detektiv Ronny" data-table-name="DetectiveRonny" title="Detektiv Ronny" aria-label="Detektiv Ronny">
+                <img src="/images/bookshelf/Icon-DetectiveRonny.svg" alt="" class="nav-icon" />
+            </button>
+            
+            <button class="nav-btn" data-display-name="Agent Bullet" data-table-name="AgentBullet" title="Agent Bullet" aria-label="Agent Bullet">
+                <img src="/images/bookshelf/Icon-AgentBullet.svg" alt="" class="nav-icon" />
+            </button>
+
+            <button class="nav-btn" data-display-name="Gedichte" data-table-name="Poems" title="Gedichte" aria-label="Gedichte">
+                <img src="/images/bookshelf/Icon-Poems.svg" alt="" class="nav-icon" />
+            </button>
         </div>
 
         <div class="shelf-row">
