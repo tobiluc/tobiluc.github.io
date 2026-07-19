@@ -43,13 +43,21 @@ body {
 .top-bar nav a {
     display: inline-block;
     position: sticky;
-    font-size: 1.5rem;
+    font-size: 1.1rem;
     font-weight: 500;
-    margin: 0 1rem;
-    padding-right: 1rem;
+    margin: 0 0.5rem;
+    padding-right: 0.5rem;
     color: var(--text-color);
     text-decoration: none;
     transition: color 0.2s ease, transform 0.2s ease;
+}
+
+@media (min-width: 768px) {
+    .top-bar nav a {
+        font-size: 1.5rem;
+        margin: 0 1rem;
+        padding-right: 1rem;
+    }
 }
 
 .top-bar nav a:hover {

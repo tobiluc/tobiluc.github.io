@@ -253,7 +253,7 @@ text-decoration: none;
 .timeline-item {
   position: relative;
   width: 50%;
-  padding: 20px 40px;
+  padding: 20px 12px;
   box-sizing: border-box;
 }
 /* left side */
