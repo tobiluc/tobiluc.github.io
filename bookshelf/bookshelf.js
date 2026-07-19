@@ -84,7 +84,7 @@ async function renderBookshelf()
         };
 
         book.onmouseleave = () => {
-            tooltip.innerHTML = `Klick auf ein "Buch", um es zu lesen.`;
+            tooltip.innerHTML = `Klick auf ein "Buch", um es zu lesen. Scrolle nach links und rechts, um alles zu sehen.`;
         };
 
         //Handle the DB fetch and opening file

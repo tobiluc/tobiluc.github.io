@@ -10,7 +10,7 @@ body {
     justify-content: center;
     align-items: center;
     gap: 45px;
-    margin-bottom: 30px;
+    margin-bottom: 0px;
     width: 100%;
     max-width: 800px;
 }
@@ -47,14 +47,14 @@ body {
 .nav-btn.active {
     filter: grayscale(0%);
     opacity: 1;
-    border-color: #007bff;
+    border-color: rgb(200, 13, 169);
     transform: scale(1.05);
 }
 
 .nav-btn img {
     width: 80%;
     height: 80%;
-    fill: #333; 
+    fill: var(--icon-color);
 }
 
 .tooltip-box {
@@ -89,38 +89,61 @@ body {
 }
 
 .shelf-title {
-    margin-bottom: 10px;
-    color: #4a3728;
-    border-bottom: 2px dashed var(--icon-color);
+    text-align: center;
+    margin-bottom: 8px;
+    color: var(--text-color);
     padding-bottom: 5px;
 }
 
-/* horizontal area where books stand */
+/* Update your existing .books-container ruleset */
 .books-container {
     display: flex;
     align-items: flex-end;
     padding: 0 20px;
     height: 180px;
-    gap: 2px;
+    gap: 6px;
+    
+    /* Used for Scrolling */
+    overflow-x: auto;
+    overflow-y: hidden;
+    white-space: nowrap;
+    
+    /* Scroll Settings */
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    scroll-snap-type: x mandatory;
+
+    /* Visual Wooden Frame  */
+    position: relative;
+    border: 12px solid #8B5A2B;
+    border-radius: 6px 6px 0 0;
+    background-color: #5c3a2169;
+    box-shadow: inset 0 8px 10px color-mix(in srgb, var(--shadow-color), transparent 30%);
+
+    padding: 20px 20px 0 20px;
 }
 
-/* The wooden shelf ledge */
-.shelf-wood {
-    height: 15px;
-    background: linear-gradient(to bottom, #8B5A2B, #5C3A21);
-    border-radius: 2px;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+.books-container::-webkit-scrollbar {
+    display: none;
 }
 
+/* Ensure individual books behave correctly inside the scroller */
 .book-spine {
+    flex-shrink: 0; /* Prevents books from squishing flat when there are too many */
+    scroll-snap-align: start; /* Pairs with the scroll-snap-type above */
+
+    box-shadow: inset -3px 0 5px rgba(0,0,0,0.2), 2px 0 4px color-mix(in srgb, var(--shadow-color), transparent 20%);
+    transition: transform 0.2s ease, filter 0.2s ease;
+
     width: 35px;
     height: 150px;
     background-color: #2b5c8f;
     color: white;
     cursor: pointer;
     border-radius: 3px 3px 0 0;
-    box-shadow: inset -3px 0 5px rgba(0,0,0,0.2), 2px 0 4px rgba(0,0,0,0.2);
-    transition: transform 0.2s ease, filter 0.2s ease;
+    
     display: flex;
     justify-content: center;
     align-items: center;
@@ -128,7 +151,23 @@ body {
     container-type: size;
 }
 
-/* Vertical title written on book spine */
+.book-spine:hover {
+    transform: translateY(-15px) scale(1.1);
+    filter: brightness(1.2);
+}
+
+.book-spine.locked {
+    background-color: #555 !important;
+    opacity: 0.7;
+}
+
+/* Keep the hover effect clean */
+.shelf-row {
+    margin-bottom: 50px;
+    position: relative;
+    overflow: hidden; /* Prevents the hover lift from causing weird row layout shifts */
+}
+
 .book-title-vertical {
     writing-mode: vertical-rl;
     transform: rotate(180deg);
@@ -140,16 +179,4 @@ body {
     letter-spacing: 0.5px;
     max-height: 90%; 
     text-overflow: ellipsis;
-}
-
-/* Hover over Book spine */
-.book-spine:hover {
-    transform: translateY(-10px) scale(1.05);
-    filter: brightness(1.2);
-}
-
-/* Locked State for spine (visitor not logged in) */
-.book-spine.locked {
-    background-color: #555 !important;
-    opacity: 0.7;
 }

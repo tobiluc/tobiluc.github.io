@@ -8,6 +8,11 @@ body {
     transition: background 0.25s, color 0.25s;
     font-size: clamp(0.9rem, 2.5vw, 1.1rem);
     line-height: 1.6;
+
+    /* Stop mobile browsers from automatically blowing up text sizes */
+    -webkit-text-size-adjust: 100%;
+    -moz-text-size-adjust: 100%;
+    text-size-adjust: 100%;
 }
 
 /* Background Canvas (Floating Shapes) */
