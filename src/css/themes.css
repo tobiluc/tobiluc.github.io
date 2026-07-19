@@ -1,20 +1,22 @@
 /* Define Themes */
 :root {
     --bg-color: #ffffff;
-    --text-color: #000000;
+    --text-color: #181818;
     --icon-color: #222;
     --card-color: #cdedcf;
     --hover-color: #28823e;
     --shadow-color: #00000020;
+    --wood-color: #c59b88;
 }
 
 [data-theme="dark"] {
     --bg-color: #232323;
-    --text-color: #e8e8e8;
+    --text-color: #e2daca;
     --card-color: #263729;
     --icon-color: #ddd;
     --hover-color: #00ea4e;
     --shadow-color: #e8e8e820;
+    --wood-color: #472921;
 }
 
 /* Toggle Themes */
