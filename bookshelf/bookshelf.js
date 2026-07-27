@@ -27,6 +27,10 @@ function switchTable(tableName, displayName)
     renderBookshelf();
 }
 
+async function query(params) {
+    
+}
+
 async function renderBookshelf()
 {
     const shelf = document.getElementById('selected-shelf');
@@ -34,11 +38,23 @@ async function renderBookshelf()
     
     shelf.innerHTML = '<div style="color: gray; padding: 20px;">Changing shelves...</div>';
 
-    // Query
-    const { data: stories, error } = await supabaseClient
-        .from(selectedTable)
-        .select('title, date, filename, description')
-        .order('date', {ascending: true});
+    // Query Table
+    let query = supabaseClient.from(selectedTable).select('*');
+
+    // TODO: Update Querystuff with Typescript (see BookItem.ts)
+    // Filter
+    if (selectedTable == 'AgentBullet') {
+        query = query.select('title, filename, description, show')
+                    .order('title', {ascending: true})
+                    .eq('show', true);
+    } else {
+        query = query.select('title, date, filename, description, show')
+                    .order('date', {ascending: true})
+                    .eq('show', true);
+    }
+
+    // Execute the query once
+    const { data: stories, error } = await query;
 
     // Error?
     if (error) {
