@@ -41,38 +41,6 @@ function switchTable(tableName: TableName, displayName: string): void {
     void renderBookshelf();
 }
 
-/**
- * Adds leading/trailing spacer elements so the first and last book
- * can still be scrolled into the dead-center of the container.
- */
-// function sizeSpacers(scroller: HTMLElement, track: HTMLElement): void {
-//     const firstBook = track.querySelector<HTMLElement>('.book-spine');
-//     if (!firstBook) return;
-
-//     const bookWidth = firstBook.getBoundingClientRect().width;
-//     const spacerWidth = Math.max(0, (scroller.clientWidth - bookWidth) / 2);
-
-//     track.style.setProperty('--spacer-width', `${spacerWidth}px`);
-// }
-/**
- * Dynamically sizes leading and trailing spacer elements to allow 
- * centering the first and last items in the carousel viewport.
- */
-function updateSpacers(scroller: HTMLElement, track: HTMLElement): void {
-    const books = track.querySelectorAll<HTMLElement>('.book-spine');
-    if (books.length === 0) return;
-
-    const firstBook = books[0];
-    const bookWidth = firstBook.getBoundingClientRect().width || 60; // fallback to CSS width
-    const spacerWidth = Math.max(0, (scroller.clientWidth - bookWidth) / 2);
-
-    let startSpacer = track.querySelector<HTMLElement>('.shelf-spacer-start');
-    let endSpacer = track.querySelector<HTMLElement>('.shelf-spacer-end');
-
-    if (startSpacer) startSpacer.style.flex = `0 0 ${spacerWidth}px`;
-    if (endSpacer) endSpacer.style.flex = `0 0 ${spacerWidth}px`;
-}
-
 function updateInfoPanel(info: HTMLElement, item: IBookItem, loggedIn: boolean): void {
     if (!item) {return;}
     info.innerHTML = item.getTooltipHTML();
@@ -105,7 +73,7 @@ function applySelectionStyles(books: HTMLElement[], index: number): void {
 }
 
 function handleScroll(scroller: HTMLElement, info: HTMLElement, loggedIn: boolean): void {
-    if (scrollRaf) return;
+    if (scrollRaf) {return;}
 
     scrollRaf = requestAnimationFrame(() => {
         scrollRaf = 0;
@@ -123,9 +91,80 @@ function handleScroll(scroller: HTMLElement, info: HTMLElement, loggedIn: boolea
     });
 }
 
+function updateSpacers(scroller: HTMLElement, track: HTMLElement): void {
+    const books = track.querySelectorAll<HTMLElement>('.book-spine');
+    if (books.length === 0) return;
+
+    const firstBook = books[0];
+    const bookWidth = firstBook.getBoundingClientRect().width || 60;
+    const spacerWidth = Math.max(0, (scroller.clientWidth - bookWidth) / 2);
+
+    let startSpacer = track.querySelector<HTMLElement>('.shelf-spacer-start');
+    let endSpacer = track.querySelector<HTMLElement>('.shelf-spacer-end');
+
+    // Force strict flex-basis and minimum dimensions for WebKit
+    if (startSpacer) {
+        startSpacer.style.flex = `0 0 ${spacerWidth}px`;
+        startSpacer.style.minWidth = `${spacerWidth}px`;
+    }
+    if (endSpacer) {
+        endSpacer.style.flex = `0 0 ${spacerWidth}px`;
+        endSpacer.style.minWidth = `${spacerWidth}px`;
+    }
+}
+
 function scrollToIndex(scroller: HTMLElement, books: HTMLElement[], index: number): void {
     const clamped = Math.max(0, Math.min(index, books.length - 1));
-    books[clamped]?.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+    const targetBook = books[clamped];
+    if (!targetBook) return;
+
+    // Direct scroll target calculation (bypasses WebKit scrollIntoView bugs)
+    const scrollerCenter = scroller.clientWidth / 2;
+    const bookOffsetLeft = targetBook.offsetLeft;
+    const bookWidth = targetBook.clientWidth;
+    const targetScrollLeft = bookOffsetLeft + (bookWidth / 2) - scrollerCenter;
+
+    scroller.scrollTo({
+        left: targetScrollLeft,
+        behavior: 'smooth'
+    });
+}
+
+async function openBook(item: IBookItem, book: HTMLElement, info: HTMLElement): Promise<void> {
+    const loggedIn = await isLoggedIn();
+    if (!loggedIn) {
+        window.location.href = '/auth/';
+        return;
+    }
+
+    // Safari requires opening the window directly in the sync execution frame
+    const newTab = window.open('', '_blank');
+
+    book.style.opacity = '0.5';
+    const originalInfo = info.innerHTML;
+    info.innerHTML = `<em>Öffne Dokument...</em>`;
+
+    try {
+        const { data, error: urlError } = await supabaseClient.storage
+            .from(BUCKET_NAME)
+            .createSignedUrl(`${selectedTable}/${item.filename}`, 10);
+
+        if (urlError) throw urlError;
+
+        if (data?.signedUrl && newTab) {
+            newTab.location.href = data.signedUrl;
+        } else if (newTab) {
+            newTab.close();
+        }
+    } catch (err) {
+        if (newTab) newTab.close();
+        info.innerHTML = `<span style="color: red">${err}</span>`;
+        return;
+    } finally {
+        book.style.opacity = '1';
+    }
+
+    info.innerHTML = originalInfo;
 }
 
 async function renderBookshelf(): Promise<void> {
@@ -212,37 +251,6 @@ async function renderBookshelf(): Promise<void> {
     if (nextBtn) nextBtn.onclick = () => scrollToIndex(scroller, books, currentIndex + 1);
 }
 
-async function openBook(item: IBookItem, book: HTMLElement, info: HTMLElement): Promise<void> {
-    const loggedIn = await isLoggedIn();
-    if (!loggedIn) {
-        window.location.href = '/auth/';
-        return;
-    }
-
-    const newTab = window.open('about:blank', '_blank');
-
-    book.style.opacity = '0.5';
-    const originalInfo = info.innerHTML;
-    info.innerHTML = `<em>Öffne Dokument...</em>`;
-
-    try {
-        const { data, error: urlError } = await supabaseClient.storage
-            .from(BUCKET_NAME)
-            .createSignedUrl(`${selectedTable}/${item.filename}`, 10);
-        if (urlError) throw urlError;
-
-        if (data?.signedUrl && newTab) {
-            newTab.location.href = data.signedUrl;
-        }
-    } catch (err) {
-        info.innerHTML = `<span style="color: red">${err}</span>`;
-        return;
-    } finally {
-        book.style.opacity = '1';
-    }
-
-    info.innerHTML = originalInfo;
-}
 
 document.addEventListener('DOMContentLoaded', () => {
     // const navButtons = document.querySelectorAll<HTMLElement>('.category-nav .nav-btn');

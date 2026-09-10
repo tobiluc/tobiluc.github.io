@@ -33,18 +33,67 @@ main {
   width: 80%;
   max-width: 400px;
   margin: 0 auto 1.5rem auto;
+  position: relative;
+    display: inline-block;
+    justify-content: center;
+    align-items: center;
+}
+
+.category-select-wrapper select {
+    /* Reset WebKit/Safari defaults */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+
+    /* Force text alignment across Safari/iOS */
+    text-align: center;
+    text-align-last: center;
+    -moz-text-align-last: center;
+
+    /* Input background & dimensions */
+    background-color: var(--wood-color);
+    color: var(--text-color);
+    width: 100%;
+    font-size: 16px; /* Prevents auto-zoom on iOS */
+    font-family: inherit;
+    box-sizing: border-box;
+    padding: 10px 40px 10px 14px; /* Right padding preserves space for arrow */
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.category-select-wrapper::after {
+    content: '';
+    position: absolute;
+    right: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 10px;
+    height: 10px;
+    pointer-events: none; /* Mouse clicks pass through to select */
+
+    /* Arrow color controlled by your variable */
+    background-color: var(--text-color);
+
+    /* Mask out the arrow shape */
+    -webkit-mask: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E") no-repeat center / contain;
+    mask: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E") no-repeat center / contain;
 }
 
 .category-dropdown {
     width: 100%;
     cursor: pointer;
     box-sizing: border-box;
+    padding: 10px 40px 10px 14px;
 
-    text-align: center;
-    padding: 8px 16px;
-
+    /* Custom drop-down arrow */
     /* Warm wood background using layered gradients for depth */
-    background: var(--wood-color);
+    /* background-color: var(--wood-color);
+    background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23333333%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
+    background-repeat: no-repeat; */
+    background-position: right 12px top 50%;
+    background-size: 10px auto;
 
     /* Border */
     border-radius: 8px;
@@ -59,11 +108,14 @@ main {
         inset 0 -4px 8px color-mix(in srgb, var(--shadow-color), 40%),      /* Inner shadow for carved depth */
         0 4px 6px color-mix(in srgb, var(--shadow-color), 15%);            /* Drop shadow so it pops off the wall/shelf */
         
-    /* Text Styling for a "Carved" or "Branded" feel */
+    font-size: 16px; /* Prevents auto-zoom on iOS Safari */
+    font-family: inherit;
     color: var(--text-color);
     font-weight: bold;
     text-shadow: -1px -1px 1px color-mix(in srgb, var(--shadow-color), transparent 70%), 1px 1px 1px rgba(255, 255, 255, 0.2); /* Faux-carved effect */
     letter-spacing: 2px;
+    text-align: center;
+    text-align-last: center;
 }
 
 .category-dropdown:focus {
@@ -103,12 +155,21 @@ main {
     display: none;
 }
 
+#selected-shelf {
+    display: flex;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
+}
+
 .shelf-track {
     display: flex;
     align-items: flex-end;
+    
     gap: 4px;
     padding: 20px 0;
     width: max-content;
+    min-width: max-content;
     height: 180px;
     
     /* Used for Scrolling */
