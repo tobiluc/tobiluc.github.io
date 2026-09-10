@@ -2,7 +2,7 @@
 <html lang="de">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
     <title>Creative Work</title>
 
@@ -22,39 +22,50 @@
     <!-- Navigation Bar -->
     <load src="src/partials/navbar.html" />
 
-    <div class="bookshelf">
-        <div class="category-nav">
-            <button class="nav-btn active" data-display-name="Kurzgeschichten" data-table-name="ShortStories" title="Kurzgeschichten" aria-label="Kurzgeschichten">
-                <img src="/images/bookshelf/Icon-ShortStories.svg" alt="" class="nav-icon" />
-            </button>
-            
-            <button class="nav-btn" data-display-name="Detektiv Ronny" data-table-name="DetectiveRonny" title="Detektiv Ronny" aria-label="Detektiv Ronny">
-                <img src="/images/bookshelf/Icon-DetectiveRonny.svg" alt="" class="nav-icon" />
-            </button>
-            
-            <button class="nav-btn" data-display-name="Agent Bullet" data-table-name="AgentBullet" title="Agent Bullet" aria-label="Agent Bullet">
-                <img src="/images/bookshelf/Icon-AgentBullet.svg" alt="" class="nav-icon" />
-            </button>
+    <main class="main-container">
 
-            <button class="nav-btn" data-display-name="Gedichte" data-table-name="Poems" title="Gedichte" aria-label="Gedichte">
-                <img src="/images/bookshelf/Icon-Poems.svg" alt="" class="nav-icon" />
-            </button>
+        <div class="shelf-wrapper">
+            <!-- Category Selection -->
+             <div class="category-select-wrapper">
+                <select id="category-select" class="category-dropdown" aria-label="Kategorie auswählen">
+                    <option value="ShortStories" data-display-name="Kurzgeschichten" selected>
+                    Kurzgeschichten
+                    </option>
+                    <option value="DetectiveRonny" data-display-name="Detektiv Ronny">
+                    Detektiv Ronny
+                    </option>
+                    <option value="AgentBullet" data-display-name="Agent Bullet">
+                    Agent Bullet
+                    </option>
+                    <option value="Poems" data-display-name="Gedichte">
+                    Gedichte
+                    </option>
+                </select>
+            </div>
+
+            <!-- Book Scroller -->
+            <div class="shelf-carousel-container">
+                <button id="shelf-prev" class="shelf-arrow" aria-label="Vorheriges Buch">‹</button>
+
+                <div id="selected-shelf" class="shelf-scroller">
+                    <div id="shelf-track" class="shelf-track">
+                        <!-- books get inserted here by Code -->
+                    </div>
+                </div>
+
+                <button id="shelf-next" class="shelf-arrow" aria-label="Nächstes Buch">›</button>
+            </div>
+
+            <div id="book-info"></div>
         </div>
 
-        <div class="shelf-row">
-            <h2 class="shelf-title" id="selected-shelf-title">Kurzgeschichten</h2>
-            <div class="books-container" id="selected-shelf"></div>
-        </div>
-
-        <div id="book-tooltip" class="tooltip-box">Klick auf ein "Buch", um es zu lesen. Scrolle nach links und rechts, um alles zu sehen.</div>
-
-    </div>
+    </main>
 
     <!-- Socials -->
     <load src="/src/partials/footer.html" />
 
     <script type="module" src="/src/js/themes.js"></script>
-    <script type="module" src="./bookshelf.js"></script>
+    <script type="module" src="./bookshelf.ts"></script>
 
 </body>
 </html>

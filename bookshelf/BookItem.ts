@@ -1,127 +1,124 @@
-// import { supabaseClient } from "/auth/supabaseAuth";
+import { supabaseClient } from "../auth/supabaseAuth";
 
-// export interface IBookItem
-// {
-//     title: string;
-//     filename: string;
-//     description: string | null;
+export type TableName = 'AgentBullet' | 'DetectiveRonny' | 'ShortStories' | 'Poems';
 
-//     getTooltipHTML(): string;
-// };
+export interface IBookItem {
+    title: string;
+    filename: string;
+    description: string | null;
+    show: boolean;
 
-// export class AgentBulletItem implements IBookItem
-// {
-//     constructor(
-//         public title: string,
-//         public filename: string,
-//         public description: string | null
-//     ) {}
+    getTooltipHTML(): string;
+}
 
-//     getTooltipHTML(): string {
-//         return `<strong>${this.title}</strong> <p>${this.description ? this.description : ''}</p>`;  
-//     }
-// };
+// Raw shape coming back from Supabase before it's wrapped in a class
+interface BookRow {
+    title: string;
+    filename: string;
+    description: string | null;
+    show: boolean;
+    date?: string | null;
+}
 
-// export class DetectiveRonnyItem implements IBookItem
-// {
-//     constructor(
-//         public title: string,
-//         public filename: string,
-//         public description: string | null,
-//         public date: Date | null
-//     ) {}
+abstract class BaseBookItem implements IBookItem {
+    constructor(
+        public title: string,
+        public filename: string,
+        public description: string | null,
+        public show: boolean
+    ) {}
 
-//     getTooltipHTML(): string
-//     {
-//         const yearText = this.date ? ` (${new Date(this.date).getFullYear()})` : '';
-//         return `<strong>${this.title}</strong>${yearText} <p>${this.description ? this.description : ''}</p>`; 
-//     }
-// };
+    abstract getTooltipHTML(): string;
 
-// export class ShortStoryItem implements IBookItem
-// {
-//     constructor(
-//         public title: string,
-//         public filename: string,
-//         public description: string | null,
-//         public date: Date | null
-//     ) {}
+    protected descriptionHTML(): string {
+        return `<p>${this.description ? this.description : ''}</p>`;
+    }
+}
 
-//     getTooltipHTML(): string
-//     {
-//         const yearText = this.date ? ` (${new Date(this.date).getFullYear()})` : '';
-//         return `<strong>${this.title}</strong>${yearText} <p>${this.description ? this.description : ''}</p>`;
-//     }
-// };
+export class AgentBulletItem extends BaseBookItem {
+    getTooltipHTML(): string {
+        return `<strong>${this.title}</strong> ${this.descriptionHTML()}`;
+    }
+}
 
-// export class PoemItem implements IBookItem
-// {
-//     constructor(
-//         public title: string,
-//         public filename: string,
-//         public description: string | null,
-//         public date: Date | null
-//     ) {}
+/** Shared base for every item that also carries a date (short stories, poems, Detective Ronny). */
+export abstract class DatedBookItem extends BaseBookItem {
+    constructor(
+        title: string,
+        filename: string,
+        description: string | null,
+        show: boolean,
+        public date: Date | null
+    ) {
+        super(title, filename, description, show);
+    }
 
-//     getTooltipHTML(): string
-//     {
-//         const yearText = this.date ? ` (${new Date(this.date).getFullYear()})` : '';
-//         return `<strong>${this.title}</strong>${yearText} <p>${this.description ? this.description : ''}</p>`;
-//     }
-// };
+    getTooltipHTML(): string {
+        const yearText = this.date ? ` (${this.date.getFullYear()})` : '';
+        return `<strong>${this.title}</strong>${yearText} ${this.descriptionHTML()}`;
+    }
+}
 
-// export async function queryItems(tableName: 'AgentBullet' | 'DetectiveRonny' | 'ShortStories' | 'Poems')
-// {
-//     if (tableName == 'AgentBullet')
-//     {
-//         const { data: stories, error } = await supabaseClient
-//             .from(tableName)
-//             .select('title, filename, description')
-//             .order('title');
+export class DetectiveRonnyItem extends DatedBookItem {}
+export class ShortStoryItem extends DatedBookItem {}
+export class PoemItem extends DatedBookItem {}
 
-//         if (error) {console.error(error);}
+function toDate(value: string | null | undefined): Date | null {
+    return value ? new Date(value) : null;
+}
 
-//         return { stories, error };
-//         // return data.map(
-//         //     (row) =>
-//         //         new AgentBulletItem(
-//         //             row.title,
-//         //             row.filename,
-//         //             row.description
-//         //         )
-//         // );
-//     }
-//     else if (tableName == 'DetectiveRonny')
-//     {
-//         const { data: stories, error } = await supabaseClient
-//             .from(tableName)
-//             .select('title, filename, description, date')
-//             .order('date', { ascending: true });
+/**
+ * Queries the given table and returns typed IBookItem instances.
+ * Mirrors the old per-table branching, but centralizes it in one place.
+ */
+export async function queryItems(
+    tableName: TableName
+): Promise<{ items: IBookItem[]; error: { message: string } | null }> {
+    const baseQuery = supabaseClient.from(tableName);
 
-//         if (error) {console.error(error);}
+    const query =
+        tableName === 'AgentBullet'
+            ? baseQuery
+                  .select('title, filename, description, show')
+                  .order('title', { ascending: true })
+                  .eq('show', true)
+            : baseQuery
+                  .select('title, filename, description, show, date')
+                  .order('date', { ascending: true })
+                  .eq('show', true);
 
-//         return { stories, error };
-//     }
-//     else if (tableName == 'ShortStories')
-//     {
-//         const { data: stories, error } = await supabaseClient
-//             .from(tableName)
-//             .select('title, filename, description, date')
-//             .order('date', { ascending: true });
+    const { data, error } = await query;
 
-//         if (error) {console.error(error);}
+    if (error) {
+        return { items: [], error };
+    }
 
-//         return { stories, error };
-//     }
-//     else if (tableName == 'Poems')
-//     {
-//         const { data: stories, error } = await supabaseClient
-//             .from(tableName)
-//             .select('title, filename, description, date')
-//             .order('date', { ascending: true });
+    const rows = (data ?? []) as BookRow[];
 
-//         if (error) {console.error(error);}
+    let items: IBookItem[];
+    switch (tableName) {
+        case 'AgentBullet':
+            items = rows.map(
+                (r) => new AgentBulletItem(r.title, r.filename, r.description, r.show)
+            );
+            break;
+        case 'DetectiveRonny':
+            items = rows.map(
+                (r) =>
+                    new DetectiveRonnyItem(r.title, r.filename, r.description, r.show, toDate(r.date))
+            );
+            break;
+        case 'ShortStories':
+            items = rows.map(
+                (r) => new ShortStoryItem(r.title, r.filename, r.description, r.show, toDate(r.date))
+            );
+            break;
+        case 'Poems':
+            items = rows.map(
+                (r) => new PoemItem(r.title, r.filename, r.description, r.show, toDate(r.date))
+            );
+            break;
+    }
 
-//         return { stories, error };
-//     }
-// }
+    return { items, error: null };
+}
