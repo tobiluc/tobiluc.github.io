@@ -1,0 +1,68 @@
+interface GridOptions {
+    year: number;
+    month: string;
+    numDays: number;
+    containerSelector: string;
+    permutation: number[];
+}
+
+class RevealGrid {
+    private options: GridOptions;
+  private container: HTMLElement | null;
+
+  constructor(options: GridOptions) {
+    this.options = options;
+    this.container = document.querySelector(options.containerSelector);
+    if (!this.container) {
+      throw new Error(`Element ${options.containerSelector} not found.`);
+    }
+  }
+
+  public init(): void {
+    if (!this.container) {return;}
+
+    this.container.innerHTML = '';
+
+    for (let i = 1; i <= this.options.numDays; ++i)
+    {
+        const day = this.options.permutation[i-1];
+      const cell = document.createElement('div');
+      cell.classList.add('grid-cell');
+      cell.dataset.id = day.toString();
+      cell.innerText = day.toString();
+
+      // Toggle reveal state on click
+      cell.addEventListener('click', () => {
+        this.revealIfAllowed(day);
+      });
+      this.container.appendChild(cell);
+    }
+  }
+
+    public getCell(dayId: number | string): HTMLElement | null {
+        return this.container?.querySelector(`[data-id="${dayId}"]`) || null;
+    }
+
+    public revealIfAllowed(day: number): void {
+        const cell = this.getCell(day);
+        if (!cell) {return;}
+        // Check Date (since this is for fun only, we don't make it secure)
+        const todayDate = new Date();
+        const cellDate = new Date(`${this.options.month} ${day}, ${this.options.year}`);
+        if (cellDate <= todayDate) {
+            cell.classList.add('revealed');
+        }
+    }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    const options = {
+        year: 2026,
+        month: 'September',
+        numDays: 24,
+        containerSelector: '.grid-container',
+        permutation: [14, 3, 21, 8, 19, 2, 11, 24, 7, 16, 1, 13, 22, 5, 18, 10, 23, 6, 15, 4, 20, 9, 12, 17]
+    };
+    const grid = new RevealGrid(options);
+    grid.init();
+});

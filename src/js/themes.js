@@ -10,7 +10,9 @@ const svg_path_moon = "M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z";
 function set_theme(theme) {
     document.documentElement.setAttribute("data-theme", theme);
     localStorage.setItem("theme", theme);
-    icon.firstElementChild.setAttribute("d", theme === "dark" ? svg_path_sun : svg_path_moon);
+    if (icon) {
+        icon.firstElementChild.setAttribute("d", theme === "dark" ? svg_path_sun : svg_path_moon);
+    }
 }
 
 // Set from cache
@@ -26,9 +28,10 @@ document.addEventListener('DOMContentLoaded', () =>
     setThemeFromCache();
 
     // Toggle theme
-    btn.addEventListener("click", () => {
-        const theme = document.documentElement.getAttribute("data-theme") || "light";
-        set_theme(theme === "light" ? "dark" : "light")
-    });
-
+    if (btn) {
+        btn.addEventListener("click", () => {
+            const theme = document.documentElement.getAttribute("data-theme") || "light";
+            set_theme(theme === "light" ? "dark" : "light")
+        });
+    }
 });

@@ -18,6 +18,7 @@ export default defineConfig({
         cv: resolve(__dirname, 'cv/index.html'),
         bookshelf: resolve(__dirname, 'bookshelf/index.html'),
         auth: resolve(__dirname, 'auth/index.html'),
+        advent: resolve(__dirname, 'advent/index.html'),
       },
     },
   },
