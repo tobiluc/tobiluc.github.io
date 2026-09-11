@@ -2,7 +2,7 @@ import { isLoggedIn, supabaseClient } from "../auth/supabaseAuth";
 import { queryItems, IBookItem, TableName } from "./BookItem";
 
 const BUCKET_NAME = 'Stories';
-const SELECTED_CLASS = 'selected';
+const SELECTED_CLASS = 'selected'; // class name used for selected book
 
 //-------------------
 // Bookshelf Visuals
@@ -116,7 +116,7 @@ function updateSpacers(scroller: HTMLElement, track: HTMLElement): void {
 function scrollToIndex(scroller: HTMLElement, books: HTMLElement[], index: number): void {
     const clamped = Math.max(0, Math.min(index, books.length - 1));
     const targetBook = books[clamped];
-    if (!targetBook) return;
+    if (!targetBook) {return;}
 
     // Direct scroll target calculation (bypasses WebKit scrollIntoView bugs)
     const scrollerCenter = scroller.clientWidth / 2;
@@ -131,6 +131,8 @@ function scrollToIndex(scroller: HTMLElement, books: HTMLElement[], index: numbe
 }
 
 async function openBook(item: IBookItem, book: HTMLElement, info: HTMLElement): Promise<void> {
+
+    // If user is not logged in when trying to read a book, sned'em to the login page
     const loggedIn = await isLoggedIn();
     if (!loggedIn) {
         window.location.href = '/auth/';
@@ -247,20 +249,22 @@ async function renderBookshelf(): Promise<void> {
 
     scroller.onscroll = () => handleScroll(scroller, info, loggedIn);
 
-    if (prevBtn) prevBtn.onclick = () => scrollToIndex(scroller, books, currentIndex - 1);
-    if (nextBtn) nextBtn.onclick = () => scrollToIndex(scroller, books, currentIndex + 1);
+    // Previous/Next Button Handling
+    if (prevBtn) {prevBtn.onclick = () => scrollToIndex(scroller, books, currentIndex - 1);}
+    if (nextBtn) {nextBtn.onclick = () => scrollToIndex(scroller, books, currentIndex + 1);}
+    document.addEventListener('keydown', (event) => {
+        if (event.key === 'ArrowLeft') {
+            prevBtn?.click();
+            event.preventDefault(); 
+        } else if (event.key === 'ArrowRight') {
+            nextBtn?.click();
+            event.preventDefault();
+        }
+    });
 }
 
 
 document.addEventListener('DOMContentLoaded', () => {
-    // const navButtons = document.querySelectorAll<HTMLElement>('.category-nav .nav-btn');
-    // navButtons.forEach((button) => {
-    //     button.addEventListener('click', (event) => {
-    //         const target = event.currentTarget as HTMLElement;
-    //         const data = target.dataset;
-    //         switchTable((data.tableName as TableName) ?? selectedTable, data.displayName ?? '');
-    //     });
-    // });
     const categorySelect = document.getElementById('category-select') as HTMLSelectElement | null;
 
     if (categorySelect) {
