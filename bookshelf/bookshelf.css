@@ -150,6 +150,10 @@ main {
     scroll-behavior: smooth;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
+
+    /* edges smooth fadeout */
+    -webkit-mask-image: linear-gradient(90deg, transparent 0%, rgba(0,0,0,1) 10%, rgba(0,0,0,1) 90%, transparent 100%);
+    mask-image: linear-gradient(90deg, transparent 0%, rgba(0,0,0,1) 10%, rgba(0,0,0,1) 90%, transparent 100%);
 }
 .shelf-scroller::-webkit-scrollbar {
     display: none;
@@ -212,7 +216,7 @@ main {
     scroll-snap-align: start; /* Pairs with the scroll-snap-type above */
 
     box-shadow: inset -3px 0 5px rgba(0,0,0,0.2), 2px 0 4px color-mix(in srgb, var(--shadow-color), transparent 20%);
-    transition: transform 0.2s ease, filter 0.2s ease;
+    transition: transform 0.3s ease, filter 0.3s ease, opacity 0.3s ease;
 
     width: 35px;
     height: 150px;
@@ -231,8 +235,9 @@ main {
 
 .book-spine.selected {
     opacity: 1;
-    transform: scale(1.08);
+    transform: scale(1.2);
     box-shadow: 2px 4px 12px color-mix(in srgb, var(--shadow-color), transparent 45%);
+    z-index: 100;
 }
 
 .book-spine.locked {
@@ -256,7 +261,7 @@ main {
 
 .shelf-arrow {
     flex: 0 0 40px;
-    background: rgba(0, 0, 0, 0.4);
+    background: color-mix(in srgb, var(--wood-color), transparent 55%);;
     color: var(--text-color);
     border: none;
     border-radius: 50%;
@@ -267,7 +272,7 @@ main {
     z-index: 2;
 }
 .shelf-arrow:hover {
-    background: rgba(0, 0, 0, 0.6);
+    background: color-mix(in srgb, var(--hover-color), transparent 55%);
 }
 
 /* Info Panel */
