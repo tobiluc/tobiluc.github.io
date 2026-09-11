@@ -211,19 +211,40 @@ main {
     pointer-events: none;
 }
 
- .book-spine {
-    flex-shrink: 0; /* Prevents books from squishing flat when there are too many */
-    scroll-snap-align: start; /* Pairs with the scroll-snap-type above */
-
-    box-shadow: inset -3px 0 5px rgba(0,0,0,0.2), 2px 0 4px color-mix(in srgb, var(--shadow-color), transparent 20%);
+.book-spine {
+    flex-shrink: 0;
+    scroll-snap-align: start;
     transition: transform 0.3s ease, filter 0.3s ease, opacity 0.3s ease;
 
-    width: 35px;
+    width: 38px;
     height: 150px;
     background-color: #2b5c8f;
+    
+    /* Make Book look nice */
+    background-image: 
+        /* horizontal bands */
+        linear-gradient(to bottom, 
+            transparent 0%, transparent 5%, 
+            rgba(0, 0, 0, 0.2) 5%, rgba(0, 0, 0, 0.2) 8%, 
+            transparent 8%, transparent 92%, 
+            rgba(0, 0, 0, 0.2) 92%, rgba(0, 0, 0, 0.2) 95%, 
+            transparent 95%
+        ),
+        /* Lighting effect: on left there is white light highlight (weird word)*/
+        linear-gradient(90deg, 
+            rgba(0, 0, 0, 0.5) 0%, 
+            rgba(255, 255, 255, 0.25) 15%, 
+            rgba(255, 255, 255, 0.4) 25%, 
+            transparent 50%, 
+            rgba(0, 0, 0, 0.4) 85%, 
+            rgba(0, 0, 0, 0.7) 100%
+        );
+
     color: white;
     cursor: pointer;
-    border-radius: 3px 3px 0 0;
+    
+    /* Slight rounding at the top corners to mimic bound paper/leather */
+    border-radius: 4px 4px 0 0;
     opacity: 0.45;
     
     display: flex;
@@ -231,33 +252,62 @@ main {
     align-items: center;
     overflow: hidden;
     container-type: size;
+
+    /* Drop shadow and inner depth */
+    box-shadow: 
+        inset -2px 0 4px rgba(0, 0, 0, 0.4), 
+        inset 2px 0 3px rgba(255, 255, 255, 0.2),
+        3px 2px 6px color-mix(in srgb, var(--shadow-color), transparent 20%);
 }
 
 .book-spine.selected {
     opacity: 1;
-    transform: scale(1.2);
-    box-shadow: 2px 4px 12px color-mix(in srgb, var(--shadow-color), transparent 45%);
+    transform: scale(1.15) translateY(-6px);
+    box-shadow: 
+        inset -2px 0 4px rgba(0, 0, 0, 0.4), 
+        4px 8px 16px color-mix(in srgb, var(--shadow-color), transparent 30%);
     z-index: 100;
 }
 
 .book-spine.locked {
     background-color: #4a4a4a !important;
+    background-image: none !important;
     opacity: 0.35;
 }
 
 .book-title-vertical {
     writing-mode: vertical-rl;
     transform: rotate(180deg);
+    white-space: normal; /* Allows text to break onto multiple vertical lines */
+    user-select: none;
+    padding: 2px 0;
+    
+    /* Smaller scale range so long titles shrink down neatly */
+    text-align: left;
+    font-size: clamp(7px, 6cqh, 13px); 
+    line-height: 1.2; /* Controls spacing between the vertical text lines */
+    font-weight: bold;
+    letter-spacing: 0.2px;
+    
+    max-height: 80%; 
+    max-width: 85%;  /* Prevents multi-line text from spilling over the spine's width */
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+/* .book-title-vertical {
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
     white-space: nowrap;
     user-select: none;
     padding: 0px 0;
-    font-size: clamp(8px, 8cqh, 16px);
-    font-weight: bold;
-    letter-spacing: 0.5px;
+    font-size: clamp(8px, 8cqh, 15px);
+    font-weight: 500;
+    letter-spacing: 1px;
     max-height: 90%; 
     text-overflow: ellipsis;
-}
-
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
+} */
 
 .shelf-arrow {
     flex: 0 0 40px;
@@ -278,8 +328,17 @@ main {
 /* Info Panel */
 #book-info {
     min-height: 60px;
-    padding: 16px;
+    padding: 16px 10%;
     text-align: center;
-    width: 100%;
+    width: 90%;
     transition: min-height 0.2s ease;
+
+    margin-top: 1.5rem;
+    border: 6px solid var(--wood-color);
+    border-radius: 3px 3px 0 0;
+    background-color: color-mix(in srgb, var(--wood-color), transparent 55%);
+
+    /* edges smooth fadeout */
+    -webkit-mask-image: linear-gradient(90deg, transparent 0%, rgba(0,0,0,1) 15%, rgba(0,0,0,1) 85%, transparent 100%);
+    mask-image: linear-gradient(90deg, transparent 0%, rgba(0,0,0,1) 15%, rgba(0,0,0,1) 85%, transparent 100%);
 }

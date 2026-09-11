@@ -37,6 +37,8 @@ class RevealGrid {
       });
       this.container.appendChild(cell);
     }
+
+    this.checkCache();
   }
 
     public getCell(dayId: number | string): HTMLElement | null {
@@ -47,11 +49,39 @@ class RevealGrid {
         const cell = this.getCell(day);
         if (!cell) {return;}
         // Check Date (since this is for fun only, we don't make it secure)
+        if (this.dayIsAllowed(day)) {
+            cell.classList.add('revealed');
+            this.addRevealedToCache(day);
+        }
+    }
+
+    protected checkCache(): void {
+        // Reveal previosuly revealed cells. Store revealed state as bit string
+        const bitString = this.getRevealedCache();
+        [...bitString].forEach((char:String, index:number) => {
+            if (char != '0') {
+                this.revealIfAllowed(index+1);
+            }
+        });
+        localStorage.setItem('advent-revealed', bitString);
+    }
+
+    protected getRevealedCache(): string {
+        return localStorage.getItem("advent-revealed") || '0'.repeat(this.options.numDays);
+    }
+
+    protected addRevealedToCache(day: number): void {
+        let bitString = this.getRevealedCache();
+        if (this.dayIsAllowed(day)) {
+            bitString = bitString.substring(0, day-1) + '1' + bitString.substring(day);
+        }
+        localStorage.setItem('advent-revealed', bitString);
+    }
+
+    protected dayIsAllowed(day: number): boolean {
         const todayDate = new Date();
         const cellDate = new Date(`${this.options.month} ${day}, ${this.options.year}`);
-        if (cellDate <= todayDate) {
-            cell.classList.add('revealed');
-        }
+        return cellDate <= todayDate;
     }
 }
 

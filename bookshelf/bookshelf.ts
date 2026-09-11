@@ -43,7 +43,7 @@ function switchTable(tableName: TableName, displayName: string): void {
 
 function updateInfoPanel(info: HTMLElement, item: IBookItem, loggedIn: boolean): void {
     if (!item) {return;}
-    info.innerHTML = item.getTooltipHTML();
+    info.innerHTML = item.getInfoHTML();
 }
 
 /** Finds the book-spine element whose center is closest to the scroller's center. */
@@ -169,7 +169,7 @@ async function openBook(item: IBookItem, book: HTMLElement, info: HTMLElement): 
 
 async function renderBookshelf(): Promise<void> {
     const { scroller, track, info, prevBtn, nextBtn } = getShelfElements();
-    if (!scroller || !track || !info) return;
+    if (!scroller || !track || !info) {return;}
 
     resizeObserver?.disconnect();
     currentIndex = 0;

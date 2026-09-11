@@ -8,7 +8,7 @@ export interface IBookItem {
     description: string | null;
     show: boolean;
 
-    getTooltipHTML(): string;
+    getInfoHTML(): string;
 }
 
 // Raw shape coming back from Supabase before it's wrapped in a class
@@ -28,7 +28,7 @@ abstract class BaseBookItem implements IBookItem {
         public show: boolean
     ) {}
 
-    abstract getTooltipHTML(): string;
+    abstract getInfoHTML(): string;
 
     protected descriptionHTML(): string {
         return `<p>${this.description ? this.description : ''}</p>`;
@@ -36,8 +36,8 @@ abstract class BaseBookItem implements IBookItem {
 }
 
 export class AgentBulletItem extends BaseBookItem {
-    getTooltipHTML(): string {
-        return `<strong>${this.title}</strong> ${this.descriptionHTML()}`;
+    getInfoHTML(): string {
+        return `<strong><u>${this.title}</u></strong> ${this.descriptionHTML()}`;
     }
 }
 
@@ -53,9 +53,9 @@ export abstract class DatedBookItem extends BaseBookItem {
         super(title, filename, description, show);
     }
 
-    getTooltipHTML(): string {
+    getInfoHTML(): string {
         const yearText = this.date ? ` (${this.date.getFullYear()})` : '';
-        return `<strong>${this.title}</strong>${yearText} ${this.descriptionHTML()}`;
+        return `<strong><u>${this.title}${yearText}</u></strong> ${this.descriptionHTML()}`;
     }
 }
 
